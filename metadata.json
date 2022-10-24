@@ -1,0 +1,8 @@
+{
+  "name": "Coleweight",
+  "creator": "Ninjune",
+  "entry": "index.js",
+  "description": "Simple Coleweight module to measure mining progression.",
+  "version": "1.4.1",
+  "requires": ["axios", "PogData"]
+}
