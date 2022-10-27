@@ -10,7 +10,7 @@ register("worldLoad", () => {
         ChatLib.chat(`${PREFIX}&eYou are using an unsupported version of Coleweight!`)
         new TextComponent(`${PREFIX}&eClick &3here&e to open the github releases!`)
         .setClickAction("open_url")
-        .setClickValue(`https://github.com/Ninjune/coleweight/releases/${res.data.version}`)
+        .setClickValue(`https://github.com/Ninjune/coleweight/releases`)
         .chat()
         ChatLib.chat("")
     })
