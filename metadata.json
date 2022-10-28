@@ -4,5 +4,5 @@
   "entry": "index.js",
   "description": "Simple Coleweight module to measure mining progression.",
   "version": "1.5.0",
-  "requires": ["axios", "PogData"]
+  "requires": ["axios", "PogData", "Vigilance"]
 }

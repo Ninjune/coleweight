@@ -7,22 +7,23 @@ import { throne } from "./commands/throne.js"
 import { toggle } from "./commands/toggle.js"
 import { leaderboard } from "./commands/leaderboard.js"
 import { update } from './commands/update'
+import { openCwGui } from './gui/cwGui'
+import Settings from "./gui/settingsGui";
 import constants from './util/constants.js'
-import updater from './util/updater'
 
 const PREFIX = constants.PREFIX
 
 register("command", (arg, arg2, arg3) => {
-    switch(arg)
+    switch(arg.toLowerCase())
     {
-        case "setkey": 
+        case "setkey":
             setkey(arg2)
             break
         case "help":
             help()
             break
-        case "gui":
-            constants.cwGui.open();
+        case "move":
+            openCwGui()
             break
         case "toggle":
             toggle()
@@ -41,6 +42,9 @@ register("command", (arg, arg2, arg3) => {
             break
         case "update":
             update()
+            break
+        case "settings":
+            Settings.openGUI()
             break
         default:
             ChatLib.chat(`${constants.PREFIX}Finding Coleweight!`)
@@ -61,7 +65,7 @@ register("command", (arg, arg2, arg3) => {
     }
 }).setTabCompletions((args) => {
     let output = [],
-     commands = ["setkey", "help", "gui", "toggle", "throne", "spiral", "reload", "leaderboard"]
+     commands = ["setkey", "help", "gui", "toggle", "throne", "spiral", "reload", "leaderboard", "settings"]
     
     if(args[0].length == 0 || args[0] == undefined)
         output = commands

@@ -21,8 +21,10 @@ export function throne(arg2)
             constants.throneValues.push([startPos[0]+38, startPos[1]-15, startPos[2]+47])
             constants.throneValues.push([startPos[0]+41, startPos[1]-44, startPos[2]+46])
             constants.throneValues.push([startPos[0]+50, startPos[1]-28, startPos[2]+38])
+            constants.throneValues.push([startPos[0]+55, startPos[1]-36, startPos[2]+29])
             constants.throneValues.push([startPos[0]+49, startPos[1]-31, startPos[2]+1])
             constants.throneValues.push([startPos[0]+50, startPos[1]-1, startPos[2]+10])
+            constants.throneValues.push([startPos[0]+45, startPos[1]-3, startPos[2]-4])
             ChatLib.chat(`${PREFIX}&bThrone waypoints turned on!`)
         }
         else 

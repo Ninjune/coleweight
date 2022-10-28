@@ -6,7 +6,8 @@ let PogData = new PogObject("Coleweight", {
     "y": 141,
     "coleweight": 0,
     "cwToggle": true,
-    "first_time": true
+    "first_time": true,
+    "api_key": undefined
 }, ".cw_data.json");
 
 export default 
@@ -20,7 +21,6 @@ export default
     uptime: 0,
     baseColeweight: 0,
     stepsSinceLast: 0,
-    cwGui: new Gui(),
     throneValues: [],
     spiralValues: [],
     coleweightHr: 0,
