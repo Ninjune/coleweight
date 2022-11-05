@@ -52,8 +52,7 @@ register("step", () => {
         try 
         {
             let tempUuid = Player.getUUID(),
-             cwRows = (FileLib.read("Coleweight", "coleweight.csv")).split("\r\n"),
-             cwData = "",
+             profileData = "",
              coleweight = 0,
              uuid = ""
 
@@ -64,92 +63,102 @@ register("step", () => {
                     uuid = uuid + tempUuid[i]
                 }
             }
-            
-            axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${uuid}`)
-            .then(res => {
-                for(let i=0; i < res.data.profiles.length; i+=1) 
-                {
-                    if(profileToSearch = 'none' && res.data.profiles[i].selected == true) 
-                        cwData = res.data.profiles[i] 
-                    else if(res.data.profiles[i].cute_name == profileToSearch) 
-                        cwData = res.data.profiles[i]
-                }
-                for(let i = 0; i < cwRows.length; i++)
-                {
-                    let row = cwRows[i].split(","),
-                     sourceToSearch = row[0];
-                     
-                    if(row[2] == undefined) 
-                    {
-                        let source = cwData.members[uuid][sourceToSearch],
-                         eq = Math.ceil(source/row[1]*100) / 100
-                        if(eq != undefined)
-                            coleweight += eq
-                    }
-                    else if(row[3] == undefined)
-                    {
-                        let source = cwData.members[uuid][row[2]][sourceToSearch]
-                        if (sourceToSearch == "powder_mithril_total")
-                        {
-                            var eq = Math.ceil(source/row[1]*100) / 100
-                            let powder2 = cwData.members[uuid]['mining_core']['powder_spent_mithril']
-                            
-                            if(powder2 != undefined)
-                            {
-                                eq = Math.ceil((source+powder2)/row[1]*100) / 100
-                            }
-                        }
-                        else if (sourceToSearch == "powder_gemstone_total")
-                        {
-                            var eq = Math.ceil(source/row[1]*100) / 100
-                            let powder2 = cwData.members[uuid]['mining_core']['powder_spent_gemstone']
+            axios.get(`https://ninjune.dev/api/cwinfo`)
+            .then(cwInfoRes => {
+                axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${uuid}`)
+                .then(res => {
+                    let eq = 0,
+                     cwInfo = cwInfoRes.data
 
-                            if(powder2 != undefined)
-                            {
-                                eq = Math.ceil((source+powder2)/row[1]*100) / 100
-                            }
-                        }
-                        else
-                            var eq = Math.ceil(source/row[1]*100) / 100
-                        
-                        if(eq != undefined)
-                            coleweight += eq
-                    }
-                    else if(row[5] == undefined)
+                    for(let i=0; i < res.data.profiles.length; i+=1) 
                     {
-                        let source = cwData.members[uuid][row[2]][row[3]][row[4]][sourceToSearch]
-                         eq = Math.ceil(source/row[1]*100) / 100
-                        if(source != undefined)
-                            coleweight += eq
+                        if(res.data.profiles[i].selected == true) 
+                            profileData = res.data.profiles[i] 
                     }
-                }
-                if(constants.baseColeweight == 0)
-                {
-                    constants.baseColeweight = coleweight
-                }
-                else if((coleweight - constants.baseColeweight) > 0)
-                {
-                    constants.cwValues.push(coleweight - constants.baseColeweight)
-                    constants.calcCwPerHr = true
-                    constants.upTimeTrack = true
-                    constants.stepsSinceLast = 0
-                    constants.baseColeweight = coleweight
-                }
-                else if(constants.stepsSinceLast > 20)
-                {
-                    constants.upTimeTrack = false
-                    constants.stepsSinceLast = 0
-                    constants.cwValues = []
-                }
-                else
-                {
-                    constants.stepsSinceLast += 1
-                }
+
+                    coleweight += Math.ceil((profileData.members[uuid][cwInfo.experience.name]/cwInfo.experience.req)*100) / 100
+
+                    for(let i = 0; i < cwInfo.powder.length; i++)
+                    {
+                        let sourceToSearch = cwInfo.powder[i].name,
+                         source = profileData.members[uuid].mining_core[sourceToSearch]
+                        
+                        if(source != undefined)
+                        {
+                            eq = Math.ceil(source/cwInfo.powder[i].req*100) / 100
+                            
+                            if(i == 0)
+                            {
+                                let powder2 = profileData.members[uuid].mining_core['powder_spent_mithril']
+
+                                if(powder2 != undefined)
+                                    eq = Math.ceil((source+powder2)/cwInfo.powder[i].req*100) / 100
+                            }
+                            else
+                            {
+                                let powder2 = profileData.members[uuid].mining_core['powder_spent_gemstone']
+
+                                if(powder2 != undefined)
+                                    eq = Math.ceil((source+powder2)/cwInfo.powder[i].req*100) / 100
+                            }
+                            coleweight += eq
+                        }
+                    }
                     
-                constants.data.coleweight = Math.ceil(coleweight*100)/100
-                constants.data.save()
-            })
-            .catch(err => {})
+                    for(let i = 0; i < cwInfo.collection.length; i++)
+                    {
+                        let sourceToSearch = cwInfo.collection[i].name,
+                         source = profileData.members[uuid].collection[sourceToSearch]
+                        
+                        if(source != undefined)
+                        {
+                            eq = Math.ceil(source/cwInfo.collection[i].req*100) / 100
+                            coleweight += eq
+                        }
+                    }
+
+                    for(let i = 0; i < cwInfo.miscellaneous.length; i++)
+                    {
+                        let sourceToSearch = cwInfo.miscellaneous[i].name
+                        if(i == 0 || i == 1)
+                            source = profileData.members[uuid].bestiary[sourceToSearch]
+                        else
+                            source = profileData.members[uuid].mining_core.crystals.jade_crystal[sourceToSearch]
+                        if (source != undefined)
+                        {
+                            eq = Math.ceil(source/cwInfo.miscellaneous[i].req*100) / 100
+                            coleweight += eq
+                        }
+                    }
+
+                    if(constants.baseColeweight == 0)
+                    {
+                        constants.baseColeweight = coleweight
+                    }
+                    else if((coleweight - constants.baseColeweight) > 0)
+                    {
+                        constants.cwValues.push(coleweight - constants.baseColeweight)
+                        constants.calcCwPerHr = true
+                        constants.upTimeTrack = true
+                        constants.stepsSinceLast = 0
+                        constants.baseColeweight = coleweight
+                    }
+                    else if(constants.stepsSinceLast > 20)
+                    {
+                        constants.upTimeTrack = false
+                        constants.stepsSinceLast = 0
+                        constants.cwValues = []
+                    }
+                    else
+                    {
+                        constants.stepsSinceLast += 1
+                    }
+                        
+                    constants.data.coleweight = Math.ceil(coleweight*100)/100
+                    constants.data.save()
+                })
+                .catch(err => {ChatLib.chat(e)})
+                })
         }
         catch(e)
         {
