@@ -6,8 +6,19 @@ VERSION = constants.VERSION
 register("worldLoad", () => {
     axios.get(`https://chattriggers.com/api/modules/1367`)
     .then(res => {
-        if(res.data.releases[0].releaseVersion != VERSION && constants.beta == false)
+        let ctVersionArray = (res.data.releases[0].releaseVersion).split('.'),
+         currentVersionArray = VERSION.split('.'),
+         newVersion = false
+
+        for(let i = 0; i < ctVersionArray.length; i++)
         {
+            if (ctVersionArray[i] > currentVersionArray[i])
+                newVersion = true
+        }
+
+        if(newVersion)
+        {
+            ChatLib.chat(VERSION + " " + res.data.releases[0].releaseVersion)
             ChatLib.chat(`${PREFIX}&eYou are using an unsupported version of Coleweight!`)
             new TextComponent(`${PREFIX}&eClick &3here&e to update!`)
             .setClickAction("run_command")
@@ -19,7 +30,16 @@ register("worldLoad", () => {
         {
             axios.get(`https://raw.githubusercontent.com/Ninjune/coleweight/main/metadata.json`)
             .then(res => {
-                if(res.data.version == VERSION || constants.beta == true) return
+                let githubVersionArray = (res.data.version).split('.')
+
+                for(let i = 0; i < githubVersionArray.length; i++)
+                {
+                    if(githubVersionArray[i] > currentVersionArray[i])
+                        newVersion = true
+                }
+
+                if(!newVersion) return
+                
                 ChatLib.chat(`${PREFIX}&eYou are using an unsupported version of Coleweight!`)
                 new TextComponent(`${PREFIX}&eClick &3here&e to open the github releases!`)
                 .setClickAction("open_url")
