@@ -1,16 +1,15 @@
 import PogObject from "PogData"
 
 let PogData = new PogObject("Coleweight", {
-    "api_key": undefined,
+    "api_key": "",
     "x": 0.5,
     "y": 141,
     "coleweight": 0,
     "cwToggle": true,
-    "first_time": true,
-    "api_key": undefined
+    "first_time": true
 }, ".cw_data.json");
 
-export default 
+export default
 {
     PREFIX: "&2[CW] ",
     VERSION: (JSON.parse(FileLib.read("Coleweight", "metadata.json"))).version,
@@ -24,5 +23,6 @@ export default
     throneValues: [],
     spiralValues: [],
     coleweightHr: 0,
-    cwValuesSum: 0
+    cwValuesSum: 0,
+    beta: false
 }
