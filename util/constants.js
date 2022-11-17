@@ -1,20 +1,34 @@
 import PogObject from "PogData"
 
 let PogData = new PogObject("Coleweight", {
-    "api_key": undefined,
+    "api_key": "",
     "x": 0.5,
     "y": 141,
     "coleweight": 0,
-    "cwToggle": true,
-    "first_time": true,
-    "api_key": undefined
-}, ".cw_data.json");
+    "first_time": true
+}, "config/.cw_data.json")
 
-export default 
+let PowderData = new PogObject("Coleweight", {
+    "chests": 0,
+    "gemstonePowder": 0,
+    "mithrilPowder": 0,
+    "x": 0,
+    "y": 0
+}, "config/.powdertracker_data.json")
+
+let TimerData = new PogObject("Coleweight", {
+    "x": 0,
+    "y": 0,
+    "timer": 0
+}, "config/.timer_data.json")
+
+export default
 {
     PREFIX: "&2[CW] ",
     VERSION: (JSON.parse(FileLib.read("Coleweight", "metadata.json"))).version,
     data: PogData,
+    powderdata: PowderData,
+    timerdata: TimerData,
     cwValues: [],
     calcCwPerHr: false,
     upTimeTrack: false,
@@ -24,5 +38,7 @@ export default
     throneValues: [],
     spiralValues: [],
     coleweightHr: 0,
-    cwValuesSum: 0
+    cwValuesSum: 0,
+    beta: false,
+    serverData: {}
 }

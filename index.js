@@ -1,11 +1,14 @@
-import axios from '../axios'
+import './chat/apiNew'
+import './chat/message'
+
+import './chat/serverdata'
+import './render/tabList'
 import './commandManager'
+import './util/updater'
+import './util/grieferTrack'
+import axios from '../axios'
 import constants from './util/constants';
-import "./util/updater"
-import Settings from "./gui/settingsGui.js"
-
 const PREFIX = constants.PREFIX
-
 
 //world update (coords)
 register("renderWorld", () => {
@@ -26,6 +29,7 @@ register("renderWorld", () => {
     
 })
 
+
 //update every second (dogshit code)
 register("step", () => {
     // first time check
@@ -39,7 +43,7 @@ register("step", () => {
         new TextComponent(ChatLib.getCenteredText(`${PREFIX}&bView commands: /cw help`)).chat()
         ChatLib.chat("")
     }
-    if (constants.data.api_key == undefined) return
+    if (constants.data.api_key == undefined || constants.data.api_key == "") return
 
     // updates coleweight for gui
     let date_ob = new Date(),

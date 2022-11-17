@@ -1,19 +1,24 @@
-import axios from '../axios'
+import { openTimerGui } from "./render/timerGui.js"
+import { openPowderGui, updateDisplay } from "./render/powertrackerGui"
+import { openCwGui } from "./render/cwGui"
 import { help } from "./commands/help.js"
 import { reload } from "./commands/reload.js"
 import { setkey } from "./commands/setkey.js"
 import { spiral } from "./commands/spiral.js"
 import { throne } from "./commands/throne.js"
-import { toggle } from "./commands/toggle.js"
 import { leaderboard } from "./commands/leaderboard.js"
-import { update } from './commands/update'
-import { openCwGui } from './gui/cwGui'
-import Settings from "./gui/settingsGui";
-import constants from './util/constants.js'
-
-const PREFIX = constants.PREFIX
+import { update } from "./commands/update"
+import { fetchDiscord } from "./commands/fetchDiscord"
+import { findColeweight } from "./commands/findColeweight"
+import { claim } from "./commands/claim"
+import { tick } from "./commands/tick"
+import { time } from "./commands/time"
+import { info } from "./commands/info"
+import Settings from "./settings"
+import constants from "./util/constants"
 
 register("command", (arg, arg2, arg3) => {
+    if (arg == undefined) {findColeweight(arg); return}
     switch(arg.toLowerCase())
     {
         case "setkey":
@@ -23,10 +28,22 @@ register("command", (arg, arg2, arg3) => {
             help()
             break
         case "move":
-            openCwGui()
-            break
-        case "toggle":
-            toggle()
+            if (arg2 == undefined) {ChatLib.chat(`${constants.PREFIX}&cNot enough arguments.`); return}
+            switch(arg2.toLowerCase())
+            {
+                case "coleweight":
+                    openCwGui()
+                    break
+                case "powdertracker":
+                    openPowderGui()
+                    break
+                case "time":
+                case "timer":
+                    openTimerGui()
+                    break
+                default:
+                    ChatLib.chat(`${constants.PREFIX}&cNo such gui as '${arg2}'.`)
+            }
             break
         case "throne":
             throne(arg2)
@@ -43,29 +60,31 @@ register("command", (arg, arg2, arg3) => {
         case "update":
             update()
             break
+        case "config":
         case "settings":
             Settings.openGUI()
             break
+        case "claim":
+            claim(arg2)
+            break
+        case "powdertrackersync":
+            updateDisplay()
+            break
+        case "tick":
+            tick(arg2, arg3)
+            break
+        case "time":
+            time()
+            break
+        case "info":
+            info()
+            break
         default:
-            ChatLib.chat(`${constants.PREFIX}Finding Coleweight!`)
-            let username = ""
-            if(arg == undefined) 
-                username = Player.getUUID()
-            else 
-                username = arg 
-            axios.get(`https://ninjune.dev/api/coleweight?username=${username}`)
-                .then(res => {
-                    let coleweightMessage = new TextComponent(`${constants.PREFIX}&b${res.data.rank}. ${res.data.name}&b's Coleweight: ${res.data.coleweight} (Top &l${res.data.percentile}&b%)`)
-                        .setHoverValue(`&fExperience&f: &a${res.data.exp}\n&fPowder&f: &a${res.data.pow}\n&fCollection&f: &a${res.data.col}\n&fMiscellaneous&f: &a${res.data.bes + res.data.nuc}`)
-                    ChatLib.chat(coleweightMessage)
-                })
-                .catch(err => {
-                    ChatLib.chat(`${PREFIX}&eError. (api may be down)`)
-                })
+            findColeweight(arg)
     }
 }).setTabCompletions((args) => {
     let output = [],
-     commands = ["setkey", "help", "gui", "toggle", "throne", "spiral", "reload", "leaderboard", "settings"]
+     commands = ["setkey", "help", "move", "toggle", "throne", "spiral", "reload", "leaderboard", "settings", "claim", "tick", "time", "info"]
     
     if(args[0].length == 0 || args[0] == undefined)
         output = commands
@@ -86,30 +105,13 @@ register("command", (arg, arg2, arg3) => {
 }).setName("cw").setAliases(["coleweight"])
 
 register("command", (arg) => {
-    if(arg == undefined) { ChatLib.chat(`${PREFIX}&eRequires a username!`); return; }
-    axios.get(`https://api.ashcon.app/mojang/v2/user/${arg}`)
-        .then(res => {
-            let uuid = res.data.uuid;
-            axios.get(`https://api.hypixel.net/player?key=${constants.data.api_key}&uuid=${uuid}`)
-            .then(res2 => {
-                let discordMessage = new TextComponent(`${PREFIX}&a${res.data.username}'s Discord: `)
-                ChatLib.chat(discordMessage);
-                ChatLib.chat(`&b${res2.data.player.socialMedia.links.DISCORD}`)
-            })
-            .catch(err => {
-                ChatLib.chat(`${PREFIX}&eNo discord linked :( (or no key linked)`)
-            })
-        })
-        .catch(err => {
-            ChatLib.chat(`${PREFIX}&eInvalid name! `)
-        });
+    fetchDiscord(arg)
 }).setTabCompletions((args) => {
     let players = World.getAllPlayers().map((p) => p.getName())
     .filter((n) =>
       n.toLowerCase().startsWith(args.length ? args[0].toLowerCase() : "")
     )
-    .sort(),
-     output = players
+    .sort()
         
-    return output
+    return players
 }).setName("fetchdiscord").setAliases(["fdiscord"]);
