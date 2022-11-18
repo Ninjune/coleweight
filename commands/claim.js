@@ -41,19 +41,29 @@ export function claim(structure)
 register('worldLoad', () => {
     if(!settings.claiming) return
     setTimeout(() => {
-        console.log(constants.serverData.server)
+        if(settings.debug) console.log(constants.serverData.server)
         axios.get(`https://ninjune.dev/api/claim?claimedlobby=${constants.serverData.server}`)
         .then(res => {
             if(res.data.claimed)
             {
+                ChatLib.chat("here")
                 World.getAllPlayers().forEach((player) => {
-                    if (player.getName() == res.data.player)
-                    ChatLib.chat(`${PREFIX}&cThe ${res.data.structure} in this lobby is claimed by ${res.data.player}.`)
+                    res.data.structures.forEach((structure) => {
+                        if (player.getName() == structure.player)
+                            ChatLib.chat(`${PREFIX}&cThe ${structure.structure} in ${structure.server} is claimed by ${structure.player}.`) 
+                            //holy im so good at naming things, structure.structure I must be a genius.
+                    })
                 })
             }
         })
         .catch(err => {
-            ChatLib.chat(`${PREFIX}Error: ${err}`)
+            if(!settings.debug) return
+            ChatLib.chat(`${PREFIX}&cError: ${err}`)
         })
     }, 2000)
+})
+
+register('worldUnload', () => {
+    axios.get(`https://ninjune.dev/api/unclaim?claimedlobby=${constants.serverData.server}&key=${constants.data.api_key}`) 
+    // unclaims the lobby, isn't needed but will allow another player to claim lobby after claimer leaves. key used to verify identity of unclaimer.
 })

@@ -20,12 +20,13 @@ register("chat", (level, typeOfChat, hypixelRank, username, playerMessage, event
             onward = false
     })
     if(!onward || cwlbData == undefined) return
+    cwlbPlayerData = cwlbData.filter(player => player.name == username)[0]
+    if(cwlbPlayerData == undefined) return
     cancel(event)
     newMessage = new Message()
     message = ChatLib.getChatMessage(event, true),
     messagePrefix = message
-
-    cwlbPlayerData = cwlbData.filter(player => player.name == username)[0]
+        
     if(cwlbPlayerData.rank > 0 && cwlbPlayerData.rank < 501)
         messagePrefix = message.slice(0, message.indexOf(':')) + ` &8[&6#${addCommas(cwlbPlayerData.rank)}&8]&f: `
     else if(hypixelRank == "" && typeOfChat == "")

@@ -1,5 +1,5 @@
 import { openTimerGui } from "./render/timerGui.js"
-import { openPowderGui, updateDisplay } from "./render/powertrackerGui"
+import { openPowderGui } from "./render/powertrackerGui"
 import { openCwGui } from "./render/cwGui"
 import { help } from "./commands/help.js"
 import { reload } from "./commands/reload.js"

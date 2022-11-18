@@ -1,39 +1,30 @@
 import settings from "../settings";
 import constants from "../util/constants";
 
-const cwMove = new Gui(),
- cwGui = new Display()
-
-cwGui.setBackgroundColor(Renderer.color(0, 0, 0, 75));
-cwGui.setBackground("full");
-cwGui.setMinWidth(100)
+const cwGui = new Gui()
+let txt = "Please set your api key with /cw setkey (key)!"
 
 export function openCwGui()
 {
-    cwMove.open()
+    cwGui.open()
 }
 
 
 register("dragged", (dx, dy, x, y) => {
-    if (!cwMove.isOpen()) return
+    if (!cwGui.isOpen()) return
     constants.data.x = x
     constants.data.y = y
     constants.data.save()
-});
+})
 
 register("renderOverlay", () => {
-    cwGui.setShouldRender(false)
-    cwGui.clearLines()
-    cwGui.setRenderLoc(constants.data.x, constants.data.y)
-    
-    if (cwMove.isOpen()) 
+    if (cwGui.isOpen())
     {
-        let txt = "Please set your api key with /cw setkey (key)!"
         if (constants.data.api_key != undefined)
-            txt = "Click anywhere to move!"
+        txt = "Click anywhere to move!"
         Renderer.drawStringWithShadow(txt, Renderer.screen.getWidth()/2 - Renderer.getStringWidth(txt)/2, Renderer.screen.getHeight()/2)
-        cwGui.addLines([`&aCW: &b0`, `&aCW/hr: &b0`, `&aUptime: &b69h 420m `, `&aColeweight Gained: &b0     `])
-        cwGui.setShouldRender(true)
+        Renderer.drawStringWithShadow(txt, Renderer.screen.getWidth()/2 - Renderer.getStringWidth(txt)/2, Renderer.screen.getHeight()/2)
+        Renderer.drawStringWithShadow(`&aCW: &b0\n&aCW/hr: &b0\n&aUptime: &b0m\n&aColeweight Gained: &b0`, constants.data.x, constants.data.y)
     }
 
     if(!settings.cwToggle || constants.data.api_key == undefined) return
@@ -54,12 +45,10 @@ register("renderOverlay", () => {
         constants.calcCwPerHr = false
     }
     
-    if (cwMove.isOpen() || !constants.upTimeTrack) return
-
-    cwGui.setShouldRender(true)
+    if (cwGui.isOpen() || !constants.upTimeTrack) return
 
     if(uptimeHr >= 1)
-        cwGui.addLines([`&aCW: &b${coleweightMessage}`, `&aCW/hr: &b${constants.coleweightHr}`, `&aUptime: &b${uptimeHr}h ${Math.floor(constants.uptime/60) - uptimeHr*60}m`, `&aColeweight Gained: &b${Math.ceil(constants.cwValuesSum*100) / 100}`])
+        Renderer.drawStringWithShadow(`&aCW: &b${coleweightMessage}\n&aCW/hr: &b${constants.coleweightHr}\n&aUptime: &b${uptimeHr}h ${Math.floor(constants.uptime/60) - uptimeHr*60}m\n&aColeweight Gained: &b${Math.ceil(constants.cwValuesSum*100) / 100}`, constants.data.x, constants.data.y)
     else
-        cwGui.addLines([`&aCW: &b${coleweightMessage}`, `&aCW/hr: &b${constants.coleweightHr}`, `&aUptime: &b${Math.floor(constants.uptime/60)}m ${Math.floor(constants.uptime%60)}s`, `&aColeweight Gained: &b${Math.ceil(constants.cwValuesSum*100) / 100}`])
+        Renderer.drawStringWithShadow(`&aCW: &b${coleweightMessage}\n&aCW/hr: &b${constants.coleweightHr}\n&aUptime: &b${Math.floor(constants.uptime/60)}m ${Math.floor(constants.uptime%60)}s\n&aColeweight Gained: &b${Math.ceil(constants.cwValuesSum*100) / 100}`, constants.data.x, constants.data.y)
 })

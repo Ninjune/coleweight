@@ -4,12 +4,8 @@ Major credit to Fabi019 for Powdertracker module.
 import constants from "../util/constants"
 import settings from "../settings"
 
-const moveGui = new Gui(),
- powderGui = new Display(),
+const powderGui = new Gui(),
  bossBar = Java.type("net.minecraft.entity.boss.BossStatus").field_82827_c
-
-powderGui.setBackgroundColor(Renderer.color(0, 0, 0, 75));
-powderGui.setBackground("full");
 
 let sessionRunning = false,
  sessionChests = 0,
@@ -20,7 +16,7 @@ let sessionRunning = false,
 
 export function openPowderGui()
 {
-    moveGui.open()
+    powderGui.open()
 }
 
 function DoublePowderActive() 
@@ -29,9 +25,7 @@ function DoublePowderActive()
 }
 
 register("dragged", (dx, dy, x, y) => {
-    if (!moveGui.isOpen()) return
-    sessionRunning = true
-    powderGui.setRenderLoc(x, y)
+    if (!powderGui.isOpen()) return
     constants.powderdata.x = x
     constants.powderdata.y = y
     constants.powderdata.save()
@@ -52,6 +46,7 @@ register("chat", (value, type) => {
         constants.powderdata.mithrilPowder += powder
         sessionMithril += powder
     }
+    constants.powderdata.save()
     timeSinceLastGain = 0
     sessionRunning = true
 }).setCriteria(/You received \+([0-9]+) ([a-zA-Z]+) Powder/g)
@@ -62,60 +57,50 @@ register("chat", event => {
     sessionRunning = true
 }).setCriteria("&r&6You have successfully picked the lock on this chest!&r");
 
-export function updateDisplay() 
-{
-    if (!sessionRunning) {powderGui.setShouldRender(false); return}
-    else if (!settings.trackerVisible) {powderGui.setShouldRender(false); return}
-    else {powderGui.setShouldRender(true)}
-
-    const renderText = (text, value) => {
-        powderGui.setLine(line++, `§a${text}: §b${value}`)
-    }
-    
-    let uptimeHr = Math.floor(seconds/60/60),
-     lines = [],
-     line = 0
-    
-    powderGui.clearLines()
-    powderGui.setRenderLoc(constants.powderdata.x, constants.powderdata.y)
-    powderGui.setAlign(
-        settings.trackerAlignment == 0 ? "left" : 
-        settings.trackerAlignment == 1 ? "right" :
-        "center"
-    )
-        
-    if (settings.showTotals) 
-    {
-        renderText("Total Chests", constants.powderdata.chests)
-        renderText("Total Gemstone", constants.powderdata.gemstonePowder)
-        renderText("Total Mithril", constants.powderdata.mithrilPowder)
-        line++
-    }
-
-    renderText("Session Chests", sessionChests)
-    renderText("Session Gemstone", sessionGemstone)
-    renderText("Session Mithril", sessionMithril)
-
-
-    if (settings.showRates) 
-    {
-        line++
-        renderText("Chests/hr", Math.round(((sessionChests ?? 0)/(seconds ?? 1)) * 3600))
-        renderText("Gemstone/hr", Math.round(((sessionGemstone ?? 0)/(seconds ?? 1)) * 3600))
-        renderText("Mithril/hr", Math.round(((sessionMithril ?? 0)/(seconds ?? 1)) * 3600))
-        if(uptimeHr >= 1)
-            renderText("Uptime", `${uptimeHr}h ${Math.floor(seconds/60) - uptimeHr*60}m`)
-        else
-            renderText("Uptime", `${Math.floor(seconds/60)}m ${Math.floor(seconds%60)}s`)
-    }
-}
-
 register("renderOverlay", () => {
-    if (moveGui.isOpen()) 
+    if (powderGui.isOpen()) 
     {
         let txt = "Drag to move."
         Renderer.drawStringWithShadow(txt, Renderer.screen.getWidth()/2 - Renderer.getStringWidth(txt)/2, Renderer.screen.getHeight()/2)
     }
+    if (!settings.trackerVisible || !sessionRunning) return
+    
+    let uptimeHr = Math.floor(seconds/60/60),
+     lines = [], 
+     message =""
+    
+    function addText(item, value)
+    {
+        lines.push("&a" + item + ": &b" + value)
+    }
+
+    if (settings.showTotals) 
+    {
+        addText("Total Chest", constants.powderdata.chests)
+        addText("Total Gemstone", constants.powderdata.gemstonePowder)
+        addText("Total Mithril", constants.powderdata.mithrilPowder)
+    }
+
+    addText("Session Chests", sessionChests)
+    addText("Session Gemstone", sessionGemstone)
+    addText("Session Mithril", sessionMithril)
+
+
+    if (settings.showRates) 
+    {
+        addText("Chests/hr", Math.round(((sessionChests ?? 0)/(seconds ?? 1)) * 3600))
+        addText("Gemstone/hr", Math.round(((sessionGemstone ?? 0)/(seconds ?? 1)) * 3600))
+        addText("Mithril/hr", Math.round(((sessionMithril ?? 0)/(seconds ?? 1)) * 3600))
+        if(uptimeHr >= 1)
+            addText("Uptime", `${uptimeHr}h ${Math.floor(seconds/60) - uptimeHr*60}m`)
+        else
+            addText("Uptime", `${Math.floor(seconds/60)}m ${Math.floor(seconds%60)}s`)
+    }
+
+    lines.forEach((line) => {
+        message += line + "\n"
+    })
+    Renderer.drawStringWithShadow(message, constants.powderdata.x, constants.powderdata.y)
 })
 
 register("step", () => {
@@ -128,5 +113,4 @@ register("step", () => {
     {
         sessionRunning = false
     }
-    updateDisplay()
 }).setFps(1)
