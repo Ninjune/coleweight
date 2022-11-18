@@ -3,6 +3,6 @@
   "creator": "Ninjune",
   "entry": "index.js",
   "description": "Simple Coleweight module to measure mining progression.",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "requires": ["axios", "PogData", "Vigilance"]
 }
