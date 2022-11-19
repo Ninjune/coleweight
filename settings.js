@@ -2,22 +2,22 @@ import { @Vigilant, @ButtonProperty, @SwitchProperty, @SelectorProperty } from '
 
 @Vigilant("Coleweight")
 class Settings {
-    @ButtonProperty({
-        name: "Change tracker position",
-        description: "Move the location of the tracker.",
-        category: "General",
-        placeholder: "Open"
-    })
-    moveLocation() {
-        ChatLib.command("cw move coleweight", true);
-    }
-
     @SwitchProperty({
         name: "Coleweight tracker",
         description: "Enables the Coleweight tracker.",
         category: "General"
     })
     cwToggle = true;
+
+    @ButtonProperty({
+        name: "Change Coleweight tracker position",
+        description: "Move the location of the coleweight tracker.",
+        category: "General",
+        placeholder: "Open"
+    })
+    moveCwLocation() {
+        ChatLib.command("cw move coleweight", true);
+    }
 
     @SwitchProperty({
         name: "Rank chat",
@@ -54,6 +54,23 @@ class Settings {
     })
     timerVisible = false;
 
+    @ButtonProperty({
+        name: "Change timer position",
+        description: "Move the location of the timer.",
+        category: "General",
+        placeholder: "Open"
+    })
+    moveTimerLocation() {
+        ChatLib.command("cw move timer", true);
+    }
+
+    @SwitchProperty({
+        name: "Debug",
+        description: "Toggles debug mode.",
+        category: "General"
+    })
+    debug = false;
+
     @SwitchProperty({
         name: "Show powdertracker",
         description: "If the tracker overlay should be visible.",
@@ -84,12 +101,12 @@ class Settings {
       trackerAlignment = 0;
     
     @ButtonProperty({
-        name: "Change tracker position",
-        description: "Move the location of the tracker.",
+        name: "Change Powdertracker position",
+        description: "Move the location of the powdertracker.",
         category: "Powdertracker",
         placeholder: "Open"
     })
-    moveLocation() {
+    movePowderLocation() {
         ChatLib.command("cw move powdertracker", true);
     }
 
@@ -110,26 +127,21 @@ class Settings {
         this.registerListener("Timer", value => {
             this.timerVisible = value;
         })
+        this.registerListener("Debug", value => {
+            this.debug = value;
+        })
         this.registerListener("Show powdertracker", value => {
             this.trackerVisible = value;
-            this.sync();
         })
         this.registerListener("Show totals", value => {
             this.showTotals = value;
-            this.sync();
         })
         this.registerListener("Show rates", value => {
             this.showRates = value;
-            this.sync();
         })
         this.registerListener("Alignment", value => {
             this.trackerAlignment = value;
-            this.sync();
         })
-    }
-      
-    sync() {
-        ChatLib.command("cw powdertrackersync", true);
     }
 }
 
