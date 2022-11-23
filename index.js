@@ -1,8 +1,9 @@
+import './render/naturals'
+import './render/tabList'
+import './commands/yog'
 import './chat/apiNew'
 import './chat/message'
-
 import './chat/serverdata'
-import './render/tabList'
 import './commandManager'
 import './util/updater'
 import './util/grieferTrack'
@@ -26,7 +27,6 @@ register("renderWorld", () => {
             Tessellator.drawString(i+1, constants.spiralValues[i][0], constants.spiralValues[i][1], constants.spiralValues[i][2])
         }
     }
-    
 })
 
 

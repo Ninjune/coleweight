@@ -6,7 +6,7 @@ import settings from "../settings"
 import constants from "../util/constants"
 import { addCommas } from "../util/helperFunctions"
 const PREFIX = constants.PREFIX
-let cwlbData = {},
+let cwlbData = [],
  newMessage, message, messagePrefix, cwlbPlayerData, onward
 
 register("chat", (level, typeOfChat, hypixelRank, username, playerMessage, event) => { // CW Rank
@@ -22,10 +22,10 @@ register("chat", (level, typeOfChat, hypixelRank, username, playerMessage, event
     if(!onward || cwlbData == undefined) return
     cwlbPlayerData = cwlbData.filter(player => player.name == username)[0]
     if(cwlbPlayerData == undefined) return
-    cancel(event)
     newMessage = new Message()
     message = ChatLib.getChatMessage(event, true),
     messagePrefix = message
+    cancel(event)
         
     if(cwlbPlayerData.rank > 0 && cwlbPlayerData.rank < 501)
         messagePrefix = message.slice(0, message.indexOf(':')) + ` &8[&6#${addCommas(cwlbPlayerData.rank)}&8]&f: `

@@ -1,12 +1,13 @@
 import { openTimerGui } from "./render/timerGui.js"
 import { openPowderGui } from "./render/powertrackerGui"
 import { openCwGui } from "./render/cwGui"
-import { help } from "./commands/help.js"
-import { reload } from "./commands/reload.js"
-import { setkey } from "./commands/setkey.js"
-import { spiral } from "./commands/spiral.js"
-import { throne } from "./commands/throne.js"
-import { leaderboard } from "./commands/leaderboard.js"
+import { help } from "./commands/help"
+import { reload } from "./commands/reload"
+import { setkey } from "./commands/setkey"
+import { spiral } from "./commands/spiral"
+import { throne } from "./commands/throne"
+import { yog } from "./commands/yog"
+import { leaderboard } from "./commands/leaderboard"
 import { update } from "./commands/update"
 import { fetchDiscord } from "./commands/fetchDiscord"
 import { findColeweight } from "./commands/findColeweight"
@@ -16,6 +17,7 @@ import { time } from "./commands/time"
 import { info } from "./commands/info"
 import Settings from "./settings"
 import constants from "./util/constants"
+import { clearLobbies } from "./commands/markingLobbies"
 
 register("command", (arg, arg2, arg3) => {
     if (arg == undefined) {findColeweight(arg); return}
@@ -79,12 +81,18 @@ register("command", (arg, arg2, arg3) => {
         case "info":
             info()
             break
+        case "clearlobbies":
+            clearLobbies()
+            break
+        case "yog":
+            yog(arg2)
+            break
         default:
             findColeweight(arg)
     }
 }).setTabCompletions((args) => {
     let output = [],
-     commands = ["setkey", "help", "move", "toggle", "throne", "spiral", "reload", "leaderboard", "settings", "claim", "tick", "time", "info"]
+     commands = ["setkey", "help", "move", "toggle", "throne", "spiral", "reload", "leaderboard", "settings", "claim", "tick", "time", "info", "clearlobbies", "yog"]
     
     if(args[0].length == 0 || args[0] == undefined)
         output = commands

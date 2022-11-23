@@ -8,9 +8,12 @@ let players = [] // global variable moment
 function checkMMiners()
 {
     if (!Settings.trackGriefers) return
-    let tempPlayers = World.getAllPlayers().map((p) => p.getName())
-
-    tempPlayers.forEach((player, index) => {
+    const NetHandlerPlayClient = Client.getConnection(),
+     PlayerMap = NetHandlerPlayClient.func_175106_d() // getPlayerInfoMap
+    
+    PlayerMap.filter(player => player.func_178853_c() > 0 && !player.func_178845_a().name.startsWith("!")).forEach((PlayerMP) => {
+        let player = PlayerMP.func_178845_a().name
+        
         if(players.indexOf(player) == -1)
         {
             axios.get(`https://ninjune.dev/api/mminers?username=${player}`)
