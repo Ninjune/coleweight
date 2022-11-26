@@ -24,7 +24,7 @@ export function claim(structure)
         return
     }
     
-    axios.get(`https://ninjune.dev/api/claim?type=${structure}&lobby=${constants.serverData.server}&method=auth&username=${Player.getName()}&serverID=${serverId}`)
+    axios.get(`https://ninjune.dev/api/claim?type=${structure}&lobby=${constants.serverData.server}&username=${Player.getName()}&serverID=${serverId}`)
     .then(res => {
         if(res.data.success)
             ChatLib.chat(`${PREFIX}&aSuccessfully claimed ${constants.serverData.server} as your server!`)
@@ -50,7 +50,7 @@ register('gameLoad', (event) => {
 
 register('worldLoad', () => {
     if(!settings.claiming) return
-    axios.get(`https://ninjune.dev/api/unclaim?method=auth&username=${Player.getName()}&serverID=${serverId}`)
+    axios.get(`https://ninjune.dev/api/unclaim?username=${Player.getName()}&serverID=${serverId}`)
     .then(res => {
         if(settings.debug && !res.data.success)
             ChatLib.chat("Unclaim: " + res.data.reason)
@@ -67,7 +67,7 @@ register('worldLoad', () => {
          PlayerMap = NetHandlerPlayClient.func_175106_d()  // getPlayerInfoMap
         
         if(settings.debug) console.log(constants.serverData.server)
-        axios.get(`https://ninjune.dev/api/claim?claimedlobby=${constants.serverData.server}`)
+        axios.get(`https://ninjune.dev/api/claimed?serverID=${constants.serverData.server}&authServer=${serverId}&passedName=${Player.getName()}`)
         .then(res => {
             if(res.data.claimed)
             {
@@ -80,6 +80,10 @@ register('worldLoad', () => {
                             //holy im so good at naming things, structure.structure I must be a genius.
                     })
                 })
+            }
+            else if (res.data.err && settings.debug)
+            {
+                ChatLib.chat("Check claim: " + res.data.reason)
             }
         })
         .catch(err => {

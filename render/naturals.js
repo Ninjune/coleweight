@@ -1,11 +1,11 @@
-import axios from "../../axios" // USE AT YOUR OWN RISK disabled by default in this version because dragoonmaster4 wants me to confirm that this isn't bannable with admins before adding. 
+import axios from "../../axios"
 import settings from "../settings"
 import constants from "../util/constants"
 const PREFIX = constants.PREFIX
 let coords = []
 
 register("step", () => {
-    if(constants.serverData.map != "Crystal Hollows" || !settings.showNaturals) return
+    if(constants.serverData.map != "Crystal Hollows") return
     axios.get(`https://ninjune.dev/api/coords`)
     .then((res) => {
         coords = []
