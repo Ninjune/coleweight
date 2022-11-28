@@ -1,5 +1,7 @@
 import { openTimerGui } from "./render/timerGui.js"
 import { openPowderGui } from "./render/powertrackerGui"
+import { openCoordsGui } from "./render/coordsGui.js"
+import { openDowntimeGui } from "./render/downtimeGui.js"
 import { openCwGui } from "./render/cwGui"
 import { help } from "./commands/help"
 import { reload } from "./commands/reload"
@@ -18,6 +20,7 @@ import { info } from "./commands/info"
 import Settings from "./settings"
 import constants from "./util/constants"
 import { clearLobbies } from "./commands/markingLobbies"
+import { divans } from "./commands/divans.js"
 
 register("command", (arg, arg2, arg3) => {
     if (arg == undefined) {findColeweight(arg); return}
@@ -42,6 +45,9 @@ register("command", (arg, arg2, arg3) => {
                 case "time":
                 case "timer":
                     openTimerGui()
+                    break
+                case "downtime":
+                    openDowntimeGui()
                     break
                 default:
                     ChatLib.chat(`${constants.PREFIX}&cNo such gui as '${arg2}'.`)
@@ -87,12 +93,21 @@ register("command", (arg, arg2, arg3) => {
         case "yog":
             yog(arg2)
             break
+        case "divans":
+        case "divan":
+            divans(arg2)
+            break
+        case "coord":
+        case "coords":
+            openCoordsGui()
+            break
         default:
             findColeweight(arg)
     }
 }).setTabCompletions((args) => {
     let output = [],
-     commands = ["setkey", "help", "move", "toggle", "throne", "spiral", "reload", "leaderboard", "settings", "claim", "tick", "time", "info", "clearlobbies", "yog"]
+     commands = ["setkey", "help", "move", "toggle", "throne", "spiral", "reload", "leaderboard", 
+      "settings", "claim", "tick", "time", "info", "clearlobbies", "yog", "divan", "coords"]
     
     if(args[0].length == 0 || args[0] == undefined)
         output = commands

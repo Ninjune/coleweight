@@ -22,6 +22,11 @@ let TimerData = new PogObject("Coleweight", {
     "timer": 0
 }, "config/.timer_data.json")
 
+let DowntimeData = new PogObject("Coleweight", {
+    "x": 0,
+    "y": 0
+}, "config/.downtime_data.json")
+
 export default
 {
     PREFIX: "&2[CW] ",
@@ -29,6 +34,7 @@ export default
     data: PogData,
     powderdata: PowderData,
     timerdata: TimerData,
+    downtimedata: DowntimeData,
     cwValues: [],
     calcCwPerHr: false,
     upTimeTrack: false,

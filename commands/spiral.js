@@ -1,5 +1,8 @@
 import constants from "../util/constants"
+import { waypointRender } from "../util/waypoints"
+
 const PREFIX = constants.PREFIX
+let spiralWaypoints = []
 
 export function spiral(arg2) 
 {
@@ -12,31 +15,41 @@ export function spiral(arg2)
     }
     else
     {
-        if(constants.spiralValues[0] == undefined)
+        if(spiralWaypoints[0] == undefined)
         {
             let startPos = [Player.getX(), Player.getY(), Player.getZ()]
-            constants.spiralValues.push([startPos[0]+2, startPos[1]-3, startPos[2]+14])
-            constants.spiralValues.push([startPos[0]+3, startPos[1]-21, startPos[2]+6])
-            constants.spiralValues.push([startPos[0]+6, startPos[1]-23, startPos[2]-1])
-            constants.spiralValues.push([startPos[0]+19, startPos[1]+4, startPos[2]-5])
-            constants.spiralValues.push([startPos[0]+21, startPos[1]-7, startPos[2]])
-            constants.spiralValues.push([startPos[0]+25, startPos[1]-35, startPos[2]-8])
-            constants.spiralValues.push([startPos[0]+39, startPos[1]-36, startPos[2]])
-            constants.spiralValues.push([startPos[0]+52, startPos[1]-24, startPos[2]+1])
-            constants.spiralValues.push([startPos[0]+48, startPos[1]+3, startPos[2]+3])
-            constants.spiralValues.push([startPos[0]+47, startPos[1]+4, startPos[2]+22])
-            constants.spiralValues.push([startPos[0]+55, startPos[1]-8, startPos[2]+42])
-            constants.spiralValues.push([startPos[0]+46, startPos[1]-11, startPos[2]+49])
-            constants.spiralValues.push([startPos[0]+26, startPos[1]+5, startPos[2]+39])
-            constants.spiralValues.push([startPos[0]+20, startPos[1]+3, startPos[2]+41])
-            constants.spiralValues.push([startPos[0]+8, startPos[1]-23, startPos[2]+32])
-            constants.spiralValues.push([startPos[0]+4, startPos[1]-23, startPos[2]+28])
+            spiralWaypoints.push([startPos[0]+2, startPos[1]-3, startPos[2]+14])
+            spiralWaypoints.push([startPos[0]+3, startPos[1]-21, startPos[2]+6])
+            spiralWaypoints.push([startPos[0]+6, startPos[1]-23, startPos[2]-1])
+            spiralWaypoints.push([startPos[0]+19, startPos[1]+4, startPos[2]-5])
+            spiralWaypoints.push([startPos[0]+21, startPos[1]-7, startPos[2]])
+            spiralWaypoints.push([startPos[0]+25, startPos[1]-35, startPos[2]-8])
+            spiralWaypoints.push([startPos[0]+39, startPos[1]-36, startPos[2]])
+            spiralWaypoints.push([startPos[0]+52, startPos[1]-24, startPos[2]+1])
+            spiralWaypoints.push([startPos[0]+48, startPos[1]+3, startPos[2]+3])
+            spiralWaypoints.push([startPos[0]+47, startPos[1]+4, startPos[2]+22])
+            spiralWaypoints.push([startPos[0]+55, startPos[1]-8, startPos[2]+42])
+            spiralWaypoints.push([startPos[0]+46, startPos[1]-11, startPos[2]+49])
+            spiralWaypoints.push([startPos[0]+26, startPos[1]+5, startPos[2]+39])
+            spiralWaypoints.push([startPos[0]+20, startPos[1]+3, startPos[2]+41])
+            spiralWaypoints.push([startPos[0]+8, startPos[1]-23, startPos[2]+32])
+            spiralWaypoints.push([startPos[0]+4, startPos[1]-23, startPos[2]+28])
             ChatLib.chat(`${PREFIX}&bSpiral waypoints turned on!`)
         }
         else 
         {
-            constants.spiralValues = []
+            spiralWaypoints = []
             ChatLib.chat(`${PREFIX}&bSpiral waypoints turned off!`)
         }
     }
 }
+
+register("renderWorld", () => {
+    waypointRender(spiralWaypoints)
+})
+
+register("worldLoad", () => {
+    spiralWaypoints = []
+})
+
+export default ""

@@ -2,7 +2,7 @@
   "name": "Coleweight",
   "creator": "Ninjune",
   "entry": "index.js",
-  "description": "Simple Coleweight module to measure mining progression.",
-  "version": "1.6.5",
+  "description": "Mining utilities.",
+  "version": "1.6.6",
   "requires": ["axios", "PogData", "Vigilance"]
 }

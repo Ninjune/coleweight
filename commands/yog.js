@@ -9,7 +9,7 @@ export function yog(arg2)
     
     if(arg2 != "toggle")
     {
-        new TextComponent(`${PREFIX}&bGo to the leftmost corner of the topaz crystal facing bal close to bal then do /cw yog toggle.`)
+        new TextComponent(`${PREFIX}&bGo to the leftmost corner of the topaz crystal facing bal close to bal then do /cw coords yog toggle.`)
         .chat()
     }
     else

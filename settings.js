@@ -54,6 +54,25 @@ class Settings {
     claiming = true;
 
     @SwitchProperty({
+        name: "Downtime tracker",
+        description: "Tracks downtime.",
+        subcategory: "Downtime",
+        category: "General"
+    })
+    downtimeTracker = false;
+
+    @ButtonProperty({
+        name: "Change downtime tracker position",
+        description: "Move the location of the downtime tracker.",
+        subcategory: "Downtime",
+        category: "General",
+        placeholder: "Open"
+    })
+    moveDowntimeLocation() {
+        ChatLib.command("cw move downtime", true);
+    }
+
+    @SwitchProperty({
         name: "Debug",
         description: "Toggles debug mode.",
         subcategory: "Random Features",
@@ -173,6 +192,9 @@ class Settings {
         })
         this.registerListener("Timer", value => {
             this.timerVisible = value;
+        })
+        this.registerListener("Downtime tracker", value => {
+            this.downtimeTracker = value;
         })
         this.registerListener("Debug", value => {
             this.debug = value;
