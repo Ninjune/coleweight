@@ -9,7 +9,7 @@ let oldFuel = 0,
  trackingDowntime = false,
  downtime = 0,
  downtimeCount = 0,
- uptime // for average
+ uptime = 0
 
 
 export function openDowntimeGui()
@@ -81,6 +81,6 @@ register("step", () => {
         timeAtLastFuel = 0
         trackingDowntime = false
     } // over 60 seconds then stop making gui
-    else
+    else if(trackingDowntime)
         uptime += 1
 }).setFps(1)
