@@ -1,34 +1,15 @@
+import './render/naturals'
+import './render/tabList'
+import './commands/yog'
 import './chat/apiNew'
 import './chat/message'
-
 import './chat/serverdata'
-import './render/tabList'
 import './commandManager'
 import './util/updater'
 import './util/grieferTrack'
 import axios from '../axios'
 import constants from './util/constants';
 const PREFIX = constants.PREFIX
-
-//world update (coords)
-register("renderWorld", () => {
-    if(constants.throneValues[0] != undefined)
-    {
-        for(let i = 0; i < constants.throneValues.length; i++)
-        {
-            Tessellator.drawString(i+1, constants.throneValues[i][0], constants.throneValues[i][1], constants.throneValues[i][2])
-        }
-    }
-    if(constants.spiralValues[0] != undefined)
-    {
-        for(let i = 0; i < constants.spiralValues.length; i++)
-        {
-            Tessellator.drawString(i+1, constants.spiralValues[i][0], constants.spiralValues[i][1], constants.spiralValues[i][2])
-        }
-    }
-    
-})
-
 
 //update every second (dogshit code)
 register("step", () => {
