@@ -1,5 +1,5 @@
 import axios from "../../axios"
-import constants from "./constants"
+import constants from "../util/constants"
 
 const PREFIX = constants.PREFIX,
  VERSION = constants.VERSION

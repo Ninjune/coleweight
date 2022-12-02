@@ -27,15 +27,21 @@ export function claim(structure)
     axios.get(`https://ninjune.dev/api/claim?type=${structure}&lobby=${constants.serverData.server}&username=${Player.getName()}&serverID=${serverId}`)
     .then(res => {
         if(res.data.success)
+        {
             ChatLib.chat(`${PREFIX}&aSuccessfully claimed ${constants.serverData.server} as your server!`)
+            return
+        }
         else
         {   
-            ChatLib.chat(`${PREFIX}&cError: ${res.data.reason}.`)
+            
             if(res.data.code == 501)
             {
                 ChatLib.chat(`${PREFIX}&cError: Not logged into the auth server. Try running the command again.`)
                 Client.getMinecraft().func_152347_ac().joinServer(Client.getMinecraft().func_110432_I().func_148256_e(), Client.getMinecraft().func_110432_I().func_148254_d(), serverId)
+                return
             }
+            else
+                ChatLib.chat(`${PREFIX}&cError: ${res.data.reason}.`)
         }
     })
     .catch(err => {
@@ -45,7 +51,11 @@ export function claim(structure)
 }
 
 register('gameLoad', (event) => {
-    Client.getMinecraft().func_152347_ac().joinServer(Client.getMinecraft().func_110432_I().func_148256_e(), Client.getMinecraft().func_110432_I().func_148254_d(), serverId)
+    try
+    {
+        Client.getMinecraft().func_152347_ac().joinServer(Client.getMinecraft().func_110432_I().func_148256_e(), Client.getMinecraft().func_110432_I().func_148254_d(), serverId)
+    }
+    catch(e) {}
 })
 
 register('worldLoad', () => {

@@ -1,4 +1,5 @@
 import constants from "../util/constants"
+import { waypointRender } from "../util/helperFunctions"
 
 const PREFIX = constants.PREFIX
 let yogWaypoints = []
@@ -51,9 +52,7 @@ export function yog(arg2)
 
 register("renderWorld", () => {
     if(yogWaypoints.length < 1) return
-    yogWaypoints.forEach((waypoint) => {
-        Tessellator.drawString(Math.floor((Math.abs(parseInt(Player.getX()) - waypoint[0]) + Math.abs(parseInt(Player.getY()) - waypoint[1]) + Math.abs(parseInt(Player.getZ()) - waypoint[2]))/3) + "m", waypoint[0], waypoint[1], waypoint[2])
-    }) 
+    waypointRender(yogWaypoints)
 })
 
 register("worldLoad", () => {

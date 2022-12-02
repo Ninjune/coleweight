@@ -1,8 +1,9 @@
 import settings from "../settings"
-import { createGui } from "./textGuiCreator"
 import constants from "../util/constants"
+import { textGui } from "../util/helperFunctions"
 
-const downtimeGui = new Gui()
+const downtimeMoveGui = new Gui()
+const downtimeGui = new textGui()
 let oldFuel = 0,
  timeAtLastFuel = 0,
  overallDowntime = 0,
@@ -14,12 +15,12 @@ let oldFuel = 0,
 
 export function openDowntimeGui()
 {
-    downtimeGui.open()
+    downtimeMoveGui.open()
 }
  
 
 register("dragged", (dx, dy, x, y) => {
-    if (!downtimeGui.isOpen()) return
+    if (!downtimeMoveGui.isOpen()) return
     constants.downtimedata.x = x
     constants.downtimedata.y = y
     constants.downtimedata.save()
@@ -51,24 +52,22 @@ register('actionbar', (xp) => {
 
 
 register("renderOverlay", () => {
-    if (downtimeGui.isOpen()) 
+    if (downtimeMoveGui.isOpen()) 
     {
         let txt = "Drag to move."
         Renderer.drawStringWithShadow(txt, Renderer.screen.getWidth()/2 - Renderer.getStringWidth(txt)/2, Renderer.screen.getHeight()/2)
-        createGui(
-            {leftValues: ["Downtime", "Overall Downtime", "Average Downtime", "Uptime"], rightValues: [0, 0, 0, 0]}, 
-            constants.downtimedata.x, 
-            constants.downtimedata.y
-        )
+        downtimeGui.guiObject = {leftValues: ["Downtime", "Overall Downtime", "Average Downtime", "Uptime"], rightValues: [0, 0, 0, 0]}
+        downtimeGui.x = constants.downtimedata.x
+        downtimeGui.y = constants.downtimedata.y
+        downtimeGui.renderGui()
         return
     }
-    if (downtimeCount == 0 || !trackingDowntime) return
+    if (downtimeCount == 0 || !trackingDowntime || !settings.downtimeTracker) return
     let avgDowntime = Math.ceil((overallDowntime/downtimeCount)*100) / 100
-    createGui(
-        {leftValues: ["Downtime", "Overall Downtime", "Average Downtime", "Uptime"], rightValues: [downtime, overallDowntime, avgDowntime, uptime]}, 
-        constants.downtimedata.x, 
-        constants.downtimedata.y
-    )
+    downtimeGui.guiObject = {leftValues: ["Downtime", "Overall Downtime", "Average Downtime", "Uptime"], rightValues: [downtime, overallDowntime, avgDowntime, uptime]}
+    downtimeGui.x = constants.downtimedata.x
+    downtimeGui.y = constants.downtimedata.y
+    downtimeGui.renderGui()
 })
 
 

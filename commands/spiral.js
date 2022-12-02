@@ -1,5 +1,5 @@
 import constants from "../util/constants"
-import { waypointRender } from "../util/waypoints"
+import { waypointRender } from "../util/helperFunctions"
 
 const PREFIX = constants.PREFIX
 let spiralWaypoints = []
@@ -45,7 +45,7 @@ export function spiral(arg2)
 }
 
 register("renderWorld", () => {
-    waypointRender(spiralWaypoints)
+    waypointRender(spiralWaypoints, true)
 })
 
 register("worldLoad", () => {

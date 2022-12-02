@@ -35,16 +35,8 @@ export default
     powderdata: PowderData,
     timerdata: TimerData,
     downtimedata: DowntimeData,
-    cwValues: [],
-    calcCwPerHr: false,
-    upTimeTrack: false,
-    uptime: 0,
-    baseColeweight: 0,
-    stepsSinceLast: 0,
     throneValues: [],
     spiralValues: [],
-    coleweightHr: 0,
-    cwValuesSum: 0,
     beta: false,
     serverData: {}
 }

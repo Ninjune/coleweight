@@ -1,8 +1,9 @@
 import constants from "../util/constants"
-import { waypointRender } from "../util/waypoints"
+import { waypointRender } from "../util/helperFunctions"
 
 const PREFIX = constants.PREFIX
 let throneWaypoints = []
+
 
 export function throne(arg2) 
 {
@@ -38,9 +39,11 @@ export function throne(arg2)
     }
 }
 
+
 register("renderWorld", () => {
-    waypointRender(throneWaypoints)
+    waypointRender(throneWaypoints, true)
 })
+
 
 register("worldLoad", () => {
     throneWaypoints = []

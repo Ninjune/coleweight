@@ -20,18 +20,20 @@ import {
   } from "../../Elementa"
 
 // stylla made 2 lines of code (gamer)
-const Color = Java.type("java.awt.Color")
-const URL = Java.type("java.net.URL")
+const Color = Java.type("java.awt.Color"),
+ URL = Java.type("java.net.URL"),
+ WIDTH = 3.5, // not actually width more like reverse of width lmao, bigger = smaller
+ HEIGHT = 2.877 // ^
 let ScreenW = Renderer.screen.getWidth(),
  ScreenH = Renderer.screen.getHeight()
 
 function coordsWindow(row, column, title, command, desc, image=false, alternateText="")
 {
     const coordWindow = new UIBlock(new Color(0, 0, 0, 0.5)) // 320 960 
-        .setX(((ScreenW/3*(column))-ScreenW/3.5).pixels())
+        .setX(((ScreenW/3*(column))-ScreenW/3.25).pixels())
         .setY((ScreenH/2*(row-1)+ScreenH/10.8).pixels())
-        .setWidth((ScreenW/4.5).pixels())
-        .setHeight((ScreenH/3.7).pixels())
+        .setWidth((ScreenW/WIDTH).pixels())
+        .setHeight((ScreenH/HEIGHT).pixels())
         .onMouseClick(() => {
             ChatLib.command(command, true)
         })
@@ -53,8 +55,8 @@ function coordsWindow(row, column, title, command, desc, image=false, alternateT
         new UIImage.ofURL(new URL(desc))
             .setX(new CenterConstraint())
             .setY(new AdditiveConstraint(new CenterConstraint(), (4).pixels()))
-            .setWidth((ScreenW/5).pixels())
-            .setHeight((ScreenH/5).pixels())
+            .setWidth((ScreenW/3.7).pixels())
+            .setHeight((ScreenH/3.7).pixels())
             .setChildOf(coordWindow)
     }
     else
@@ -62,7 +64,7 @@ function coordsWindow(row, column, title, command, desc, image=false, alternateT
         new UIWrappedText(desc)
             .setX((2).pixels())
             .setY((25).pixels())
-            .setWidth((ScreenW/4.5).pixels())
+            .setWidth((ScreenW/3.7).pixels())
             .setTextScale((1).pixels())
             .setColor(new ConstantColorConstraint(Color.WHITE))
             .setChildOf(coordWindow)
