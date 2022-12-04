@@ -3,7 +3,8 @@ import settings from "../settings"
 import Settings from "../settings"
 import constants from "../util/constants"
 const PREFIX = constants.PREFIX
-let players = [] // global variable moment
+let checkedPlayers = [],
+ griefers = []
 
 
 register("step", () => {
@@ -16,8 +17,10 @@ register("step", () => {
 
 
 register("worldLoad", () => {
-    players = []
-    checkMMiners()
+    checkedPlayers = []
+    setTimeout(() => {
+        checkMMiners()
+    }, 1500)
 })
 
 
@@ -32,19 +35,27 @@ function checkMMiners()
         PlayerMap.filter(player => player.func_178853_c() > 0 && !player.func_178845_a().name.startsWith("!")).forEach((PlayerMP) => {
             let player = PlayerMP.func_178845_a().name
             
-            if(players.indexOf(player) == -1)
+            if(!checkedPlayers.includes(player))
             {
-                axios.get(`https://ninjune.dev/api/mminers?username=${player}`)
-                .then(res => {
-                    if(res.data.found == true && res.data.type == "griefer")
-                        ChatLib.chat(`${PREFIX}&e'${res.data.name}' is a griefer!`)
-                })
-                players.push(player)
+                if(griefers.includes(player))
+                    ChatLib.chat(`${PREFIX}&e'${player}' is a griefer!`)
+                checkedPlayers.push(player)
             }
         })
     } catch(err) { if(settings.debug) console.log("grieferTrack trycatch: " + err) }
 
-    return players
+    return checkedPlayers
 }
 
+
+register("gameLoad", () => {
+    axios.get(`https://ninjune.dev/api/mminers`)
+    .then(res => {
+        griefers = res.data.griefers
+    })
+    .catch(err => {
+        if(!settings.debug) return
+        ChatLib.chat(err)
+    })
+})
 export default ""

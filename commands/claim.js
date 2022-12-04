@@ -2,7 +2,10 @@ import axios from "../../axios"
 import settings from "../settings"
 import constants from "../util/constants"
 const PREFIX = constants.PREFIX
+const path = `https://ninjune.dev`
 const serverId = java.util.UUID.randomUUID().toString().replace("-", "")
+let claimedServers = []
+
 
 export function claim(structure)
 {
@@ -24,11 +27,12 @@ export function claim(structure)
         return
     }
     
-    axios.get(`https://ninjune.dev/api/claim?type=${structure}&lobby=${constants.serverData.server}&username=${Player.getName()}&serverID=${serverId}`)
+    axios.get(`${path}/api/claim?type=${structure}&lobby=${constants.serverData.server}&username=${Player.getName()}&serverID=${serverId}`)
     .then(res => {
         if(res.data.success)
         {
             ChatLib.chat(`${PREFIX}&aSuccessfully claimed ${constants.serverData.server} as your server!`)
+            claimedServers.push({player: Player.getName(), server: constants.serverData.server, structure: structure})
             return
         }
         else
@@ -37,18 +41,17 @@ export function claim(structure)
             if(res.data.code == 501)
             {
                 ChatLib.chat(`${PREFIX}&cError: Not logged into the auth server. Try running the command again.`)
-                Client.getMinecraft().func_152347_ac().joinServer(Client.getMinecraft().func_110432_I().func_148256_e(), Client.getMinecraft().func_110432_I().func_148254_d(), serverId)
-                return
+                return Client.getMinecraft().func_152347_ac().joinServer(Client.getMinecraft().func_110432_I().func_148256_e(), Client.getMinecraft().func_110432_I().func_148254_d(), serverId)
             }
             else
-                ChatLib.chat(`${PREFIX}&cError: ${res.data.reason}.`)
+                return ChatLib.chat(`${PREFIX}&cError: ${res.data.reason}.`)
         }
     })
     .catch(err => {
-        ChatLib.chat(`${PREFIX}&cError: ${err}`)
+        return ChatLib.chat(`${PREFIX}&cError: ${err}`)
     })
-    
 }
+
 
 register('gameLoad', (event) => {
     try
@@ -56,49 +59,61 @@ register('gameLoad', (event) => {
         Client.getMinecraft().func_152347_ac().joinServer(Client.getMinecraft().func_110432_I().func_148256_e(), Client.getMinecraft().func_110432_I().func_148254_d(), serverId)
     }
     catch(e) {}
+    // what if a player claims after gameload? idk man, making requests every worldload is hurting my server. 
+    // this feature is barely used anyway.
+    getClaimed()
 })
+
 
 register('worldLoad', () => {
     if(!settings.claiming) return
-    axios.get(`https://ninjune.dev/api/unclaim?username=${Player.getName()}&serverID=${serverId}`)
-    .then(res => {
-        if(settings.debug && !res.data.success)
-            ChatLib.chat("Unclaim: " + res.data.reason)
-            if(res.data.code == 501)
-                Client.getMinecraft().func_152347_ac().joinServer(Client.getMinecraft().func_110432_I().func_148256_e(), Client.getMinecraft().func_110432_I().func_148254_d(), serverId)
-    })
-    .catch(err => {
-        if(settings.debug)
-            ChatLib.chat(`${PREFIX}&cError: ${err}`)
-    })
-    // unclaims the lobby, isn't needed but will allow another player to claim lobby after claimer leaves.
+    if(claimedServers == undefined)
+        getClaimed()
     setTimeout(() => {
         const NetHandlerPlayClient = Client.getConnection(),
          PlayerMap = NetHandlerPlayClient.func_175106_d()  // getPlayerInfoMap
-        
-        if(settings.debug) console.log(constants.serverData.server)
-        axios.get(`https://ninjune.dev/api/claimed?serverID=${constants.serverData.server}&authServer=${serverId}&passedName=${Player.getName()}`)
-        .then(res => {
-            if(res.data.claimed)
-            {
-                PlayerMap.filter(player => player.func_178853_c() /* getResponseTime */ > 0 && !player.func_178845_a()/* getGameProfile */.name.startsWith("!")).forEach((PlayerMP) => {
-                    let player = PlayerMP.func_178845_a()/* getGameProfile */.name
+        let player
 
-                    res.data.structures.forEach((structure) => {
-                        if (player == structure.player)
-                            ChatLib.chat(`${PREFIX}&cThe ${structure.structure} in ${structure.server} is claimed by ${structure.player}.`) 
-                            //holy im so good at naming things, structure.structure I must be a genius.
+        if(settings.debug) console.log(constants.serverData.server)
+        
+        claimedServers.forEach((claimedServer) => {
+            PlayerMap.filter(player => player.func_178853_c() > 0 && !player.func_178845_a().name.startsWith("!")).forEach((PlayerMP) => {
+                player = PlayerMP.func_178845_a().name
+
+                if (player == claimedServer.player && claimedServer.server == constants.serverData.server)
+                    ChatLib.chat(`${PREFIX}&cThe ${claimedServer.structure} in ${claimedServer.server} is claimed by ${claimedServer.player}.`)
+            })
+
+            if (Player.getName() == claimedServer.player)
+                {
+                    axios.get(`${path}/api/unclaim?username=${Player.getName()}&serverID=${serverId}`)
+                    .then(res => {
+                        if(settings.debug && !res.data.success)
+                            ChatLib.chat("Unclaim: " + res.data.reason)
+                            if(res.data.code == 501)
+                                Client.getMinecraft().func_152347_ac().joinServer(Client.getMinecraft().func_110432_I().func_148256_e(), Client.getMinecraft().func_110432_I().func_148254_d(), serverId)
                     })
-                })
-            }
-            else if (res.data.err && settings.debug)
-            {
-                ChatLib.chat("Check claim: " + res.data.reason)
-            }
-        })
-        .catch(err => {
-            if(!settings.debug) return
-            ChatLib.chat(`${PREFIX}&cError: ${err}`)
+                    .catch(err => {
+                        if(settings.debug)
+                            ChatLib.chat(`${PREFIX}&cError: ${err}`)
+                    })
+                }
         })
     }, 2000)
 })
+
+
+function getClaimed()
+{
+    axios.get(`${path}/api/claimed?authServer=${serverId}&passedName=${Player.getName()}`)
+    .then(res => {
+        if(res.data.code == 501)
+        {
+            Client.getMinecraft().func_152347_ac().joinServer(Client.getMinecraft().func_110432_I().func_148256_e(), Client.getMinecraft().func_110432_I().func_148254_d(), serverId)
+            return
+        }
+        res.data.forEach(server => {
+            claimedServers.push(server)
+        })
+    })
+}

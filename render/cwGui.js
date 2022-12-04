@@ -11,12 +11,23 @@ let cwValues = [],
  baseColeweight = 0,
  stepsSinceLast = 0,
  coleweightHr = 0,
- cwValuesSum = 0
+ cwValuesSum = 0,
+ cwInfo
 
 
 export function openCwGui()
 {
     cwGui.open()
+}
+
+
+export function reload() 
+{
+    upTimeTrack = false
+    stepsSinceLast = 0
+    cwValues = []
+    uptime = 0
+    ChatLib.chat(`${PREFIX}Reloaded!`)
 }
 
 
@@ -63,6 +74,12 @@ register("renderOverlay", () => {
         Renderer.drawStringWithShadow(`&aCW: &b${coleweightMessage}\n&aCW/hr: &b${coleweightHr}\n&aUptime: &b${Math.floor(uptime/60)}m ${Math.floor(uptime%60)}s\n&aColeweight Gained: &b${Math.ceil(cwValuesSum*100) / 100}`, data.x, data.y)
 })
 
+register("gameLoad", () => {
+    axios.get(`https://ninjune.dev/api/cwinfo`)
+    .then(cwInfoRes => {
+        cwInfo = cwInfoRes.data
+    })
+})
 
 
 register("step", () => {
@@ -88,12 +105,9 @@ register("step", () => {
                     uuid = uuid + tempUuid[i]
                 }
             }
-            axios.get(`https://ninjune.dev/api/cwinfo`)
-            .then(cwInfoRes => {
                 axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${uuid}`)
                 .then(res => {
-                    let eq = 0,
-                     cwInfo = cwInfoRes.data
+                    let eq = 0
 
                     for(let i=0; i < res.data.profiles.length; i+=1) 
                     {
@@ -168,6 +182,7 @@ register("step", () => {
                     }
                     else if(stepsSinceLast > 20)
                     {
+                        uptime = 0
                         upTimeTrack = false
                         stepsSinceLast = 0
                         cwValues = []
@@ -179,7 +194,6 @@ register("step", () => {
                         
                     data.coleweight = Math.ceil(coleweight*100)/100
                     data.save()
-                })
                 })
         }
         catch(e) {}

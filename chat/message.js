@@ -40,7 +40,7 @@ register("chat", (level, typeOfChat, hypixelRank, username, playerMessage, event
     ChatLib.chat(newMessage)
 }).setCriteria(/^(\[\d+\] )?((?:(?:Guild|Party|Co-op) > )|(?:\[:v:\] ))?(\[\w+\+{0,2}\] )?(\w{1,16})(?: \[\w{1,6}\])?: (.*)$/g)
 
-register("worldLoad", () => {
+register("gameLoad", () => {
     axios.get(`https://ninjune.dev/api/coleweight-leaderboard?length=500`)
     .then(res => {
         cwlbData = res.data

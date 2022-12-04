@@ -1,6 +1,6 @@
 import { @Vigilant, @ButtonProperty, @SwitchProperty, @SelectorProperty, @SliderProperty } from 'Vigilance'
 
-@Vigilant("Coleweight")
+@Vigilant("Coleweight/config")
 class Settings {
     @SwitchProperty({
         name: "Coleweight tracker",
@@ -8,7 +8,7 @@ class Settings {
         subcategory: "Coleweight Tracker",
         category: "General"
     })
-    cwToggle = true;
+    cwToggle = false;
 
     @ButtonProperty({
         name: "Change Coleweight tracker position",
