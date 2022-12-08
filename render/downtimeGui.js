@@ -21,9 +21,9 @@ export function openDowntimeGui()
 
 register("dragged", (dx, dy, x, y) => {
     if (!downtimeMoveGui.isOpen()) return
-    constants.downtimedata.x = x
-    constants.downtimedata.y = y
-    constants.downtimedata.save()
+    constants.collectiondata.x = x
+    constants.collectiondata.y = y
+    constants.collectiondata.save()
 })
 
 register('actionbar', (xp) => {
@@ -57,16 +57,16 @@ register("renderOverlay", () => {
         let txt = "Drag to move."
         Renderer.drawStringWithShadow(txt, Renderer.screen.getWidth()/2 - Renderer.getStringWidth(txt)/2, Renderer.screen.getHeight()/2)
         downtimeGui.guiObject = {leftValues: ["Downtime", "Overall Downtime", "Average Downtime", "Uptime"], rightValues: [0, 0, 0, 0]}
-        downtimeGui.x = constants.downtimedata.x
-        downtimeGui.y = constants.downtimedata.y
+        downtimeGui.x = constants.collectiondata.x
+        downtimeGui.y = constants.collectiondata.y
         downtimeGui.renderGui()
         return
     }
     if (downtimeCount == 0 || !trackingDowntime || !settings.downtimeTracker) return
     let avgDowntime = Math.ceil((overallDowntime/downtimeCount)*100) / 100
     downtimeGui.guiObject = {leftValues: ["Downtime", "Overall Downtime", "Average Downtime", "Uptime"], rightValues: [downtime, overallDowntime, avgDowntime, uptime]}
-    downtimeGui.x = constants.downtimedata.x
-    downtimeGui.y = constants.downtimedata.y
+    downtimeGui.x = constants.collectiondata.x
+    downtimeGui.y = constants.collectiondata.y
     downtimeGui.renderGui()
 })
 

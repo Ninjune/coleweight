@@ -58,4 +58,6 @@ register("gameLoad", () => {
         ChatLib.chat(err)
     })
 })
+
+
 export default ""

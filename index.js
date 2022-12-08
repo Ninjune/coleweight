@@ -1,5 +1,6 @@
 import './render/naturals'
 import './render/tabList'
+import './render/gemstoneMiningStats'
 import './commands/yog'
 import './chat/apiNew'
 import './chat/message'

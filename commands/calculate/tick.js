@@ -1,12 +1,14 @@
-import constants from "../util/constants"
+import constants from "../../util/constants"
 const PREFIX = constants.PREFIX
 
 export function tick(speed, block)
 {
-    if(speed == undefined || parseInt(speed) != speed) 
-        return `${PREFIX}&cMining speed must be an integer!`
+    if(speed == undefined || parseInt(speed) != speed)
+        return ChatLib.chat(`${PREFIX}&cMining speed must be an integer!`)
+    if(block == undefined)
+        return ChatLib.chat(constants.CALCULATEERRORMESSAGE)
     let strength = findStrength(block)
-    if(strength < 1) return `${PREFIX}&cBlock must be a gemstone or positive breaking power! (or starting letter of gemstone)`
+    if(strength < 1) return ChatLib.chat(`${PREFIX}&cBlock must be a gemstone or positive breaking power! (or starting letter of gemstone)`)
     let currentBlockTick = strength*30/speed,
      currentShardTick = (strength-200)*30/speed,
      nextBlockSpeed, nextShardSpeed

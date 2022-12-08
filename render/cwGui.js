@@ -21,7 +21,7 @@ export function openCwGui()
 }
 
 
-export function reload() 
+export function reloadColeweight() 
 {
     upTimeTrack = false
     stepsSinceLast = 0

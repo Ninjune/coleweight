@@ -54,6 +54,22 @@ class Settings {
     claiming = true;
 
     @SwitchProperty({
+        name: "Gemstone mining stats",
+        description: "Shows gemstone mining speed/fortune on player profile. (includes professional and jungle amulet)",
+        subcategory: "Random Features",
+        category: "General"
+    })
+    gemstoneMiningStats = true;
+
+    @SwitchProperty({
+        name: "Debug",
+        description: "Toggles debug mode.",
+        subcategory: "Random Features",
+        category: "General"
+    })
+    debug = false;
+
+    @SwitchProperty({
         name: "Downtime tracker",
         description: "Tracks downtime.",
         subcategory: "Downtime",
@@ -73,12 +89,31 @@ class Settings {
     }
 
     @SwitchProperty({
-        name: "Debug",
-        description: "Toggles debug mode.",
-        subcategory: "Random Features",
+        name: "Collection tracker",
+        description: "Tracks collections ('/cw trackcollection (collection)' to set).",
+        subcategory: "Collection",
         category: "General"
     })
-    debug = false;
+    collectionTracker = false;
+
+    @SwitchProperty({
+        name: "Collection notation",
+        description: "Changes collection to be abbrivated like '45K' or '2M'.",
+        subcategory: "Collection",
+        category: "General"
+    })
+    collectionNotation = true;
+
+    @ButtonProperty({
+        name: "Change collection tracker position",
+        description: "Move the location of the collection tracker.",
+        subcategory: "Collection",
+        category: "General",
+        placeholder: "Open"
+    })
+    moveCollectionLocation() {
+        ChatLib.command("cw move collection", true);
+    }
 
     @SwitchProperty({
         name: "Marked lobbies",
@@ -187,6 +222,12 @@ class Settings {
         this.registerListener("Claiming", value => {
             this.claiming = value;
         })
+        this.registerListener("Gemstone mining stats", value => {
+            this.gemstoneMiningStats = value;
+        })
+        this.registerListener("Debug", value => {
+            this.debug = value;
+        })
         this.registerListener("Marked lobbies", value => {
             this.lobbyMarking = value;
         })
@@ -196,8 +237,11 @@ class Settings {
         this.registerListener("Downtime tracker", value => {
             this.downtimeTracker = value;
         })
-        this.registerListener("Debug", value => {
-            this.debug = value;
+        this.registerListener("Collection tracker", value => {
+            this.collectionTracker = value;
+        })
+        this.registerListener("Collection notation", value => {
+            this.collectionNotation = value;
         })
         this.registerListener("Show powdertracker", value => {
             this.trackerVisible = value;
