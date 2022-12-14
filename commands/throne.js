@@ -41,7 +41,7 @@ export function throne(arg2)
 
 
 register("renderWorld", () => {
-    waypointRender(throneWaypoints, true)
+    waypointRender(throneWaypoints, true, true)
 })
 
 

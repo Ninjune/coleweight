@@ -1,0 +1,151 @@
+{"data": [
+    {
+        "costFormula": "Math.pow((currentLevel+1), 3)",
+        "rewardFormula": "Level*20",
+        "nameStringed": "Mining Speed",
+        "names": ["miningspeed", "speed", "ms"],
+        "maxLevel": 50,
+        "powderType": "mithril"
+    },
+    {
+        "costFormula": "Math.pow((currentLevel+1), 3.05)",
+        "rewardFormula": "Level*5",
+        "nameStringed": "Mining Fortune",
+        "names": ["miningfortune", "fortune", "mf"],
+        "maxLevel": 50,
+        "powderType": "mithril"
+
+    },
+    {
+        "costFormula": "Math.pow((currentLevel+1), 4)",
+        "rewardFormula": "10+(Level*0.5)",
+        "nameStringed": "Quick Forge",
+        "names": ["quickforge", "forge"],
+        "maxLevel": 20,
+        "powderType": "mithril"
+    },
+    {
+        "costFormula": "200+((currentLevel-1)*18)",
+        "rewardFormula": "(200+((Level-1)*18))*2",
+        "nameStringed": "Titanium Insanium",
+        "names": ["titaniuminsanium", "titanium", "tita"],
+        "maxLevel": 50,
+        "powderType": "mithril"
+    },
+    {
+        "costFormula": "200+((currentLevel-1)*18)",
+        "rewardFormula": "(200+((Level-1)*18))*2",
+        "nameStringed": "Titanium Insanium",
+        "names": ["dailypowder"],
+        "maxLevel": 100,
+        "powderType": "mithril"
+    },
+    {
+        "costFormula": "Math.pow((currentLevel+1), 3.07)",
+        "rewardFormula": "5+Level",
+        "nameStringed": "Luck Of The Cave",
+        "names": ["luckofthecave", "caveluck", "luck"],
+        "maxLevel": 45,
+        "powderType": "mithril"
+    },
+    {
+        "costFormula": "Math.pow((currentLevel+1), 3.4)",
+        "rewardFormula": "20+((Level-1)*6)",
+        "nameStringed": "Crystallized",
+        "names": ["crystallized"],
+        "maxLevel": 30,
+        "powderType": "mithril"
+    },
+    {
+        "costFormula": "Math.pow((currentLevel+1), 2.6)",
+        "rewardFormula": "10+(Level*0.4)",
+        "nameStringed": "Efficient Miner",
+        "names": ["efficientminer", "efficient"],
+        "maxLevel": 100,
+        "powderType": "mithril"
+    },
+    {
+        "costFormula": "currentLevel*70",
+        "rewardFormula": "0.2+(Level*0.01)",
+        "nameStringed": "Orbiter",
+        "names": ["orbiter", "orbit"],
+        "maxLevel": 80,
+        "powderType": "mithril"
+    },
+    {
+        "costFormula": "Math.pow((currentLevel+1), 2.3)",
+        "rewardFormula": "5+(Level*0.1)",
+        "nameStringed": "Seasoned Mineman",
+        "names": ["seasonedmineman", "mineman"],
+        "maxLevel": 100,
+        "powderType": "mithril"
+    },
+    {
+        "1": { "cost": "0", "reward": "+1 Pickaxe Ability Level;+1 Token of the Mountain", "powderType": "mithril"},
+        "2": { "cost": "50000", "reward": "+1 Forge Slot", "powderType": "mithril" },
+        "3": { "cost": "75000", "reward": "+1 Commission Slot" },
+        "4": { "cost": "100000", "reward": "+1 base ᠅ Mithril Powder when mining Mithril", "powderType": "mithril" },
+        "5": { "cost": "125000", "reward": "+1 Token of the Mountain", "powderType": "mithril" },
+        "6": { "cost": "500000", "reward": "+1 base ᠅ Gemstone Powder when mining Gemstones", "powderType": "gemstone" },
+        "7": { "cost": "750000", "reward": "+1 Token of the Mountain", "powderType": "gemstone"},
+        "nameStringed": "Peak of the Mountain",
+        "names": ["peakofthemountain", "peak", "potm"],
+        "maxLevel": 7
+    },
+    {
+        "costFormula": "Math.pow((currentLevel+1), 2.2)",
+        "rewardFormula": "50+((Level-1)*5)",
+        "nameStringed": "Mole",
+        "names": ["mole"],
+        "maxLevel": 190,
+        "powderType": "gemstone"
+  	},
+    {
+        "costFormula": "Math.pow((currentLevel+1), 2.3)",
+        "rewardFormula": "50+(Level*5)",
+        "nameStringed": "Professional",
+        "names": ["professional", "prof"],
+        "maxLevel": 140,
+        "powderType": "gemstone"
+  	},
+    {
+        "costFormula": "Math.pow((currentLevel+1), 3.07)",
+        "rewardFormula": "5+((Level-1)*0.5)",
+        "nameStringed": "Lonesome Miner",
+        "names": ["lonesomeminer", "lonesome"],
+        "maxLevel": 45,
+        "powderType": "gemstone"
+  	},
+    {
+        "costFormula": "Math.pow((currentLevel+1), 4)",
+        "rewardFormula": "20+(4*(Level-1))",
+        "nameStringed": "Great Explorer",
+        "names": ["greatexplorer", "explorer"],
+        "maxLevel": 20,
+        "powderType": "gemstone"
+  	},
+    {
+        "costFormula": "Math.pow((currentLevel+1), 3.2)",
+        "rewardFormula": "Level*0.01",
+        "nameStringed": "Powder Buff",
+        "names": ["powderbuff", "powder"],
+        "maxLevel": 50,
+        "powderType": "gemstone"
+  	},
+    {
+        "costFormula": "Math.pow((currentLevel+1), 3.2)",
+        "rewardFormula": "Level*40",
+        "nameStringed": "Mining Speed II",
+        "names": ["miningspeedii", "miningspeed2", "speed2", "ms2"],
+        "maxLevel": 50,
+        "powderType": "gemstone"
+  	},
+    {
+        "costFormula": "Math.pow((currentLevel+1), 3.2)",
+        "rewardFormula": "Level*5",
+        "nameStringed": "Mining Fortune II",
+        "names": ["miningfortuneii", "miningfortune2", "fortune2", "mf2"],
+        "maxLevel": 50,
+        "powderType": "gemstone"
+  	}
+]}

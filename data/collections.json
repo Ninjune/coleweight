@@ -1,0 +1,87 @@
+{
+   "gemstone": 
+    {
+        "collectionToTrack": "GEMSTONE_COLLECTION",
+        "collectionStringed": "Gemstone"
+    },
+    "mithril":
+    {
+        "collectionToTrack": "MITHRIL_ORE",
+        "collectionStringed": "Mithril"
+    },
+    "gold":
+    {
+        "collectionToTrack": "GOLD_INGOT",
+        "collectionStringed": "Gold"
+    },
+    "obsidian":
+    {
+        "collectionToTrack": "OBSIDIAN",
+        "collectionStringed": "Obsidian"
+    },
+    "netherrack":
+    {
+        "collectionToTrack": "NETHERRACK",
+        "collectionStringed": "Netherrack"
+    },
+    "diamond":
+    {
+        "collectionToTrack": "DIAMOND",
+        "collectionStringed": "Diamond"
+    },
+    "ice":
+    {
+        "collectionToTrack": "ICE",
+        "collectionStringed": "Ice"
+    },
+    "redstone":
+    {
+        "collectionToTrack": "REDSTONE",
+        "collectionStringed": "Redstone"
+    },
+    "lapis":
+    {
+        "collectionToTrack": "INK_SACK:4",
+        "collectionStringed": "Lapis"
+    },
+    "coal":
+    {
+        "collectionToTrack": "COAL",
+        "collectionStringed": "Coal"
+    },
+    "emerald":
+    {
+        "collectionToTrack": "EMERALD",
+        "collectionStringed": "Emerald"
+    },
+    "endstone":
+    {
+        "collectionToTrack": "ENDER_STONE",
+        "collectionStringed": "Endstone"
+    },
+    "glowstone":
+    {
+        "collectionToTrack": "GLOWSTONE_DUST",
+        "collectionStringed": "Glowstone"
+    },
+    "iron":
+    {
+        "collectionToTrack": "IRON_INGOT",
+        "collectionStringed": "Iron"
+    },
+    "mycelium":
+    {
+        "collectionToTrack": "MYCEL",
+        "collectionStringed": "Mycelium"
+    },
+    "quartz":
+    {
+        "collectionToTrack": "QUARTZ",
+        "collectionStringed": "Endstone"
+    },
+    "cobblestone":
+    {
+        "collectionToTrack": "COBBLESTONE",
+        "collectionStringed": "Cobblestone"
+    }
+}

@@ -45,7 +45,7 @@ export function spiral(arg2)
 }
 
 register("renderWorld", () => {
-    waypointRender(spiralWaypoints, true)
+    waypointRender(spiralWaypoints, true, true)
 })
 
 register("worldLoad", () => {

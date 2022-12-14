@@ -40,6 +40,17 @@ register("chat", (level, typeOfChat, hypixelRank, username, playerMessage, event
     ChatLib.chat(newMessage)
 }).setCriteria(/^(\[\d+\] )?((?:(?:Guild|Party|Co-op) > )|(?:\[:v:\] ))?(\[\w+\+{0,2}\] )?(\w{1,16})(?: \[\w{1,6}\])?: (.*)$/g)
 
+register("gameLoad", () => {
+    axios.get(`https://ninjune.dev/api/coleweight-leaderboard?length=500`)
+    .then(res => {
+        cwlbData = res.data
+    })
+    .catch(err => {
+        ChatLib.chat(err)
+    })
+})
+
+
 register("messageSent", (origMessage, event) => { // emotes! this was fun to make :)
     let commandState = 0,
      command = "",
@@ -75,14 +86,21 @@ register("messageSent", (origMessage, event) => { // emotes! this was fun to mak
     ChatLib.say(`${message}`)
 })
 
-register("worldLoad", () => {
-    axios.get(`https://ninjune.dev/api/coleweight-leaderboard?length=500`)
-    .then(res => {
-        cwlbData = res.data
-    })
-    .catch(err => {
-        ChatLib.chat(err)
-    })
-})
+
+// first time check
+register("step", () => {
+    if (constants.data.first_time) 
+    {
+        constants.data.first_time = false
+        constants.data.save()
+        ChatLib.chat("")
+        new TextComponent(ChatLib.getCenteredText(`${PREFIX}&bPlease Set Your Api Key By Doing /api new`)).chat()
+        new TextComponent(ChatLib.getCenteredText(`${PREFIX}&bOr By Doing /cw setkey (key)`)).chat()
+        new TextComponent(ChatLib.getCenteredText(`${PREFIX}&bView commands: /cw help`)).chat()
+        ChatLib.chat("")
+    }
+    if (constants.data.api_key == undefined || constants.data.api_key == "") return
+}).setFps(1);
+
 
 export default ""

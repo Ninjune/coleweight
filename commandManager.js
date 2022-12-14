@@ -2,9 +2,9 @@ import { openTimerGui } from "./render/timerGui.js"
 import { openPowderGui } from "./render/powertrackerGui"
 import { openCoordsGui } from "./render/coordsGui.js"
 import { openDowntimeGui } from "./render/downtimeGui.js"
-import { openCwGui } from "./render/cwGui"
+import { openCwGui, reloadColeweight } from "./render/cwGui"
+import { openCollectionGui, reloadCollection, trackCollection } from "./render/collectionGui"
 import { help } from "./commands/help"
-import { reload } from "./commands/reload"
 import { setkey } from "./commands/setkey"
 import { spiral } from "./commands/spiral"
 import { throne } from "./commands/throne"
@@ -14,27 +14,30 @@ import { update } from "./commands/update"
 import { fetchDiscord } from "./commands/fetchDiscord"
 import { findColeweight } from "./commands/findColeweight"
 import { claim } from "./commands/claim"
-import { tick } from "./commands/tick"
 import { time } from "./commands/time"
 import { info } from "./commands/info"
+import { credits } from "./commands/credits"
 import Settings from "./settings"
 import constants from "./util/constants"
 import { clearLobbies } from "./commands/markingLobbies"
 import { divans } from "./commands/divans.js"
+import { calculate } from "./commands/calculate/calculate.js"
+import { openMiningAbilitiesGui } from "./render/miningAbilities.js"
 
-register("command", (arg, arg2, arg3) => {
-    if (arg == undefined) {findColeweight(arg); return}
-    switch(arg.toLowerCase())
+register("command", (...args) => {
+    console.log(args[0])
+    if (args[0] == undefined) {findColeweight(args[0]); return}
+    switch(args[0].toString().toLowerCase())
     {
         case "setkey":
-            setkey(arg2)
+            setkey(args[1])
             break
         case "help":
             help()
             break
         case "move":
-            if (arg2 == undefined) {ChatLib.chat(`${constants.PREFIX}&cNot enough arguments.`); return}
-            switch(arg2.toLowerCase())
+            if (args[1] == undefined) {ChatLib.chat(`${constants.PREFIX}&cNot enough arguments.`); return}
+            switch(args[1].toLowerCase())
             {
                 case "coleweight":
                     openCwGui()
@@ -49,21 +52,37 @@ register("command", (arg, arg2, arg3) => {
                 case "downtime":
                     openDowntimeGui()
                     break
+                case "collection":
+                    openCollectionGui()
+                    break
+                case "miningabilities":
+                    openMiningAbilitiesGui()
+                    break
                 default:
                     ChatLib.chat(`${constants.PREFIX}&cNo such gui as '${arg2}'.`)
             }
             break
         case "throne":
-            throne(arg2)
+            throne(args[1])
             break
         case "spiral":
-            spiral(arg2)
+            spiral(args[1])
             break
         case "reload":
-            reload()
+            switch(args[1].toLowerCase())
+            {
+                case "coleweight":
+                    reloadColeweight()
+                    break
+                case "collection":
+                    reloadCollection()
+                    break
+                default:
+                    ChatLib.chat(`${constants.PREFIX}&cNo such gui as '${args[1]}'.`)
+            }
             break
         case "leaderboard":
-            leaderboard(arg2, arg3)
+            leaderboard(args[1], args[2])
             break
         case "update":
             update()
@@ -73,13 +92,10 @@ register("command", (arg, arg2, arg3) => {
             Settings.openGUI()
             break
         case "claim":
-            claim(arg2)
+            claim(args[1])
             break
         case "powdertrackersync":
             updateDisplay()
-            break
-        case "tick":
-            tick(arg2, arg3)
             break
         case "time":
             time()
@@ -91,37 +107,71 @@ register("command", (arg, arg2, arg3) => {
             clearLobbies()
             break
         case "yog":
-            yog(arg2)
+            yog(args[1])
             break
         case "divans":
         case "divan":
-            divans(arg2)
+            divans(args[1])
             break
         case "coord":
         case "coords":
             openCoordsGui()
             break
+        case "credits":
+            credits()
+            break
+        case "track":
+            trackCollection(args[1])
+            break
+        case "calc":
+        case "calculate":
+            calculate(args.slice(1))
+            break
         default:
-            findColeweight(arg)
+            findColeweight(args[0])
     }
 }).setTabCompletions((args) => {
     let output = [],
+     calculateOptions = ["tick", "ms2toprofessional", "hotmcalc", "calchotm"],
      commands = ["setkey", "help", "move", "toggle", "throne", "spiral", "reload", "leaderboard", 
-      "settings", "claim", "tick", "time", "info", "clearlobbies", "yog", "divan", "coords"]
+        "settings", "claim", "time", "info", "clearlobbies", "yog", "divan", "coords", "credits", "track", "calculate"]
     
     if(args[0].length == 0 || args[0] == undefined)
-        output = commands
+        return output = commands
+
+    if(args[0] == "calc" || args[0] == "calculate")
+    {
+        if(args[1] == undefined) output = calculateOptions
+
+        else
+        {
+            calculateOptions.forEach(calculateOption => {
+                for(let char = 0; char < args[1].length; char++)
+                {
+                    if(calculateOption[char] != args[1][char])
+                        break
+                    else if(char == args[1].length - 1)
+                        output.push(calculateOption)
+                }
+            })
+        }
+    }
     else
     {
-        for(let i = 0; i < commands.length; i++)
+        
+        if(args[0] == undefined) output = commands
+
+        else
         {
-            for(let j = 0; j < args[0].length; j++)
-            {
-                if(commands[i][j] != args[0][j])
-                    break
-                else if(j == args[0].length - 1)
-                    output.push(commands[i])
-            }
+            commands.forEach(command => {
+                for(let char = 0; char < args[0].length; char++)
+                {
+                    if(command[char] != args[0][char])
+                        break
+                    else if(char == args[0].length - 1)
+                        output.push(command)
+                }
+            })
         }
     }
     return output
