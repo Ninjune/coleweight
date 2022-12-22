@@ -3,6 +3,7 @@ const PREFIX = "◆"
 export function help()
 {
     ChatLib.chat("&b--------------[ &a&lColeweight &b]--------------")
+    ChatLib.chat("&7(Hover over command to see usage.)")
     ChatLib.chat(ChatLib.getCenteredText("&a&lInfo"))
     helpCommand("", "Gets Coleweight of specified user", "(username)")
     helpCommand("help", "This menu.", "")
@@ -23,11 +24,11 @@ export function help()
     helpCommand("yog", "Shows instructions for yog waypoints.", "[toggle]")
     helpCommand("divans", "Guide for setting up waypoints for Mines of Divan treasures.", "[toggle]")
     ChatLib.chat(ChatLib.getCenteredText("&a&lMiscellaneous"))
+    helpCommand("drawline", "Draws a line to coords. (y defaults to the player's y)", "(x) [y] (z)")
     ChatLib.chat(`&a${PREFIX} /fetchdiscord (username) => &bGets discord of username (if linked)`)
-    ChatLib.chat("&b------------------------------------------")
+    ChatLib.chat("&b--------------------------------------------")
 }
 
-// Made by Almighty Stylla <3
 export function helpCommand(command, desc, usage)
 {  
     ChatLib.chat(new TextComponent(`&a${PREFIX} /cw ${command} => &b${desc}`).setHoverValue(`${"/cw " + command + " " + usage}`))

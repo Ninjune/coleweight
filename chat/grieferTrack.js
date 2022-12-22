@@ -1,6 +1,5 @@
 import axios from "../../axios"
 import settings from "../settings"
-import Settings from "../settings"
 import constants from "../util/constants"
 const PREFIX = constants.PREFIX
 let checkedPlayers = [],
@@ -26,7 +25,7 @@ register("worldLoad", () => {
 
 function checkMMiners()
 {
-    if (!Settings.trackGriefers) return
+    if (!settings.trackGriefers) return
     try
     {
         const NetHandlerPlayClient = Client.getConnection(),
@@ -37,8 +36,13 @@ function checkMMiners()
             
             if(!checkedPlayers.includes(player))
             {
-                if(griefers.includes(player))
-                    ChatLib.chat(`${PREFIX}&e'${player}' is a griefer!`)
+                griefers.forEach(griefer => {
+                    let dateObj = new Date(0)
+                    dateObj.setUTCMilliseconds(griefer.timestamp)
+                    
+                    if(griefer.name == player)
+                        ChatLib.chat(`${PREFIX}&e'${player}' has griefed &e&l${griefer.offences} &etime(s). Their last grief was on ${dateObj.toString().slice(4, 15)}.`)
+                })
                 checkedPlayers.push(player)
             }
         })

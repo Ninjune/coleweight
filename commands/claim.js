@@ -59,16 +59,12 @@ register('gameLoad', (event) => {
         Client.getMinecraft().func_152347_ac().joinServer(Client.getMinecraft().func_110432_I().func_148256_e(), Client.getMinecraft().func_110432_I().func_148254_d(), serverId)
     }
     catch(e) {}
-    // what if a player claims after gameload? idk man, making requests every worldload is hurting my server. 
-    // this feature is barely used anyway.
     getClaimed()
 })
 
 
 register('worldLoad', () => {
     if(!settings.claiming) return
-    if(claimedServers == undefined)
-        getClaimed()
     setTimeout(() => {
         const NetHandlerPlayClient = Client.getConnection(),
          PlayerMap = NetHandlerPlayClient.func_175106_d()  // getPlayerInfoMap
@@ -112,6 +108,7 @@ function getClaimed()
             Client.getMinecraft().func_152347_ac().joinServer(Client.getMinecraft().func_110432_I().func_148256_e(), Client.getMinecraft().func_110432_I().func_148254_d(), serverId)
             return
         }
+        claimedServers = []
         res.data.forEach(server => {
             claimedServers.push(server)
         })

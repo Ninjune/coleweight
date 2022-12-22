@@ -1,8 +1,8 @@
 /*
 Major credit to Fabi019 for Powdertracker module.
 */
-import constants from "../util/constants"
-import settings from "../settings"
+import constants from "../../util/constants"
+import settings from "../../settings"
 
 const powderGui = new Gui(),
  bossBar = Java.type("net.minecraft.entity.boss.BossStatus").field_82827_c

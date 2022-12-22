@@ -93,8 +93,15 @@
         "maxLevel": 7
     },
     {
+        "rewardFormula": "20+(Level*4)",
+        "nameStringed": "Fortunate",
+        "names": ["fortunate"],
+        "maxLevel": 20,
+        "powderType": "gemstone"
+  	},
+    {
         "costFormula": "Math.pow((currentLevel+1), 2.2)",
-        "rewardFormula": "50+((Level-1)*5",
+        "rewardFormula": "50+((Level-1)*5)",
         "nameStringed": "Mole",
         "names": ["mole"],
         "maxLevel": 190,

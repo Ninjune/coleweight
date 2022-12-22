@@ -16,9 +16,9 @@ register("chat", (key) => {
             ChatLib.chat(`${PREFIX}&eKey is not valid!`)
     })
     .catch(err => {
-        ChatLib.chat(`${PREFIX}&eKey is not valid!`)
+        ChatLib.chat(`${PREFIX}&eKey is not valid! if this is a mistake report: ${err}`)
     })
-    ChatLib.chat(ChatLib.getCenteredText(`${PREFIX}&aApi Key Successfully Set!`))
+    ChatLib.chat(`${PREFIX}&aApi Key Successfully Set!`)
 }).setCriteria(/Your new API key is (.+)/)
 
 export default ""

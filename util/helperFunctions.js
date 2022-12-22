@@ -77,12 +77,15 @@ export class textGui
         this.guiObject = guiObject
         this.x = x
         this.y = y
+        this.alignment = 0
+        this.moveGuiObject = new Gui()
     }
 
 
     renderGui()
     {
         let string = ""
+
         this.guiObject.leftValues.forEach((leftValue, index) => {
             if(leftValue == "Uptime")
             {
@@ -99,7 +102,55 @@ export class textGui
                 string += `&a${leftValue}: &b${this.guiObject.rightValues[index]}\n`
             }
         })
-        Renderer.drawStringWithShadow(string, this.x, this.y)
+
+        let text = new Text(string)
+        if (this.alignment == 1)
+            text.setAlign("CENTER")
+        else if (this.alignment == 2)
+            text.setAlign("RIGHT")
+        text.setShadow(true)
+        .setX(this.x)
+        .setY(this.y)
+
+        if (this.moveGuiObject.isOpen()) 
+        {
+            let txt = "Drag to move."
+
+            Renderer.drawStringWithShadow(txt, Renderer.screen.getWidth()/2 - Renderer.getStringWidth(txt)/2, Renderer.screen.getHeight()/2)
+        }
+
+        text.draw()
+    }
+
+
+    moveGui()
+    {
+        this.moveGuiObject.open()
+    }
+
+
+    findDrawValues()
+    {
+        let string = ""
+
+        this.guiObject.leftValues.forEach((leftValue, index) => {
+            if(leftValue == "Uptime")
+            {
+                let uptime = this.guiObject.rightValues[index] ?? 0,
+                uptimeHr = Math.floor(uptime/60/60)
+                
+                if(uptimeHr >= 1)
+                    string += `&aUptime: &b${uptimeHr}h ${Math.floor(uptime/60) - uptimeHr*60}m\n`
+                else
+                    string += `&aUptime: &b${Math.floor(uptime/60)}m ${Math.floor(uptime%60)}s\n`
+            }
+            else
+            {
+                string += `&a${leftValue}: &b${this.guiObject.rightValues[index]}\n`
+            }
+        })
+
+        return string
     }
 }
 
@@ -139,8 +190,9 @@ export class trackerGui
             return this.itemGui.renderGui()
         }
         if(!renderGui) return
-        if(this.itemValues[0] != undefined && this.trackingItem && this.calcItemPerHour)
+        if(this.itemValues[0] != undefined && /*this.trackingItem && */this.calcItemPerHour)
         {
+            this.itemValuesSum = 0
             for(let i = 0; i < this.itemValues.length; i++)
                 this.itemValuesSum += this.itemValues[i]
             let eq = Math.ceil((this.itemValuesSum*(3600/this.uptimeSeconds)) * 100) / 100
@@ -225,15 +277,14 @@ export class trackerGui
 }
 
 
-function getObjectValue(obj, path, def) 
+export function getObjectValue(obj, path, def) 
 {
 	let current = obj
-
+    if(path == undefined) return undefined
     for (let i = 0; i < path.length; i++) 
-	    current = current[path[i]] // could be source of issues
+	    current = current[path[i]]
 
 	return current
-
 }
 
 
@@ -263,4 +314,89 @@ export function getSelectedProfile(res)
         if(res.data.profiles[i].selected == true) 
             return res.data.profiles[i]
     }
+}
+
+export function capitalizeFirst(sentence)
+{
+    let words = sentence.split(" "),
+     capitalized = words.map(word => {
+        return word[0].toUpperCase() + word.slice(1);
+    })
+
+    return capitalized.join(" ")
+}
+
+export function drawTitle(text, drawTimestamp, scale = 5, time = 3000, sound = "random.orb",)
+{
+    let object = {}
+    if(drawTimestamp == undefined)
+    {
+        World.playSound(sound, 1, 1)
+        object.drawTimestamp = Date.now()
+        object.drawTitle = 1
+    }
+    else if (Date.now() - drawTimestamp > time)
+    {
+        object.drawTimestamp = undefined
+        object.drawTitle = 2
+    }
+    else
+    {
+        let title = new Text(text, Renderer.screen.getWidth()/2, Renderer.screen.getHeight()/2)
+        title.setAlign("CENTER")
+        .setShadow(true)
+        .setScale(scale)
+        .draw()
+        object.drawTimestamp = drawTimestamp
+        object.drawTitle = 1
+    }
+    return object
+}
+
+const hollowsLocations = ["Goblin", "Jungle", "Mithril", "Precursor", "Magma", "Crystal", "Khazad", "Divan", "City"]
+export function checkInHollows() 
+{
+    const scoreboard = Scoreboard.getLines()
+
+    for(let lineIndex = 0; lineIndex < scoreboard.length; lineIndex++) 
+    {
+        for(let locationsIndex = 0; locationsIndex < hollowsLocations.length; locationsIndex++) 
+        {
+            if(scoreboard[lineIndex].toString().includes(hollowsLocations[locationsIndex])) 
+                return true
+        }
+    }
+    return false
+}
+
+const dwarvenLocations = ["Dwarven", "Royal", "Palace", "Library", "Mist", "Cliffside", "Quarry", "Gateway", "Wall", "Forge", "Far", "Burrows", "Springs", "Upper"]
+export function checkInDwarven() 
+{
+    const scoreboard = Scoreboard.getLines()
+
+    for(let lineIndex = 0; lineIndex < scoreboard.length; lineIndex++) 
+    {
+        for(let locationsIndex = 0; locationsIndex < dwarvenLocations.length; locationsIndex++) 
+        {
+            if(scoreboard[lineIndex].toString().includes(dwarvenLocations[locationsIndex])) 
+                return true
+        }
+    }
+    return false
+}
+
+const foragingLocations = ["Dark", "Birch", "Spruce", "Savanna", "Jungle", "Forest"]
+export function checkInPark() 
+{
+    const scoreboard = Scoreboard.getLines()
+
+    for(let lineIndex = 0; lineIndex < scoreboard.length; lineIndex++) 
+    {
+        for(let locationsIndex = 0; locationsIndex < foragingLocations.length; locationsIndex++) 
+        {
+            if(scoreboard[lineIndex].toString().includes(foragingLocations[locationsIndex])) 
+                return true
+        }
+    }
+    return false
 }

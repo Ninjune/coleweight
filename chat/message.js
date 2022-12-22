@@ -50,43 +50,6 @@ register("gameLoad", () => {
     })
 })
 
-
-register("messageSent", (origMessage, event) => { // emotes! this was fun to make :)
-    let commandState = 0,
-     command = "",
-     colonIndex1 = -1,
-     message = ""
-    
-    for(let charIndex = 0; charIndex < origMessage.length; charIndex++)
-    {
-        if(origMessage[charIndex] == ":" && commandState == 0)
-        {
-            colonIndex1 = charIndex
-            commandState = 1
-        }
-        else if (origMessage[charIndex] == ":" && commandState == 1)
-        {
-            commandState = 2
-            command = origMessage.slice(colonIndex1 + 1, charIndex).toLowerCase()
-        }
-    }
-    if(command == "shrug")
-    {
-        cancel(event)
-        emote = "¯\\_(ツ)_/¯"
-    }
-    else if (command == "lenny")
-    {
-        cancel(event)
-        emote = "( ͡° ͜ʖ ͡°)"
-    }
-    else
-        return
-    message = origMessage.slice(0, colonIndex1) + emote + origMessage.slice(colonIndex1 + 2 + command.length, origMessage.length)
-    ChatLib.say(`${message}`)
-})
-
-
 // first time check
 register("step", () => {
     if (constants.data.first_time) 
@@ -101,5 +64,6 @@ register("step", () => {
     }
     if (constants.data.api_key == undefined || constants.data.api_key == "") return
 }).setFps(1);
+
 
 export default ""

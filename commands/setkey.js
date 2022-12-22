@@ -17,6 +17,6 @@ export function setkey(arg2)
             ChatLib.chat(`${PREFIX}&eKey is not valid!`)
     })
     .catch(err => {
-        ChatLib.chat(`${PREFIX}&eKey is not valid!`)
+        ChatLib.chat(`${PREFIX}&eKey is not valid! if this is a mistake report: ${err}`)
     })
 }

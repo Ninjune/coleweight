@@ -1,5 +1,5 @@
-import settings from "../settings";
-import constants from "../util/constants";
+import settings from "../../settings";
+import constants from "../../util/constants";
 
 
 const timerGui = new Gui()

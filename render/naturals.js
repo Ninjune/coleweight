@@ -6,17 +6,11 @@ let coords = [],
  visibleCoords = []
 
 register("gameLoad", res => {
-    axios.get(`https://ninjune.dev/api/coords`)
-    .then((res) => {
-        coords = res.data
-    })
-    .catch((err) => {
-        if(settings.debug) return console.log(err)
-    })
+    coords = JSON.parse(FileLib.read("Coleweight", "data/naturalCoords.json"))
 })
 
 register("step", () => {
-    if(constants.serverData.map != "Crystal Hollows" || !settings.showNaturals) return
+    if(constants.serverData.map != "Crystal Hollows" || !settings.showNaturals || coords.length < 1) return
     visibleCoords = []
     coords.filter(coord => 
         (((-1 * settings.naturalRange)/2 < (parseInt(Player.getX()) - coord.x)) && ((parseInt(Player.getX()) - coord.x) < settings.naturalRange/2)

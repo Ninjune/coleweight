@@ -1,6 +1,6 @@
-import constants from "../util/constants"
-import settings from "../settings"
-import { trackerGui } from "../util/helperFunctions"
+import constants from "../../util/constants"
+import settings from "../../settings"
+import { trackerGui } from "../../util/helperFunctions"
 const PREFIX = constants.PREFIX
 const collectionMoveGui = new Gui()
 const collectionGui = new trackerGui("", "Collection Not set! /cw track", settings.collectionNotation)
