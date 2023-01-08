@@ -54,7 +54,7 @@
         "collectionToTrack": "EMERALD",
         "collectionStringed": "Emerald"
     },
-    "endstone":
+    "end":
     {
         "collectionToTrack": "ENDER_STONE",
         "collectionStringed": "Endstone"
@@ -77,11 +77,31 @@
     "quartz":
     {
         "collectionToTrack": "QUARTZ",
-        "collectionStringed": "Endstone"
+        "collectionStringed": "Quartz"
     },
     "cobblestone":
     {
         "collectionToTrack": "COBBLESTONE",
         "collectionStringed": "Cobblestone"
-    }
+    },
+	"hard":
+	{
+		"collectionToTrack": "HARD_STONE",
+        "collectionStringed": "Hard Stone"
+	},
+	"red":
+	{
+		"collectionToTrack": "SAND:1",
+        "collectionStringed": "Red Sand"
+	},
+	"sand":
+	{
+		"collectionToTrack": "SAND",
+        "collectionStringed": "Sand"
+	},
+	"gravel":
+	{
+		"collectionToTrack": "GRAVEL",
+        "collectionStringed": "Gravel"
+	}
 }

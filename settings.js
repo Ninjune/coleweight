@@ -1,10 +1,16 @@
-import { @Vigilant, @ButtonProperty, @SwitchProperty, @SelectorProperty, @SliderProperty } from 'Vigilance'
+import { @Vigilant, @ButtonProperty, @SwitchProperty, @SelectorProperty, @SliderProperty, @TextProperty } from 'Vigilance'
 
-@Vigilant("Coleweight/config")
+@Vigilant("Coleweight/config", "Coleweight Settings", {
+    getCategoryComparator: () => (a, b) => {
+        const categories = ["General", "Naturals", "Gui", "Stats", "Foraging"];
+
+        return categories.indexOf(a.name) - categories.indexOf(b.name);
+    }
+})
 class Settings {
     @SwitchProperty({
         name: "Coleweight tracker",
-        description: "Enables the Coleweight tracker.",
+        description: "Enables the Coleweight tracker. (gain coleweight for a few mins for it to show up)",
         subcategory: "Coleweight Tracker",
         category: "Gui"
     })
@@ -39,19 +45,19 @@ class Settings {
 
     @SwitchProperty({
         name: "Track griefers",
-        description: "Check lobbies for griefers (on join and when new players join.)",
+        description: "Check lobbies for griefers (on join and when new players join.) Mining cult does not encourage the harrasment of people on this list.",
         subcategory: "Random Features",
         category: "General"
     })
     trackGriefers = true;
 
     @SwitchProperty({
-        name: "Claiming",
-        description: "Enables lobby claiming (/claim).",
+        name: "Griefer messages everywhere",
+        description: "Makes griefer messages appear in all lobbies (not just CH/DM)",
         subcategory: "Random Features",
         category: "General"
     })
-    claiming = true;
+    grieferEverywhere = false;
 
     @SwitchProperty({
         name: "Dwarven notifier",
@@ -89,6 +95,14 @@ class Settings {
     }
 
     @SwitchProperty({
+        name: "Efficient Miner Overlay",
+        description: "Points towards the best block to break with efficient miner. (Also dwarven mines mithril overlay)",
+        subcategory: "Efficient Miner Overlay",
+        category: "Gui"
+    })
+    efficientMinerOverlay = false;
+
+    @SwitchProperty({
         name: "Collection tracker",
         description: "Tracks collections ('/cw track (collection)' to set).",
         subcategory: "Collection",
@@ -104,6 +118,14 @@ class Settings {
     })
     collectionNotation = true;
 
+    @SwitchProperty({
+        name: "Collection show always",
+        description: "Changes collection tracker to show always.",
+        subcategory: "Collection",
+        category: "Gui"
+    })
+    showCollectionTrackerAlways = false;
+
     @ButtonProperty({
         name: "Change collection tracker position",
         description: "Move the location of the collection tracker.",
@@ -114,7 +136,7 @@ class Settings {
     moveCollectionLocation() {
         ChatLib.command("cw move collection", true);
     }
-
+    
     @SwitchProperty({
         name: "Marked lobbies",
         description: "Enables lobby marking (automatic).",
@@ -192,28 +214,32 @@ class Settings {
     @SwitchProperty({ // Powdertracker
         name: "Show powdertracker",
         description: "If the tracker overlay should be visible.",
-        category: "Powdertracker"
+        subcategory: "Powdertracker",
+        category: "Gui"
     })
     trackerVisible = false;
     
     @SwitchProperty({
         name: "Show totals",
         description: "If the tracker should show the total amount.",
-        category: "Powdertracker"
+        subcategory: "Powdertracker",
+        category: "Gui"
     })
     showTotals = true;
     
     @SwitchProperty({
         name: "Show rates",
         description: "If the tracker should show the estimated rates per hour.",
-        category: "Powdertracker"
+        subcategory: "Powdertracker",
+        category: "Gui"
     })
     showRates = true;
     
     @SelectorProperty({
         name: "Alignment",
         description: "Sets the alignment of the tracker.",
-        category: "Powdertracker",
+        subcategory: "Powdertracker",
+        category: "Gui",
         options: ["Left", "Right", "Center"]
     })
     trackerAlignment = 0;
@@ -221,7 +247,8 @@ class Settings {
     @ButtonProperty({
         name: "Change Powdertracker position",
         description: "Move the location of the powdertracker.",
-        category: "Powdertracker",
+        subcategory: "Powdertracker",
+        category: "Gui",
         placeholder: "Open"
     })
     movePowderLocation() {
@@ -251,6 +278,13 @@ class Settings {
     })
     gemstoneMiningStats = true;
 
+    @SwitchProperty({ // Stats
+        name: "Show powder sum",
+        description: "Shows powder sum in HOTM menu.",
+        category: "Stats"
+    })
+    showPowderSum = false;
+
     @SelectorProperty({
         name: "Tick speed block",
         description: "Sets the tick speed block on player profile.",
@@ -258,6 +292,13 @@ class Settings {
         options: ["Green Mithril", "Blue Mithril", "Ruby", "Normal gemstone (jade, amethyst, etc)", "Topaz/Opal", "Jasper"]
     })
     tickSpeedBlock = 3;
+
+    @SwitchProperty({ // Foraging
+        name: "Treecap timer",
+        description: "Shows a timer over crosshair that shows time to next treecapitator proc.",
+        category: "Foraging"
+    })
+    treecapTimer = false;
 
     constructor() {
         this.initialize(this);
@@ -270,8 +311,8 @@ class Settings {
         this.registerListener("Track griefers", value => {
             this.trackGriefers = value;
         })
-        this.registerListener("Claiming", value => {
-            this.claiming = value;
+        this.registerListener("Griefer messages everywhere", value => {
+            this.grieferEverywhere = value;
         })
         this.registerListener("Dwarven notifier", value => {
             this.dwarvenNotifier = value;
@@ -297,11 +338,17 @@ class Settings {
         this.registerListener("Downtime tracker", value => {
             this.downtimeTracker = value;
         })
+        this.registerListener("Efficient Miner Overlay", value => {
+            this.efficientMinerOverlay = value;
+        })
         this.registerListener("Collection tracker", value => {
             this.collectionTracker = value;
         })
         this.registerListener("Collection notation", value => {
             this.collectionNotation = value;
+        })
+        this.registerListener("Collection show always", value => {
+            this.showCollectionTrackerAlways = value;
         })
         this.registerListener("Show powdertracker", value => {
             this.trackerVisible = value;
@@ -323,6 +370,12 @@ class Settings {
         })
         this.registerListener("Gemstone mining stats", value => {
             this.gemstoneMiningStats = value;
+        })
+        this.registerListener("Show powder sum", value => {
+            this.showPowderSum = value;
+        })
+        this.registerListener("Tick speed block", value => {
+            this.tickSpeedBlock = value;
         })
         this.registerListener("Tick speed block", value => {
             this.tickSpeedBlock = value;

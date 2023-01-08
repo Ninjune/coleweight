@@ -6,13 +6,7 @@ let coords = [],
  visibleCoords = []
 
 register("gameLoad", res => {
-    axios.get(`https://ninjune.dev/api/coords`)
-    .then((res) => {
-        coords = res.data
-    })
-    .catch((err) => {
-        if(settings.debug) return console.log(err)
-    })
+    coords = JSON.parse(FileLib.read("Coleweight", "data/naturalCoords.json"))
 })
 
 register("step", () => {

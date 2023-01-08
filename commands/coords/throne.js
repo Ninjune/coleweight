@@ -1,5 +1,5 @@
-import constants from "../util/constants"
-import { waypointRender } from "../util/helperFunctions"
+import constants from "../../util/constants"
+import { waypointRender } from "../../util/helperFunctions"
 
 const PREFIX = constants.PREFIX
 let throneWaypoints = []

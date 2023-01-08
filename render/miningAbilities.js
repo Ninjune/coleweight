@@ -63,11 +63,24 @@ register("step", () => {
         else if (ability.drawTitle == 0)
             ability.drawTitle = 1
     })
-}).setDelay(1) // delay instead of fps for accuracy ? 
+}).setDelay(1)
 
 
 register("chat", (abilityName, event) => {
     let found = false
+    let timer
+
+    switch(capitalizeFirst(abilityName))
+    {
+        case "Pickobulus":
+            timer = 110
+            break
+        case "Vein seeker":
+            timer = 60
+            break
+        default:
+            timer = 120
+    }
 
     activeAbilities.forEach(ability => {
         if(ability.name == capitalizeFirst(abilityName))
@@ -75,16 +88,13 @@ register("chat", (abilityName, event) => {
             found = true
             drawTimestamp = undefined
             ability.drawTitle = 0
-            if (capitalizeFirst(abilityName) === "Pickobulus")
-                ability.timer = 110
-            else
-                ability.timer = 120
+            ability.timer = timer
         }
     })
 
     if (!found)
     {
-        let object = {timer: capitalizeFirst(abilityName) === "Pickobulus" ? 110 : 120, name: capitalizeFirst(abilityName), drawTitle: 0, drawTimestamp: undefined}
+        let object = {timer: timer, name: capitalizeFirst(abilityName), drawTitle: 0, drawTimestamp: undefined}
 
         activeAbilities.push(object)
     }

@@ -3,8 +3,9 @@ import constants from "../util/constants"
 import { findTick } from "../commands/calculate/tick"
 import { addCommas, getSelectedProfile } from "../util/helperFunctions"
 import axios from "../../axios"
+import { findCost, findHotmObject } from "../commands/calculate/hotmCalc"
 const NBTTagString = Java.type("net.minecraft.nbt.NBTTagString")
-
+let powderTotals = {}
 
 register("itemTooltip", (lore, item) => { // this is so bad 💀
     if(!item.getLore()[0].startsWith("§o§aYour SkyBlock Profile") || !settings.gemstoneMiningStats) return
@@ -42,14 +43,15 @@ register("itemTooltip", (lore, item) => { // this is so bad 💀
          professionalSpeed = miningSpeed + Math.floor(50+(constants.data.professional*5)),
          miningSpeedText = `${element} §6(§b${addCommas(professionalSpeed)}§6)`,
          tick
-        if(settings.tickSpeedBlock > 1) // may need to change if add tick blocks (good programming real)
+        
+        if(professionalSpeed > 50 && settings.tickSpeedBlock > 1) // may need to change if add tick blocks (good programming real)
             tick = findTick(professionalSpeed, settings.tickSpeedBlock).currentBlockTick
         else
             tick = findTick(miningSpeed, settings.tickSpeedBlock).currentBlockTick
         
         list.set(elementIndex, new NBTTagString(miningSpeedText))
         list.set(elementIndex + 1, new NBTTagString(` §6⸕ Block Tick §f${Math.round(tick)}`)) // 1 new added
-        for(let i = elementIndex + 2; i < list.getTagCount() + 1; i++)
+        for(let i = elementIndex + 2; i < list.getTagCount(); i++)
         {
             list.set(i, new NBTTagString(tempList[i - 1]))
         }
@@ -57,13 +59,20 @@ register("itemTooltip", (lore, item) => { // this is so bad 💀
 })
 
 
-
-
-register("worldLoad", () => {
+register("gameLoad", () => {
     axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${Player.getUUID()}`)
     .then(res => {
-        let professional = getSelectedProfile(res)?.members[Player.getUUID().replace(/-/g, "")]?.mining_core?.nodes?.professional,
-         fortunate = getSelectedProfile(res)?.members[Player.getUUID().replace(/-/g, "")]?.mining_core?.nodes?.fortunate
+        let
+         selected = getSelectedProfile(res)?.members[Player.getUUID().replace(/-/g, "")]
+         professional = selected?.mining_core?.nodes?.professional,
+         fortunate = selected?.mining_core?.nodes?.fortunate
+
+        powderTotals = { 
+            gemstone: (selected?.mining_core?.powder_gemstone_total ?? 0) 
+              + (selected?.mining_core?.powder_spent_gemstone ?? 0),
+            mithril: (selected?.mining_core?.powder_mithril_total ?? 0)
+              + (selected?.mining_core?.powder_spent_mithril ?? 0)
+        }
         
         if(professional != undefined)
             constants.data.professional = professional
@@ -73,7 +82,7 @@ register("worldLoad", () => {
     })
 })
 
-register('step', () => { // idk how to get items so...
+register('step', () => {
     let inventoryName = Player?.getOpenedInventory()?.getName()?.toString()
     if(inventoryName == undefined) return
     if(inventoryName.includes("Accessory Bag ")) {
@@ -89,11 +98,33 @@ register('step', () => { // idk how to get items so...
 }).setFps(2)
 
 
-register("itemTooltip", (lore, item) => { // keeping for if api key isn't set
+register("itemTooltip", (lore, item) => {
     if(item.getLore()[0].startsWith("§o§aFortunate§r"))
         constants.data.fortunate = parseInt(item.getLore()[1].replace("§5§o§7Level ", ""))
     else if (item.getLore()[0].startsWith("§o§aProfessional§r"))
         constants.data.professional = parseInt(item.getLore()[1].replace("§5§o§7Level ", ""))
     else return
     constants.data.save()
+})
+
+register("itemTooltip", (lore, item) => { // powder put into each perk
+    if(!settings.showPowderSum || !item.getLore()[1]?.startsWith("§5§o§7Level ") || item?.getLore()[1]?.includes("💀")) return
+    new Thread(() => {
+        if(item.getLore()[1].includes("💀")) return
+        const list = new NBTTagList(item.getNBT().getCompoundTag("tag").getCompoundTag("display").getTagMap().get("Lore"))
+        let perk = item.getLore()[0].replace(/§.|\(.+\)/g, "").replace(/ /g, "")
+        let level = /Level (\d+)/g.exec(item.getLore()[1])[1]
+        let hotmObjectToFind = findHotmObject(perk)
+        if(hotmObjectToFind == undefined || (hotmObjectToFind.costFormula == undefined && perk != "Fortunate")) return
+
+        let powderSum
+
+        if(perk == "Fortunate")
+            powderSum = findCost(undefined, 2, parseInt(level), true)
+        else
+            powderSum = findCost(hotmObjectToFind.costFormula, 1, parseInt(level))
+       
+        if(item.getLore()[1].includes("💀")) return
+        list.set(0, new NBTTagString(item.getLore()[1] + ` §7(§b${addCommas(Math.round(powderSum))} §l${Math.round(powderSum/powderTotals[hotmObjectToFind.powderType]*100)}%§7)💀`)) // this is a perfect solution no cap
+    }).start()
 })

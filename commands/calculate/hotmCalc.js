@@ -16,28 +16,35 @@ export function hotmCalc(hotmName, minLevel, maxLevel)
         }
         return
     }
-    if(maxLevel == undefined)
-    {
-        maxLevel = minLevel
-        minLevel = 1
-    }
+    new Thread(() => {
+        if(maxLevel == undefined)
+        {
+            maxLevel = minLevel
+            minLevel = 2
+        }
 
-    if(minLevel != parseInt(minLevel) || maxLevel != parseInt(maxLevel)) return ChatLib.chat(constants.CALCULATEERRORMESSAGE)
+        if(minLevel != parseInt(minLevel) || maxLevel != parseInt(maxLevel)) return ChatLib.chat(constants.CALCULATEERRORMESSAGE)
 
-    minLevel = parseInt(minLevel)
-    maxLevel = parseInt(maxLevel)
-    let hotmObjectToFind = findHotmObject(hotmName)
-    if(hotmObjectToFind == undefined) return ChatLib.chat(`${PREFIX}&cDid not find HOTM perk with name '${hotmName}'!`)
+        minLevel = parseInt(minLevel)
+        maxLevel = parseInt(maxLevel)
+        let hotmObjectToFind = findHotmObject(hotmName)
+        if(hotmObjectToFind == undefined) return ChatLib.chat(`${PREFIX}&cDid not find HOTM perk with name '${hotmName}'!`)
 
-    maxLevel = (maxLevel < hotmObjectToFind.maxLevel ? maxLevel : hotmObjectToFind.maxLevel)
+        maxLevel = (maxLevel < hotmObjectToFind.maxLevel ? maxLevel : hotmObjectToFind.maxLevel)
+        let powderSum,
+        reward = findReward(hotmObjectToFind.rewardFormula, minLevel, maxLevel)
 
-    let powderSum = findCost(hotmObjectToFind.costFormula, minLevel, maxLevel),
-     reward = findReward(hotmObjectToFind.rewardFormula, minLevel, maxLevel)
-    
-    ChatLib.chat("")
-    ChatLib.chat(`&6${hotmObjectToFind.nameStringed} ${minLevel} - ${maxLevel} &bwill cost &6&l${addCommas(Math.round(powderSum))} &6${hotmObjectToFind.powderType[0].toUpperCase() + hotmObjectToFind.powderType.slice(1)} &bpowder.`)
-    ChatLib.chat(`&6${hotmObjectToFind.nameStringed} ${minLevel} - ${maxLevel} &bwill give &6&l${addCommas(Math.round(reward * 100) / 100)} &bof whatever reward is listed.`)
-    ChatLib.chat("")
+        if(hotmObjectToFind.names[0] == "fortunate") 
+            powderSum = findCost(undefined, minLevel, maxLevel, true)
+        else
+            powderSum = findCost(hotmObjectToFind.costFormula, minLevel, maxLevel)
+
+        
+        ChatLib.chat("")
+        ChatLib.chat(`&6${hotmObjectToFind.nameStringed} ${minLevel} - ${maxLevel} &bwill cost &6&l${addCommas(Math.round(powderSum))} &6${hotmObjectToFind.powderType[0].toUpperCase() + hotmObjectToFind.powderType.slice(1)} &bpowder.`)
+        ChatLib.chat(`&6${hotmObjectToFind.nameStringed} ${minLevel} - ${maxLevel} &bwill give &6&l${addCommas(Math.round(reward * 100) / 100)} &bof whatever reward is listed.`)
+        ChatLib.chat("")
+    }).start()
 }
 
 export function findHotmObject(hotmName)
@@ -46,21 +53,26 @@ export function findHotmObject(hotmName)
 
     for(let i = 0; i < hotmData.length; i++)
     {
-        if(hotmData[i].names.includes(hotmName))
+        if(hotmData[i].names.includes(hotmName.toLowerCase()))
             return hotmData[i]
     }
 }
 
-export function findCost(costFormula, minLevel, maxLevel)
+export function findCost(costFormula, minLevel, maxLevel, fortunate = false)
 {
     let powderSum = 0
 
-    for(let currentLevel = minLevel; currentLevel < maxLevel; currentLevel++) // finds cost
-        powderSum += eval(costFormula.replace("currentLevel", currentLevel))
+    if(fortunate)
+        powderSum = Math.pow(maxLevel+1, 3.05)
+    else
+    {
+        for(let currentLevel = minLevel; currentLevel <= maxLevel; currentLevel++) // finds cost
+            powderSum += eval(costFormula.replace("currentLevel", currentLevel))
+    }
     return powderSum
 }
 
 export function findReward(rewardFormula, minLevel, maxLevel)
 {
-    return eval(rewardFormula.replace("Level", 1+maxLevel-minLevel))
+    return eval(rewardFormula.replace("Level", 2+maxLevel-minLevel))
 }

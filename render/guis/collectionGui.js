@@ -1,8 +1,7 @@
-import constants from "../util/constants"
-import settings from "../settings"
-import { trackerGui } from "../util/helperFunctions"
+import constants from "../../util/constants"
+import settings from "../../settings"
+import { trackerGui } from "../../util/helperFunctions"
 const PREFIX = constants.PREFIX
-const collectionMoveGui = new Gui()
 const collectionGui = new trackerGui("", "Collection Not set! /cw track", settings.collectionNotation)
 
 
@@ -37,7 +36,7 @@ register("dragged", (dx, dy, x, y) => {
 })
 
 register("renderOverlay", () => {
-    collectionGui.renderGui(constants.collectiondata.x, constants.collectiondata.y, settings.collectionNotation, settings.collectionTracker)
+    collectionGui.renderGui(constants.collectiondata.x, constants.collectiondata.y, settings.collectionTracker, settings.collectionNotation, settings.showCollectionTrackerAlways)
 })
 
 register("step", () => {

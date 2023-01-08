@@ -1,6 +1,6 @@
-import settings from "../settings"
-import constants from "../util/constants"
-import { textGui } from "../util/helperFunctions"
+import settings from "../../settings"
+import constants from "../../util/constants"
+import { textGui } from "../../util/helperFunctions"
 
 const downtimeMoveGui = new Gui()
 const downtimeGui = new textGui()

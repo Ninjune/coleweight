@@ -23,10 +23,23 @@ export function tickCommand(speed, block)
 export function findTick(speed, block)
 {
     let ticks = {err: false},
-    strength = findStrength(block)
+     strength = findStrength(block),
+     tickStrength = strength-200
 
     ticks.currentBlockTick = strength*30/speed
-    ticks.currentShardTick = (strength-200)*30/speed
+    ticks.currentShardTick = tickStrength*30/speed
+
+    if(ticks.currentBlockTick < 4.5)
+    {
+        if(ticks.currentBlockTick > 0.5)
+            ticks.currentBlockTick = 4
+    }
+
+    if(ticks.currentShardTick < 4.5)
+    {
+        if(ticks.currentShardTick > 0.5)
+            ticks.currentShardTick = 4
+    }
 
     if(strength < 1) return ticks.err = true
     

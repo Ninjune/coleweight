@@ -1,4 +1,6 @@
 import axios from "../../axios"
+import { findGriefer } from "../chat/grieferTrack"
+import settings from "../settings"
 import constants from "../util/constants"
 const PREFIX = constants.PREFIX
 
@@ -12,11 +14,17 @@ export function findColeweight(arg)
         username = arg 
     axios.get(`https://ninjune.dev/api/coleweight?username=${username}`)
         .then(res => {
-            let coleweightMessage = new TextComponent(`${PREFIX}&b${res.data.rank}. ${res.data.name}&b's Coleweight: ${res.data.coleweight} (Top &l${res.data.percentile}&b%)`)
-                .setHoverValue(`&fExperience&f: &a${res.data.exp}\n&fPowder&f: &a${res.data.pow}\n&fCollection&f: &a${res.data.col}\n&fMiscellaneous&f: &a${res.data.bes + res.data.nuc}`)
+            let griefer = findGriefer(username), coleweightMessage
+            console.log(griefer.offenses)
+            if(griefer.found)
+                coleweightMessage = new TextComponent(`${PREFIX}&b${res.data.rank}. ${res.data.name}&b's Coleweight: ${res.data.coleweight} (Top &l${res.data.percentile}&b%) &c&lGriefed ${griefer.offences} time(s) &c(last grief: &a${griefer.dateObj.toString().slice(4, 15)}&c)`)
+            else
+                coleweightMessage = new TextComponent(`${PREFIX}&b${res.data.rank}. ${res.data.name}&b's Coleweight: ${res.data.coleweight} (Top &l${res.data.percentile}&b%)`)
+            coleweightMessage.setHoverValue(`&fExperience&f: &a${Math.round(res.data.experience.total*100) / 100}\n&fPowder&f: &a${Math.round(res.data.powder.total*100) / 100}\n&fCollection&f: &a${Math.round(res.data.collection.total*100) / 100}\n&fMiscellaneous&f: &a${Math.round(res.data.miscellaneous.total*100) / 100}`)
             ChatLib.chat(coleweightMessage)
-        })
+        }) 
         .catch(err => {
-            ChatLib.chat(`${PREFIX}&eError. (api may be down)`)
+            if(settings.debug) ChatLib.chat(`${PREFIX}&eError. (api may be down) ${err}`)
+            else ChatLib.chat(`${PREFIX}&eError. (api may be down)`)
         })
 }

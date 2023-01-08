@@ -1,25 +1,14 @@
 import {
     AdditiveConstraint,
-    animate,
-    Animations,
     CenterConstraint,
-    ChildBasedMaxSizeConstraint,
-    ChildBasedSizeConstraint,
     ConstantColorConstraint,
-    FillConstraint,
-    MaxConstraint,
-    ScissorEffect,
-    SiblingConstraint,
-    SubtractiveConstraint,
     UIBlock,
     UIImage,
     UIWrappedText,
-    UIMultilineTextInput,
     UIText,
     WindowScreen,
-  } from "../../Elementa"
+  } from "../../../Elementa"
 
-// stylla made 2 lines of code (gamer)
 const Color = Java.type("java.awt.Color"),
  URL = Java.type("java.net.URL"),
  WIDTH = 3.5, // not actually width more like reverse of width lmao, bigger = smaller
@@ -83,6 +72,7 @@ export function openCoordsGui()
             coordsWindow(1, 2, "Throne", "cw throne toggle", "https://i.imgur.com/7BWzO1c.jpg", true, "Go back of throne. (image isn't loading)").setChildOf(this.getWindow())
             coordsWindow(1, 3, "Yog", "cw yog toggle", "https://i.imgur.com/DojoypL.jpg", true, "Go to the leftmost corner of the topaz crystal facing bal close to bal. (image isn't loading)").setChildOf(this.getWindow())
             coordsWindow(2, 1, "Divans", "cw divans toggle", "https://i.imgur.com/bkC6yp3.jpg", true, "Go to the middle of jade crystal. (image isn't loading)").setChildOf(this.getWindow())
+            coordsWindow(2, 2, "Automatons", "cw automatons toggle", "https://media.discordapp.net/attachments/1049475464667856926/1052749218055475210/image.png", true, "Sit in pot somewhere (check image in command) (image isn't loading)").setChildOf(this.getWindow())
             new UIText("Click box to enable/disable.")
                 .setX(new CenterConstraint())
                 .setY((ScreenH-ScreenH/12).pixels())

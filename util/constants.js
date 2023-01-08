@@ -1,4 +1,6 @@
 import PogObject from "PogData"
+import axios from "../../axios"
+import settings from "../settings"
 
 let PogData = new PogObject("Coleweight", {
     "api_key": "",
@@ -39,20 +41,28 @@ let AbilityData = new PogObject("Coleweight", {
 }, "config/.ability_data.json")
 
 const PREFIX = "&2[CW] "
-export default
-{
+export default constants = {
     PREFIX: PREFIX,
     CALCULATEERRORMESSAGE: `${PREFIX}&cInvalid arguments. '/cw calculate help' for more information.`,
     INVALIDARGS: `${PREFIX}&cInvalid arguments. '/cw help' for more information.`,
     VERSION: (JSON.parse(FileLib.read("Coleweight", "metadata.json"))).version,
+    CWINFO: undefined,
     data: PogData,
     powderdata: PowderData,
     timerdata: TimerData,
     downtimedata: DowntimeData,
     collectiondata: CollectionData,
     abilitydata: AbilityData,
-    throneValues: [],
-    spiralValues: [],
     beta: false,
     serverData: {}
 }
+
+register("gameLoad", () => {
+    axios.get(`https://ninjune.dev/api/cwinfo?new=true`)
+    .then((res) => {
+        constants.CWINFO = res.data
+    })
+    .catch((e) => {
+        if(settings.debug) console.log(`[CW] Error loading CWINFO: ${e}`)
+    })
+})
