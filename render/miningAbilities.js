@@ -21,7 +21,7 @@ register("dragged", (dx, dy, x, y) => {
 
 
 register("renderOverlay", () => {
-    if(!(checkInDwarven() || checkInHollows()) || !settings.miningAbilities) return
+    if(!settings.miningAbilities || !(checkInDwarven() || checkInHollows())) return
     activeAbilities.forEach(ability => {
         if(ability.drawTitle == 1)
         {
@@ -33,7 +33,7 @@ register("renderOverlay", () => {
 })
 
 register("renderOverlay", () => {
-    if(!(checkInDwarven() || checkInHollows()) || !settings.miningAbilitiesGui) return
+    if(!settings.miningAbilities || !(checkInDwarven() || checkInHollows())) return
     let leftValues = [],
      rightValues = []
 
