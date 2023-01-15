@@ -172,8 +172,9 @@ export class trackerGui
         this.collectionMoveGui = new Gui()
     }
 
-    renderGui(x, y, notation = false, renderGui = true) // can only be called in renderOverlay
+    renderGui(x, y, toggle = true, notation = false, alwaysShow = false) // can only be called in renderOverlay
     {
+        if(!toggle) return
         let leftValues = [`${this.itemStringed}`, `${this.itemStringed}/hr`, `${this.itemStringed} gained`, "Uptime"]
         this.itemGui.x = x
         this.itemGui.y = y
@@ -189,8 +190,8 @@ export class trackerGui
             
             return this.itemGui.renderGui()
         }
-        if(!renderGui) return
-        if(this.itemValues[0] != undefined && /*this.trackingItem && */this.calcItemPerHour)
+        if(!toggle || !(alwaysShow || this.trackingItem || this.trackedItem == "")) return
+        if(this.itemValues[0] != undefined && this.calcItemPerHour)
         {
             this.itemValuesSum = 0
             for(let i = 0; i < this.itemValues.length; i++)
@@ -385,7 +386,8 @@ export function checkInDwarven()
     return false
 }
 
-const foragingLocations = ["Dark", "Birch", "Spruce", "Savanna", "Jungle", "Forest"]
+const foragingLocations = ["§aDark Thic🐍§aket", "§aBirch Par🐍§ak", "§aSpruce Wo🐍§aods", "§aSavanna W🐍§aoodland", "§aJungle Is🐍§aland", "§bForest"] 
+// pov: hypixel making a working game (i do the same thing)
 export function checkInPark() 
 {
     const scoreboard = Scoreboard.getLines()

@@ -5,7 +5,7 @@ import { addCommas, getSelectedProfile } from "../util/helperFunctions"
 import axios from "../../axios"
 import { findCost, findHotmObject } from "../commands/calculate/hotmCalc"
 const NBTTagString = Java.type("net.minecraft.nbt.NBTTagString")
-
+let powderTotals = {}
 
 register("itemTooltip", (lore, item) => { // this is so bad 💀
     if(!item.getLore()[0].startsWith("§o§aYour SkyBlock Profile") || !settings.gemstoneMiningStats) return
@@ -62,8 +62,17 @@ register("itemTooltip", (lore, item) => { // this is so bad 💀
 register("gameLoad", () => {
     axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${Player.getUUID()}`)
     .then(res => {
-        let professional = getSelectedProfile(res)?.members[Player.getUUID().replace(/-/g, "")]?.mining_core?.nodes?.professional,
-         fortunate = getSelectedProfile(res)?.members[Player.getUUID().replace(/-/g, "")]?.mining_core?.nodes?.fortunate
+        let
+         selected = getSelectedProfile(res)?.members[Player.getUUID().replace(/-/g, "")]
+         professional = selected?.mining_core?.nodes?.professional,
+         fortunate = selected?.mining_core?.nodes?.fortunate
+
+        powderTotals = { 
+            gemstone: (selected?.mining_core?.powder_gemstone_total ?? 0) 
+              + (selected?.mining_core?.powder_spent_gemstone ?? 0),
+            mithril: (selected?.mining_core?.powder_mithril_total ?? 0)
+              + (selected?.mining_core?.powder_spent_mithril ?? 0)
+        }
         
         if(professional != undefined)
             constants.data.professional = professional
@@ -106,16 +115,16 @@ register("itemTooltip", (lore, item) => { // powder put into each perk
         let perk = item.getLore()[0].replace(/§.|\(.+\)/g, "").replace(/ /g, "")
         let level = /Level (\d+)/g.exec(item.getLore()[1])[1]
         let hotmObjectToFind = findHotmObject(perk)
-        if(hotmObjectToFind == undefined) return
+        if(hotmObjectToFind == undefined || (hotmObjectToFind.costFormula == undefined && perk != "Fortunate")) return
 
         let powderSum
 
         if(perk == "Fortunate")
-            powderSum = findCost(undefined, 1, parseInt(level), true)
+            powderSum = findCost(undefined, 2, parseInt(level), true)
         else
-            powderSum = findCost(hotmObjectToFind.costFormula, 1, parseInt(level))
+            powderSum = findCost(hotmObjectToFind.costFormula, 2, parseInt(level))
        
         if(item.getLore()[1].includes("💀")) return
-        list.set(0, new NBTTagString(item.getLore()[1] + ` §7(§b${addCommas(Math.round(powderSum))}§7)💀`)) // this is a perfect solution no cap
+        list.set(0, new NBTTagString(item.getLore()[1] + ` §7(§b${addCommas(Math.round(powderSum))} §l${Math.round(powderSum/powderTotals[hotmObjectToFind.powderType]*100)}%§7)💀`)) // this is a perfect solution no cap
     }).start()
 })

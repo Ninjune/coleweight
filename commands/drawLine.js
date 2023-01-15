@@ -1,5 +1,5 @@
 import constants from "../util/constants"
-import { trace } from "../util/renderUtil"
+import { trace, drawEspBox } from "../util/renderUtil"
 const PREFIX = constants.PREFIX
 
 let x = 0,
@@ -39,4 +39,5 @@ register("renderWorld", () => {
     if(x == 0 && y == 0 && z == 0) return
 
     trace(x, y, z, 0, 0, 1, 0.86)
+    drawEspBox(x, y, z, 0, 0, 1, 0.86) // y no work
 })

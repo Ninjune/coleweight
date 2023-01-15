@@ -10,7 +10,6 @@ import { leaderboard } from "./commands/leaderboard"
 import { update } from "./commands/update"
 import { fetchDiscord } from "./commands/fetchDiscord"
 import { findColeweight } from "./commands/findColeweight"
-import { claim } from "./commands/claim"
 import { time } from "./commands/time"
 import { info } from "./commands/info"
 import { credits } from "./commands/credits"
@@ -24,7 +23,8 @@ import { throne } from "./commands/coords/throne"
 import { divans } from "./commands/coords/divans"
 import { yog } from "./commands/coords/yog"
 import { automatons } from "./commands/coords/automatons"
-import { drawLine } from "./commands/drawline.js"
+import { temple } from "./commands/coords/temple.js"
+import { drawLine } from "./commands/drawLine.js"
 
 
 register("command", (...args) => {
@@ -97,9 +97,6 @@ register("command", (...args) => {
         case "settings":
             Settings.openGUI()
             break
-        case "claim":
-            claim(args[1])
-            break
         case "powdertrackersync":
             updateDisplay()
             break
@@ -122,6 +119,9 @@ register("command", (...args) => {
         case "automaton":
         case "automatons":
             automatons(args[1])
+            break
+        case "temple":
+            temple(args[1])
             break
         case "coord":
         case "coords":
@@ -148,7 +148,7 @@ register("command", (...args) => {
      reloadOptions = ["coleweight", "collection"],
      calculateOptions = ["tick", "ms2toprofessional", "hotm", "calchotm"],
      commands = ["setkey", "help", "move", "toggle", "throne", "spiral", "reload", "leaderboard", 
-        "settings", "claim", "time", "info", "clearlobbies", "yog", "divan", "automatons", "coords", "credits", "track", "calculate", "drawline"]
+        "settings", "time", "info", "clearlobbies", "yog", "divan", "automatons", "temple", "coords", "credits", "track", "calculate", "drawline"]
     
     if(args[0].length == 0 || args[0] == undefined)
         return output = commands

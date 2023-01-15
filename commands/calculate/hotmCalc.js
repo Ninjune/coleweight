@@ -20,7 +20,7 @@ export function hotmCalc(hotmName, minLevel, maxLevel)
         if(maxLevel == undefined)
         {
             maxLevel = minLevel
-            minLevel = 1
+            minLevel = 2
         }
 
         if(minLevel != parseInt(minLevel) || maxLevel != parseInt(maxLevel)) return ChatLib.chat(constants.CALCULATEERRORMESSAGE)
@@ -74,5 +74,5 @@ export function findCost(costFormula, minLevel, maxLevel, fortunate = false)
 
 export function findReward(rewardFormula, minLevel, maxLevel)
 {
-    return eval(rewardFormula.replace("Level", 1+maxLevel-minLevel))
+    return eval(rewardFormula.replace("Level", 2+maxLevel-minLevel))
 }

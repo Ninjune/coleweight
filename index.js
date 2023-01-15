@@ -1,5 +1,6 @@
 import './render/naturals'
 import './render/tabList'
+import './render/efficientMinerOverlay'
 import './render/gemstoneMiningStats'
 import './render/dwarvenNotifier'
 import './render/treecapTimer'

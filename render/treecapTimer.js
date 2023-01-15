@@ -7,7 +7,7 @@ monkeyLevel = 0
 register("renderOverlay", () => {
     if(!settings.treecapTimer || !checkInPark()) return
     // ChatLib.chat(Player.getHeldItem().getItemNBT().getTag('tag').getTag('ExtraAttributes').getTag("id").toString())
-    let itemId = Player?.getHeldItem()?.getItemNBT()?.getTag('tag')?.getTag('ExtraAttributes')?.getTag("id")?.toString()
+    let itemId = Player.getHeldItem()?.getItemNBT()?.getTag('tag')?.getTag('ExtraAttributes')?.getTag("id")?.toString()
     if(!(itemId == `"TREECAPITATOR_AXE"` || itemId == `"ASPECT_OF_THE_VOID"` || Player?.getHeldItem()?.getRegistryName() == "minecraft:fishing_rod")) return
     let txt = Math.ceil(treecapCooldown*10)/10
     Renderer.drawStringWithShadow(txt, Renderer.screen.getWidth()/2 - Renderer.getStringWidth(txt)/2, Renderer.screen.getHeight()/2 - Renderer.screen.getHeight()/25)
