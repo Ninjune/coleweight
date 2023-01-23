@@ -1,7 +1,7 @@
 import axios from "../../axios"
 import settings from "../settings"
 import constants from "../util/constants"
-import { waypointRender } from "../util/helperFunctions"
+import { checkInHollows, waypointRender } from "../util/helperFunctions"
 let coords = [],
  visibleCoords = []
 
@@ -10,7 +10,7 @@ register("gameLoad", res => {
 })
 
 register("step", () => {
-    if(constants.serverData.map != "Crystal Hollows" || !settings.showNaturals || coords.length < 1) return
+    if(!settings.showNaturals || !checkInHollows()  || coords.length < 1) return
     visibleCoords = []
     coords.filter(coord => 
         (((-1 * settings.naturalRange)/2 < (parseInt(Player.getX()) - coord.x)) && ((parseInt(Player.getX()) - coord.x) < settings.naturalRange/2)

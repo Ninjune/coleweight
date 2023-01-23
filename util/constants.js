@@ -8,7 +8,8 @@ let PogData = new PogObject("Coleweight", {
     "jungle_amulet": true,
     "x": 0.5,
     "y": 141,
-    "first_time": true
+    "first_time": true,
+    "tracked": {}
 }, "config/.cw_data.json")
 
 let PowderData = new PogObject("Coleweight", {
@@ -53,8 +54,7 @@ export default constants = {
     downtimedata: DowntimeData,
     collectiondata: CollectionData,
     abilitydata: AbilityData,
-    beta: false,
-    serverData: {}
+    beta: false
 }
 
 register("gameLoad", () => {

@@ -1,7 +1,12 @@
 export function trace(x, y, z, red, green, blue, alpha)
 {
     GL11.glLineWidth(2.0)
+    GlStateManager.func_179129_p() // disableCullFace
+    GlStateManager.func_179147_l() // enableBlend
+    GlStateManager.func_179112_b(770, 771) // blendFunc
+    GlStateManager.func_179132_a(false) // depthMask
     GlStateManager.func_179090_x() // disableTexture2D
+    
 
     Tessellator.begin(1).colorize(red, green, blue, alpha)
     if(Player.isSneaking())
@@ -10,7 +15,9 @@ export function trace(x, y, z, red, green, blue, alpha)
         Tessellator.pos(Player.getRenderX(), Player.getRenderY()+1.6203, Player.getRenderZ()).tex(0, 0)
     Tessellator.pos(x, y, z).tex(0, 0)
     Tessellator.draw()
-
+    GlStateManager.func_179089_o() // enableCull
+    GlStateManager.func_179084_k() // disableBlend
+    GlStateManager.func_179132_a(true) // depthMask
     GlStateManager.func_179098_w() // enableTexture2D
 }
 

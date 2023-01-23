@@ -1,6 +1,8 @@
 import settings from "../../settings";
 import constants from "../../util/constants";
-
+/*
+- play notif when timer done.
+*/
 
 const timerGui = new Gui()
 
@@ -39,5 +41,6 @@ register('worldLoad', () => {
 })
 
 register("step", () => {
-    constants.timerdata.timer += 1
+    if(constants.timerdata.timer > 0)
+        constants.timerdata.timer -= 1
 }).setFps(1)

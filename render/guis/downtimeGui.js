@@ -41,7 +41,7 @@ register('actionbar', (xp) => {
             timeAtLastFuel = Date.now()
             return 
         }
-        downtime = Date.now() - timeAtLastFuel
+        downtime = (Date.now() - timeAtLastFuel)
         overallDowntime += downtime
         downtimeCount += 1
         timeAtLastFuel = Date.now()
@@ -50,6 +50,10 @@ register('actionbar', (xp) => {
     }
 }).setCriteria('${*}+${xp} Mining ${*}')
 
+/* // make downtimetracker take only tracked block later
+register("hitBlock", block => {
+    
+})*/ 
 
 register("renderOverlay", () => {
     if (downtimeMoveGui.isOpen()) 
@@ -74,12 +78,24 @@ register("renderOverlay", () => {
 register("step", () => {
     if((Date.now()-timeAtLastFuel)/1000 >= 60)
     {
-        uptime = 0
-        oldFuel = 0
-        overallDowntime = 0
-        timeAtLastFuel = 0
-        trackingDowntime = false
+        resetVars()
     } // over 60 seconds then stop making gui
     else if(trackingDowntime)
         uptime += 1
 }).setFps(1)
+
+
+export function reloadDowntime()
+{
+    resetVars()
+}
+
+
+function resetVars()
+{
+    uptime = 0
+    oldFuel = 0
+    overallDowntime = 0
+    timeAtLastBreak = 0
+    trackingDowntime = false
+}

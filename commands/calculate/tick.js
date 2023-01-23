@@ -19,7 +19,12 @@ export function tickCommand(speed, block)
     `\n&bYou need &6&l${Math.round(ticks.nextShardSpeed - speed)} mining speed&b to get the next shard tick.\n`)
 }
 
-
+/**
+ * finds tick, returns and object with currentBlockTick & currentShardTick
+ * @param {number} speed 
+ * @param {string} block 
+ * @returns {object}
+ */
 export function findTick(speed, block)
 {
     let ticks = {err: false},
@@ -53,6 +58,9 @@ export function findTick(speed, block)
         ticks.nextShardSpeed = strength*30/(Math.floor(ticks.currentShardTick)-0.5)
     else
         ticks.nextShardSpeed = strength*30/(Math.floor(ticks.currentShardTick)+0.5)
+
+    ticks.currentBlockTick = Math.round(ticks.currentBlockTick)
+    ticks.currentShardTick = Math.round(ticks.currentShardTick)
 
     return ticks
 }

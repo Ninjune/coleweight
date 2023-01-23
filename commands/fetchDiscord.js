@@ -2,11 +2,17 @@ import axios from "../../axios"
 import constants from "../util/constants"
 const PREFIX = constants.PREFIX
 
-export function fetchDiscord(arg)
-{
-    if(arg == undefined) { ChatLib.chat(`${PREFIX}&eRequires a username!`); return }
+module.exports =
+{ 
+    aliases: ["fetchdiscord"],
+    description: "Finds the discord of a Hypixel player. (if linked to Hypixel)",
+    options: "(IGN)",
+    category: "miscellaneous",
+    cw: false,
+    execute: (args) => {
+        if(args[0] == undefined) { ChatLib.chat(`${PREFIX}&eRequires a username!`); return }
 
-    axios.get(`https://api.mojang.com/users/profiles/minecraft/${arg}`)
+        axios.get(`https://api.mojang.com/users/profiles/minecraft/${args[0]}`)
         .then(mojangRes => {
             let uuid = mojangRes.data.id
             axios.get(`https://api.hypixel.net/player?key=${constants.data.api_key}&uuid=${uuid}`)
@@ -22,5 +28,5 @@ export function fetchDiscord(arg)
         .catch(err => {
             ChatLib.chat(`${PREFIX}&eInvalid name! `)
         })
+    }
 }
-

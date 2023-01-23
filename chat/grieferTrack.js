@@ -41,7 +41,7 @@ function checkMMiners()
 
                 if(griefer.found)
                 {
-                    ChatLib.chat(`${PREFIX}&e'${player}' has griefed &e&l${griefer.offences} &etime(s). Their last grief was on ${griefer.dateObj.toString().slice(4, 15)}.`)
+                    ChatLib.chat(`${PREFIX}&e'${player}' has griefed before. Their last grief was on ${griefer.dateObj.toString().slice(4, 15)}.`)
                     checkedPlayers.push(player)
                 }
             }

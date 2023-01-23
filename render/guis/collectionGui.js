@@ -1,21 +1,16 @@
 import constants from "../../util/constants"
 import settings from "../../settings"
-import { trackerGui } from "../../util/helperFunctions"
+import { trackCollection, trackerGui } from "../../util/helperFunctions"
 const PREFIX = constants.PREFIX
 const collectionGui = new trackerGui("", "Collection Not set! /cw track", settings.collectionNotation)
 
 
-export function trackCollection(arg)
+export function cguiTrackCollection(collection)
 {
     collectionGui.resetVars()
-    let collections = JSON.parse(FileLib.read("Coleweight", "data/collections.json"))
-    if(arg == "obby") arg = "obsidian"
-    if(arg == "cobble") arg = "cobblestone"
-    if(collections[arg.toLowerCase()] == undefined) return ChatLib.chat(`${PREFIX}&eThat is not a valid collection! (or is not supported)`)
-    collectionGui.trackedItem = collections[arg].collectionToTrack
-    collectionGui.itemStringed = collections[arg].collectionStringed
-
-    ChatLib.chat(`${PREFIX}&bSet collection to ${collectionGui.itemStringed}!`)
+    trackCollection(collection)
+    collectionGui.trackedItem = constants.data.tracked.item
+    collectionGui.itemStringed = constants.data.tracked.itemStringed
 }
 
 export function openCollectionGui()

@@ -4,14 +4,14 @@ Created 11/11/2022 by Ninjune.
 import axios from "../../axios"
 import settings from "../settings"
 import constants from "../util/constants"
-import { addCommas } from "../util/helperFunctions"
+import { addCommas, checkInDwarven, checkInHollows } from "../util/helperFunctions"
 const PREFIX = constants.PREFIX
 let cwlbData = [],
  newMessage, message, messagePrefix, cwlbPlayerData, onward
 
 register("chat", (level, typeOfChat, hypixelRank, username, playerMessage, event) => { // CW Rank
     if(!settings.rankChat) return
-    if(!settings.rankEverywhere && !(constants.serverData.map == "Crystal Hollows" || constants.serverData.map == "Dwarven Mines")) return
+    if(!settings.rankEverywhere && !(checkInHollows() || checkInDwarven())) return
     if(!settings.rankEverywhere && typeOfChat != "") return
     onward = true
 

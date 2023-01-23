@@ -158,7 +158,7 @@ class Settings {
 
     @SwitchProperty({ // Gui
         name: "Timer",
-        description: "Toggles visibility of CHollows timer",
+        description: "Toggles visibility of timer (/cw timer)",
         subcategory: "Timer",
         category: "Gui"
     })
@@ -190,6 +190,14 @@ class Settings {
         category: "Gui"
     })
     miningAbilitiesGui = false;
+
+    @SwitchProperty({
+        name: "Mining abilities selected indicator",
+        description: "Tells which ability is selected on the ability gui.",
+        subcategory: "Mining Abilities",
+        category: "Gui"
+    })
+    miningAbilitiesSelectedIndicator = true;
 
     @SelectorProperty({
         name: "Mining abilities alignment",
@@ -302,84 +310,6 @@ class Settings {
 
     constructor() {
         this.initialize(this);
-        this.registerListener("Rank chat", value => {
-            this.rankChat = value;
-        })
-        this.registerListener("Rank everywhere", value => {
-            this.rankEverywhere = value;
-        })
-        this.registerListener("Track griefers", value => {
-            this.trackGriefers = value;
-        })
-        this.registerListener("Griefer messages everywhere", value => {
-            this.grieferEverywhere = value;
-        })
-        this.registerListener("Dwarven notifier", value => {
-            this.dwarvenNotifier = value;
-        })
-        this.registerListener("Debug", value => {
-            this.debug = value;
-        })
-        this.registerListener("Marked lobbies", value => {
-            this.lobbyMarking = value;
-        })
-        this.registerListener("Timer", value => {
-            this.timerVisible = value;
-        })
-        this.registerListener("Mining abilities", value => {
-            this.miningAbilities = value;
-        })
-        this.registerListener("Mining abilities gui", value => {
-            this.miningAbilitiesGui = value;
-        })
-        this.registerListener("Mining abilities alignment", value => {
-            this.miningAbilitiesAlignment = value;
-        })
-        this.registerListener("Downtime tracker", value => {
-            this.downtimeTracker = value;
-        })
-        this.registerListener("Efficient Miner Overlay", value => {
-            this.efficientMinerOverlay = value;
-        })
-        this.registerListener("Collection tracker", value => {
-            this.collectionTracker = value;
-        })
-        this.registerListener("Collection notation", value => {
-            this.collectionNotation = value;
-        })
-        this.registerListener("Collection show always", value => {
-            this.showCollectionTrackerAlways = value;
-        })
-        this.registerListener("Show powdertracker", value => {
-            this.trackerVisible = value;
-        })
-        this.registerListener("Show totals", value => {
-            this.showTotals = value;
-        })
-        this.registerListener("Show rates", value => {
-            this.showRates = value;
-        })
-        this.registerListener("Alignment", value => {
-            this.trackerAlignment = value;
-        })
-        this.registerListener("Show naturals", value => {
-            this.showNaturals = value;
-        })
-        this.registerListener("Natural range", value => {
-            this.naturalRange = value;
-        })
-        this.registerListener("Gemstone mining stats", value => {
-            this.gemstoneMiningStats = value;
-        })
-        this.registerListener("Show powder sum", value => {
-            this.showPowderSum = value;
-        })
-        this.registerListener("Tick speed block", value => {
-            this.tickSpeedBlock = value;
-        })
-        this.registerListener("Tick speed block", value => {
-            this.tickSpeedBlock = value;
-        })
     }
 }
 

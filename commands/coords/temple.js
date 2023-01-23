@@ -4,11 +4,6 @@ import { waypointRender } from "../../util/helperFunctions"
 const PREFIX = constants.PREFIX
 let waypoints = []
 
-export function automatons(arg) 
-{
-    
-}
-
 register("renderWorld", () => {
     waypointRender(waypoints)
 })
@@ -20,18 +15,16 @@ register("worldLoad", () => {
 
 module.exports =
 { 
-    aliases: ["automatons", "automaton"],
-    description: "Automaton waypoints for precursor city.",
+    aliases: ["temple"],
+    description: "Waypoints for jungle temple armadillo clip.",
     options: "[toggle]",
     category: "waypoints",
     execute: (args) => {
-        const WAYPOINTNAME = "Automatons"
+        const WAYPOINTNAME = "Temple"
     
         if(args[1] != "toggle")
         {
-            new TextComponent(`${PREFIX}&bStand in the pot in &3this&b picture and do /cw ${WAYPOINTNAME} toggle`)
-            .setClickAction("open_url")
-            .setClickValue("https://media.discordapp.net/attachments/1049475464667856926/1052749218055475210/image.png")
+            new TextComponent(`${PREFIX}&bStand on the leftmost key guardian and do /cw ${WAYPOINTNAME} toggle`)
             .chat()
         }
         else
@@ -43,11 +36,7 @@ module.exports =
                 y = startPos[1], 
                 z = startPos[2]
                 
-                let coordsRows = FileLib.read("Coleweight", "data/automatons.txt").split("\n")
-                coordsRows.forEach(unsplitRow => {
-                    let row = unsplitRow.split(" ")
-                    waypoints.push([x + parseInt(row[0]), y + parseInt(row[1]), z + parseInt(row[2])])
-                })
+                waypoints.push([x + 61, y + -44, z + 18])
 
                 ChatLib.chat(`${PREFIX}&b${WAYPOINTNAME} waypoints turned on!`)
             }

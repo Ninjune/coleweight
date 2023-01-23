@@ -1,6 +1,9 @@
-import axios from "../../axios";
-import settings from "../settings";
-import constants from "./constants";
+import axios from "../../axios"
+import settings from "../settings"
+import constants from "./constants"
+import { Promise } from '../../PromiseV2'
+const PREFIX = constants.PREFIX
+
 
 export function addCommas(num) {
     try {
@@ -154,6 +157,7 @@ export class textGui
     }
 }
 
+
 export class trackerGui
 {
     constructor(trackedItem = "", itemStringed = "")
@@ -218,12 +222,10 @@ export class trackerGui
         for(let i = 0; i < tempUuid.length; i++)
         {
             if(tempUuid[i] != "-")
-            {
                 uuid += tempUuid[i]
-            }
         }
 
-        try
+        try 
         {
             axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${uuid}`)
             .then(res => {
@@ -238,13 +240,19 @@ export class trackerGui
                 {
                     this.currentItem = source
                 }
+                else if (this.trackingItem && (source - this.currentItem) > 0) // don't track first item because it won't have time tracked.
+                {
+                    this.itemValues.push(source - this.currentItem) // for averaging
+                    this.calcItemPerHour = true // for deciding when to average the values (don't need to every renderGui)
+                    this.trackingItem = true // for rendering gui & timer
+                    this.apiCallsSinceLastChange = 0 // for disabling gui at 20
+                    this.currentItem = source // current item value
+                }
                 else if ((source - this.currentItem) > 0)
                 {
-                    this.itemValues.push(source - this.currentItem)
-                    this.calcItemPerHour = true
                     this.trackingItem = true
                     this.apiCallsSinceLastChange = 0
-                    this.currentItem = source
+                    this.currentItem = source 
                 }
                 else if (this.apiCallsSinceLastChange > 20)
                 {
@@ -308,6 +316,7 @@ export function parseNotatedInput(input)
         return "NI" // not integer
 }
 
+
 export function getSelectedProfile(res)
 {
     for(let i=0; i < res.data.profiles.length; i+=1) 
@@ -316,6 +325,7 @@ export function getSelectedProfile(res)
             return res.data.profiles[i]
     }
 }
+
 
 export function capitalizeFirst(sentence)
 {
@@ -326,6 +336,7 @@ export function capitalizeFirst(sentence)
 
     return capitalized.join(" ")
 }
+
 
 export function drawTitle(text, drawTimestamp, scale = 5, time = 3000, sound = "random.orb",)
 {
@@ -354,50 +365,178 @@ export function drawTitle(text, drawTimestamp, scale = 5, time = 3000, sound = "
     return object
 }
 
-const hollowsLocations = ["Goblin", "Jungle", "Mithril", "Precursor", "Magma", "Crystal", "Khazad", "Divan", "City"]
+
+class locationChecker
+{
+    constructor(locations)
+    {
+        this.locations = locations
+        this.checkTime = Date.now()
+        this.state = false
+        this.scoreboard = 0
+    }
+
+    check()
+    {
+        if(Date.now() - this.checkTime > 1000) // 1 sec
+        {
+            this.checkTime = Date.now()
+            this.scoreboard = Scoreboard.getLines()
+
+            for(let lineIndex = 0; lineIndex < this.scoreboard.length; lineIndex++)
+            {
+                for(let locationsIndex = 0; locationsIndex < this.locations.length; locationsIndex++)
+                {
+                    if(this.scoreboard[lineIndex].toString().includes(this.locations[locationsIndex])) 
+                        return this.state = true
+                }
+            }
+            return this.state = false
+        }
+    }
+}
+
+const hollowsChecker = new locationChecker(["Goblin", "Jungle", "Mithril", "Precursor", "Magma", "Crystal", "Khazad", "Divan", "City"])
 export function checkInHollows() 
 {
-    const scoreboard = Scoreboard.getLines()
-
-    for(let lineIndex = 0; lineIndex < scoreboard.length; lineIndex++) 
-    {
-        for(let locationsIndex = 0; locationsIndex < hollowsLocations.length; locationsIndex++) 
-        {
-            if(scoreboard[lineIndex].toString().includes(hollowsLocations[locationsIndex])) 
-                return true
-        }
-    }
-    return false
+    hollowsChecker.check()
+    return hollowsChecker.state
 }
 
-const dwarvenLocations = ["Dwarven", "Royal", "Palace", "Library", "Mist", "Cliffside", "Quarry", "Gateway", "Wall", "Forge", "Far", "Burrows", "Springs", "Upper"]
+const dwarvenChecker = new locationChecker(["Dwarven", "Royal", "Palace", "Library", "Mist", "Cliffside", "Quarry", "Gateway", "Wall", "Forge", "Far", "Burrows", "Springs", "Upper"])
 export function checkInDwarven() 
 {
-    const scoreboard = Scoreboard.getLines()
-
-    for(let lineIndex = 0; lineIndex < scoreboard.length; lineIndex++) 
-    {
-        for(let locationsIndex = 0; locationsIndex < dwarvenLocations.length; locationsIndex++) 
-        {
-            if(scoreboard[lineIndex].toString().includes(dwarvenLocations[locationsIndex])) 
-                return true
-        }
-    }
-    return false
+    dwarvenChecker.check()
+    return dwarvenChecker.state
 }
 
-const foragingLocations = ["Dark", "Birch", "Spruce", "Savanna", "Jungle", "Forest"]
-export function checkInPark() 
+const foragingChecker = new locationChecker(["§aDark Thic🐍§aket", "§aBirch Par🐍§ak", "§aSpruce Wo🐍§aods", "§aSavanna W🐍§aoodland", "§aJungle Is🐍§aland", "§bForest"])
+// pov: hypixel making a working game (i do the same thing)
+export function checkInPark()
 {
-    const scoreboard = Scoreboard.getLines()
+    foragingChecker.check()
+    return foragingChecker.state
+}
 
-    for(let lineIndex = 0; lineIndex < scoreboard.length; lineIndex++) 
-    {
-        for(let locationsIndex = 0; locationsIndex < foragingLocations.length; locationsIndex++) 
-        {
-            if(scoreboard[lineIndex].toString().includes(foragingLocations[locationsIndex])) 
-                return true
-        }
-    }
-    return false
+
+const endChecker = new locationChecker(["End", "Dragon's"])
+export function checkInEnd() 
+{
+    endChecker.check()
+    return endChecker.state
+}
+
+import { findGriefer } from "../chat/grieferTrack"
+import { findTick } from "../commands/calculate/tick";
+
+export function findColeweight(name)
+{
+    ChatLib.chat(`${PREFIX}Finding Coleweight!`)
+    let username = ""
+    if(name == undefined) 
+        username = Player.getUUID()
+    else 
+        username = name
+    axios.get(`https://ninjune.dev/api/coleweight?username=${username}`)
+    .then(res => {
+        let griefer = findGriefer(username), coleweightMessage
+        if(griefer.found)
+            coleweightMessage = new TextComponent(`${PREFIX}&b${res.data.rank}. ${res.data.name}&b's Coleweight: ${res.data.coleweight} (Top &l${res.data.percentile}&b%) &c&lHas griefed before. &cLast grief: &a${griefer.dateObj.toString().slice(4, 15)}`)
+        else
+            coleweightMessage = new TextComponent(`${PREFIX}&b${res.data.rank}. ${res.data.name}&b's Coleweight: ${res.data.coleweight} (Top &l${res.data.percentile}&b%)`)
+        coleweightMessage.setHoverValue(`&fExperience&f: &a${Math.round(res.data.experience.total*100) / 100}\n&fPowder&f: &a${Math.round(res.data.powder.total*100) / 100}\n&fCollection&f: &a${Math.round(res.data.collection.total*100) / 100}\n&fMiscellaneous&f: &a${Math.round(res.data.miscellaneous.total*100) / 100}`)
+        ChatLib.chat(coleweightMessage)
+    }) 
+    .catch(err => {
+        if(settings.debug) ChatLib.chat(`${PREFIX}&eError. (api may be down) ${err}`)
+        else ChatLib.chat(`${PREFIX}&eError. (api may be down)`)
+    })
+}
+
+/**
+Chats a chat message with specified parameters.
+@param {string} command - Command
+@param {string} desc - Description
+@param {string} usage - Usage
+*/
+export function helpCommand(command, desc, usage)
+{  
+    ChatLib.chat(new TextComponent(`&a◆ /cw ${command} => &b${desc}`).setHoverValue(`${"/cw " + command + " " + usage}`))
+}
+
+
+function findBlockEfficiency()
+{
+
+}
+
+// https://cdn.discordapp.com/attachments/1052785334661947472/1053390221162590278/image.png thanks skyhelper dev
+/**
+ * 
+ * @param {string} block 
+ * @param {number} pristine 
+ * @param {number} fortune 
+ * @param {number} speed 
+ * @param {boolean} blueCheese 
+ * @param {number} blockPercentage must be decimal
+ */
+export function findGemstonesPerHr(block, pristine, fortune, speed, blueCheese, blockPercentage)
+{
+    const bal = block == "ruby" ? true : false
+    const percentage = blockPercentage
+    
+    const msbTime = blueCheese ? 25 : 20
+    const msb = (blueCheese ? 4 : 3) * (bal ? 1.15 : 1)
+
+    const shardDrops = (2+4) / 2
+    const blockDrops = (3+6) / 2
+    const avgDrops = blockDrops * percentage + shardDrops * (1-percentage)
+
+    const miningTicksObj = findTick(speed, block)
+    const miningTicksBlocks = Math.max(4, miningTicksObj.currentBlockTick)
+    const miningTicksShards = Math.max(4, miningTicksObj.currentShardTick)
+    const miningTicks = miningTicksBlocks * percentage + miningTicksShards * (1-percentage)
+
+    const msbSpeed = speed + speed * msb
+    const msbTicksObj = findTick(msbSpeed, block)
+    const msbTicksBlocks = Math.max(4, msbTicksObj.currentBlockTick)
+    const msbTicksShards = Math.max(4, msbTicksObj.currentShardTick)
+    const msbTicks = msbTicksBlocks * percentage + msbTicksShards * (1-percentage)
+
+    const blocksPerHour = (72000 / (1 + miningTicks)) * ((120 - msbTime) / 120) + (72000 / (1 + msbTicks)) * (msbTime / 120)
+    
+    const gemstonesPerHour = avgDrops * (1 + pristine * 0.79) * (1 + fortune / 100) * blocksPerHour
+    return { ticks: {blocks: miningTicksBlocks, shards: miningTicksShards, msbBlocks: msbTicksBlocks, msbShards: msbTicksShards}, gemstonesPerHour }
+}
+
+
+export function instaSellBZPrice(product)
+{
+    return new Promise((resolve, reject) => {
+        axios.get("https://api.hypixel.net/skyblock/bazaar")
+        .then(res => {
+            if(res.data.products[product] != undefined)
+                resolve(res.data.products[product].sell_summary[0].pricePerUnit)
+            else
+                resolve(0)
+        })
+        .catch(err => {
+            if(settings.debug) console.log("BZ Price: " + err)
+            reject(err)
+        })
+    })
+}
+
+
+export function trackCollection(collection)
+{
+    let collections = JSON.parse(FileLib.read("Coleweight", "data/collections.json"))
+    if(collection == "obby") collection = "obsidian"
+    if(collection == "cobble") collection = "cobblestone"
+    if(collections[collection.toLowerCase()] == undefined) return ChatLib.chat(`${PREFIX}&eThat is not a valid collection! (or is not supported)`)
+    constants.data.tracked.item = collections[collection].collectionToTrack
+    constants.data.tracked.itemStringed = collections[collection].collectionStringed
+    constants.data.save()
+
+    ChatLib.chat(`${PREFIX}&bSet collection to ${constants.data.tracked.itemStringed}!`)
 }

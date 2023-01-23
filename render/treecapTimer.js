@@ -25,12 +25,14 @@ register("step", () => {
     }
 }).setFps(10)
 
+
 register("blockBreak", (block) => {
     if(!settings.treecapTimer || !checkInPark()) return
     let blockRegistryName = block.type.getRegistryName()
     if (treecapCooldown > 0.5 || !(blockRegistryName == "minecraft:log" || blockRegistryName == "minecraft:log2")) return
     treecapCooldown = 2.0
 })
+
 
 register("chat", (lvl, pet, event) => {
     if(!settings.treecapTimer || !checkInPark()) return

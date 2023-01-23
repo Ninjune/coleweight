@@ -32,12 +32,12 @@ export function hotmCalc(hotmName, minLevel, maxLevel)
 
         maxLevel = (maxLevel < hotmObjectToFind.maxLevel ? maxLevel : hotmObjectToFind.maxLevel)
         let powderSum,
-        reward = findReward(hotmObjectToFind.rewardFormula, minLevel, maxLevel)
+        reward = findReward(hotmName, minLevel, maxLevel)
 
         if(hotmObjectToFind.names[0] == "fortunate") 
             powderSum = findCost(undefined, minLevel, maxLevel, true)
         else
-            powderSum = findCost(hotmObjectToFind.costFormula, minLevel, maxLevel)
+            powderSum = findCost(hotmName, minLevel, maxLevel)
 
         
         ChatLib.chat("")
@@ -58,21 +58,34 @@ export function findHotmObject(hotmName)
     }
 }
 
-export function findCost(costFormula, minLevel, maxLevel, fortunate = false)
+export function findCost(hotmName, minLevel, maxLevel, fortunate = false)
 {
-    let powderSum = 0
-
-    if(fortunate)
-        powderSum = Math.pow(maxLevel+1, 3.05)
+    let tickData = JSON.parse(FileLib.read("Coleweight", "data/tickData.json"))
+    let costFormula
+    if(tickData[`${hotmName} ${minLevel}-${maxLevel}`] != undefined)
+        return tickData[`${hotmName} ${minLevel}-${maxLevel}`]
     else
     {
-        for(let currentLevel = minLevel; currentLevel <= maxLevel; currentLevel++) // finds cost
-            powderSum += eval(costFormula.replace("currentLevel", currentLevel))
+        if(!fortunate)
+            costFormula = findHotmObject(hotmName).costFormula
+
+        let powderSum = 0
+
+        if(fortunate)
+            powderSum = Math.pow(maxLevel+1, 3.05)
+        else
+        {
+            for(let currentLevel = minLevel; currentLevel <= maxLevel; currentLevel++) // finds cost
+                powderSum += eval(costFormula.replace("currentLevel", currentLevel))
+        }
+        tickData[`${hotmName} ${minLevel}-${maxLevel}`] = powderSum
+        FileLib.write("Coleweight", "data/tickData.json", JSON.stringify(tickData))
+        return powderSum
     }
-    return powderSum
 }
 
-export function findReward(rewardFormula, minLevel, maxLevel)
+export function findReward(hotmName, minLevel, maxLevel)
 {
+    let rewardFormula = findHotmObject(hotmName).rewardFormula
     return eval(rewardFormula.replace("Level", 2+maxLevel-minLevel))
 }

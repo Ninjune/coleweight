@@ -8,7 +8,7 @@ const NBTTagString = Java.type("net.minecraft.nbt.NBTTagString")
 let powderTotals = {}
 
 register("itemTooltip", (lore, item) => { // this is so bad 💀
-    if(!item.getLore()[0].startsWith("§o§aYour SkyBlock Profile") || !settings.gemstoneMiningStats) return
+    if(!settings.gemstoneMiningStats || !item.getLore()[0].startsWith("§o§aYour SkyBlock Profile")) return
     const list = new NBTTagList(item.getNBT().getCompoundTag("tag").getCompoundTag("display").getTagMap().get("Lore")),
      tempList = []
 
@@ -122,7 +122,7 @@ register("itemTooltip", (lore, item) => { // powder put into each perk
         if(perk == "Fortunate")
             powderSum = findCost(undefined, 2, parseInt(level), true)
         else
-            powderSum = findCost(hotmObjectToFind.costFormula, 1, parseInt(level))
+            powderSum = findCost(perk, 2, parseInt(level))
        
         if(item.getLore()[1].includes("💀")) return
         list.set(0, new NBTTagString(item.getLore()[1] + ` §7(§b${addCommas(Math.round(powderSum))} §l${Math.round(powderSum/powderTotals[hotmObjectToFind.powderType]*100)}%§7)💀`)) // this is a perfect solution no cap
