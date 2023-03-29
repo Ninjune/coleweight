@@ -1,14 +1,13 @@
 import settings from "../settings"
 import constants from "../util/constants"
-import { findTick } from "../commands/calculate/tick"
-import { addCommas, getSelectedProfile } from "../util/helperFunctions"
+import { addCommas, findTick, getSelectedProfile } from "../util/helperFunctions"
 import axios from "../../axios"
 import { findCost, findHotmObject } from "../commands/calculate/hotmCalc"
 const NBTTagString = Java.type("net.minecraft.nbt.NBTTagString")
 let powderTotals = {}
 
 register("itemTooltip", (lore, item) => { // this is so bad 💀
-    if(!settings.gemstoneMiningStats || !item.getLore()[0].startsWith("§o§aYour SkyBlock Profile")) return
+    if(!settings.gemstoneMiningStats || item.getLore() == undefined || item.getLore()[0] == undefined || !item.getLore()[0].startsWith("§o§aYour SkyBlock Profile")) return
     const list = new NBTTagList(item.getNBT().getCompoundTag("tag").getCompoundTag("display").getTagMap().get("Lore")),
      tempList = []
 
@@ -16,7 +15,7 @@ register("itemTooltip", (lore, item) => { // this is so bad 💀
     {
         tempList.push(list.getStringTagAt(elementIndex))
     }
-    
+
     for(let elementIndex = 0; elementIndex < list.getTagCount(); elementIndex++)
     {
         let element = list.getStringTagAt(elementIndex)
@@ -24,18 +23,19 @@ register("itemTooltip", (lore, item) => { // this is so bad 💀
         {
             if(element !== ` §6☘ Mining Fortune §f${element.replace(" §6☘ Mining Fortune §f", "").replace("§", "")}` || (constants.data.jungle_amulet == false && constants.data.fortunate == 0))
                 continue
+            constants.checkedGemstoneStats = false
             let miningFortune = element.replace(" §6☘ Mining Fortune §f", "").replace("§", ""),
             replacedFortune
-    
+
             if(constants.data.jungle_amulet && constants.data.fortunate > 0)
                 replacedFortune = parseInt(miningFortune.toString().replace(",", "")) + 10 + 5*constants.data.fortunate
             else if(constants.data.jungle_amulet)
                 replacedFortune = parseInt(miningFortune.toString().replace(",", "")) + 10
             else
                 replacedFortune = parseInt(miningFortune.toString().replace(",", "")) + 5*constants.data.fortunate
-            
+
             let miningFortuneText = `${element} §6(§b${addCommas(replacedFortune)}§6)`
-    
+
             list.set(elementIndex, new NBTTagString(miningFortuneText))
             continue
         }
@@ -43,18 +43,19 @@ register("itemTooltip", (lore, item) => { // this is so bad 💀
          professionalSpeed = miningSpeed + Math.floor(50+(constants.data.professional*5)),
          miningSpeedText = `${element} §6(§b${addCommas(professionalSpeed)}§6)`,
          tick
-        
+
         if(professionalSpeed > 50 && settings.tickSpeedBlock > 1) // may need to change if add tick blocks (good programming real)
             tick = findTick(professionalSpeed, settings.tickSpeedBlock).currentBlockTick
         else
             tick = findTick(miningSpeed, settings.tickSpeedBlock).currentBlockTick
-        
+
         list.set(elementIndex, new NBTTagString(miningSpeedText))
         list.set(elementIndex + 1, new NBTTagString(` §6⸕ Block Tick §f${Math.round(tick)}`)) // 1 new added
         for(let i = elementIndex + 2; i < list.getTagCount(); i++)
         {
             list.set(i, new NBTTagString(tempList[i - 1]))
         }
+        constants.checkedGemstoneStats = true
     }
 })
 
@@ -67,13 +68,13 @@ register("gameLoad", () => {
          professional = selected?.mining_core?.nodes?.professional,
          fortunate = selected?.mining_core?.nodes?.fortunate
 
-        powderTotals = { 
-            gemstone: (selected?.mining_core?.powder_gemstone_total ?? 0) 
+        powderTotals = {
+            gemstone: (selected?.mining_core?.powder_gemstone_total ?? 0)
               + (selected?.mining_core?.powder_spent_gemstone ?? 0),
             mithril: (selected?.mining_core?.powder_mithril_total ?? 0)
               + (selected?.mining_core?.powder_spent_mithril ?? 0)
         }
-        
+
         if(professional != undefined)
             constants.data.professional = professional
         if(fortunate != undefined)
@@ -82,13 +83,13 @@ register("gameLoad", () => {
     })
 })
 
-register('step', () => {
+register("step", () => {
     let inventoryName = Player?.getOpenedInventory()?.getName()?.toString()
     if(inventoryName == undefined) return
     if(inventoryName.includes("Accessory Bag ")) {
         for (i = 0; i < Player.getOpenedInventory().getSize(); i++) {
             let extraAttributes = Player.getOpenedInventory().getStackInSlot(i)?.getNBT()?.getCompoundTag("tag")?.getCompoundTag("ExtraAttributes")
-            if (extraAttributes?.getString('id') === "JUNGLE_AMULET") 
+            if (extraAttributes?.getString("id") === "JUNGLE_AMULET")
             {
                 constants.data.jungle_amulet = true
                 constants.data.save()
@@ -110,7 +111,7 @@ register("itemTooltip", (lore, item) => {
 register("itemTooltip", (lore, item) => { // powder put into each perk
     if(!settings.showPowderSum || !item.getLore()[1]?.startsWith("§5§o§7Level ") || item?.getLore()[1]?.includes("💀")) return
     new Thread(() => {
-        if(item.getLore()[1].includes("💀")) return
+        if(item.getLore()[1].includes("💀") || item.getLore()[1] == undefined) return
         const list = new NBTTagList(item.getNBT().getCompoundTag("tag").getCompoundTag("display").getTagMap().get("Lore"))
         let perk = item.getLore()[0].replace(/§.|\(.+\)/g, "").replace(/ /g, "")
         let level = /Level (\d+)/g.exec(item.getLore()[1])[1]
@@ -123,7 +124,7 @@ register("itemTooltip", (lore, item) => { // powder put into each perk
             powderSum = findCost(undefined, 2, parseInt(level), true)
         else
             powderSum = findCost(perk, 2, parseInt(level))
-       
+
         if(item.getLore()[1].includes("💀")) return
         list.set(0, new NBTTagString(item.getLore()[1] + ` §7(§b${addCommas(Math.round(powderSum))} §l${Math.round(powderSum/powderTotals[hotmObjectToFind.powderType]*100)}%§7)💀`)) // this is a perfect solution no cap
     }).start()

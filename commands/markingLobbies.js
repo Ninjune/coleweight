@@ -1,10 +1,10 @@
+import { registerCommand } from "../commandManager"
 import settings from "../settings"
 import constants from "../util/constants"
 const PREFIX = constants.PREFIX
 let lobbies = []
 
-
-register('chat', (server) => {
+register("chat", (server) => {
     if(!settings.lobbyMarking) return
     if(lobbies.indexOf(server) > 0)
         ChatLib.chat(`${PREFIX}&aYou've been in this lobby!`)
@@ -13,8 +13,7 @@ register('chat', (server) => {
 }).setCriteria(/Sending to server ([A-Za-z0-9]+)\.\.\./g)
 
 
-module.exports =
-{ 
+registerCommand({
     aliases: ["clearlobbies"],
     description: "Clears lobbies for lobby marking.",
     options: "",
@@ -23,4 +22,4 @@ module.exports =
     execute: (args) => {
         lobbies = []
     }
-}
+})

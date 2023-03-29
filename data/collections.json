@@ -1,5 +1,5 @@
 {
-   "gemstone": 
+    "gemstone": 
     {
         "collectionToTrack": "GEMSTONE_COLLECTION",
         "collectionStringed": "Gemstone"
@@ -59,6 +59,11 @@
         "collectionToTrack": "ENDER_STONE",
         "collectionStringed": "Endstone"
     },
+    "endstone":
+    {
+        "collectionToTrack": "ENDER_STONE",
+        "collectionStringed": "Endstone"
+    },
     "glowstone":
     {
         "collectionToTrack": "GLOWSTONE_DUST",
@@ -103,5 +108,230 @@
 	{
 		"collectionToTrack": "GRAVEL",
         "collectionStringed": "Gravel"
-	}
+	},
+    "coco":
+    {
+        "collectionToTrack": "INK_SACK:3",
+        "collectionStringed": "Coco Beans"
+    },
+    "carrot":
+    {
+        "collectionToTrack": "CARROT_ITEM",
+        "collectionStringed": "Carrot"
+    },
+    "cactus":
+    {
+        "collectionToTrack": "CACTUS",
+        "collectionStringed": "Cactus"
+    },
+    "chicken":
+    {
+        "collectionToTrack": "RAW_CHICKEN",
+        "collectionStringed": "Raw Chicken"
+    },
+    "cane":
+    {
+        "collectionToTrack": "SUGAR_CANE",
+        "collectionStringed": "Sugar Cane"
+    },
+    "pumpkin":
+    {
+        "collectionToTrack": "PUMPKIN",
+        "collectionStringed": "Pumpkin"
+    },
+    "wheat":
+    {
+        "collectionToTrack": "WHEAT",
+        "collectionStringed": "Wheat"
+    },
+    "seeds":
+    {
+        "collectionToTrack": "SEEDS",
+        "collectionStringed": "Seeds"
+    },
+    "mushroom":
+    {
+        "collectionToTrack": "MUSHROOM_COLLECTION",
+        "collectionStringed": "Mushroom"
+    },
+    "rabbit":
+    {
+        "collectionToTrack": "RABBIT",
+        "collectionStringed": "Raw Rabbit"
+    },
+    "wart":
+    {
+        "collectionToTrack": "NETHER_STALK",
+        "collectionStringed": "Nether Wart"
+    },
+    "mutton":
+    {
+        "collectionToTrack": "MUTTON",
+        "collectionStringed": "Mutton"
+    },
+    "melon":
+    {
+        "collectionToTrack": "MELON",
+        "collectionStringed": "Melon"
+    },
+    "potato":
+    {
+        "collectionToTrack": "POTATO_ITEM",
+        "collectionStringed": "Potato"
+    },
+    "leather":
+    {
+        "collectionToTrack": "LEATHER",
+        "collectionStringed": "Leather"
+    },
+    "prok":
+    {
+        "collectionToTrack": "PORK",
+        "collectionStringed": "Raw Porkchop"
+    },
+    "feather":
+    {
+        "collectionToTrack": "FEATHER",
+        "collectionStringed": "Feather"
+    },
+    "pearl":
+    {
+        "collectionToTrack": "ENDER_PEARL",
+        "collectionStringed": ""
+    },
+    "chili":
+    {
+        "collectionToTrack": "CHILI_PEPPER",
+        "collectionStringed": "Chili Pepper"
+    },
+    "slime":
+    {
+        "collectionToTrack": "SLIME_BALL",
+        "collectionStringed": "Slimeball"
+    },
+    "magma":
+    {
+        "collectionToTrack": "MAGMA_CREAM",
+        "collectionStringed": "Magma Cream"
+    },
+    "ghast":
+    {
+        "collectionToTrack": "GHAST_TEAR",
+        "collectionStringed": "Ghast Tear"
+    },
+    "gunpowder":
+    {
+        "collectionToTrack": "SULPHUR",
+        "collectionStringed": "Gunpowder"
+    },
+    "rotten":
+    {
+        "collectionToTrack": "ROTTEN_FLESH",
+        "collectionStringed": "Rotten Flesh"
+    },
+    "spider":
+    {
+        "collectionToTrack": "SPIDER_EYE",
+        "collectionStringed": "Spider Eye"
+    },
+    "bone":
+    {
+        "collectionToTrack": "BONE",
+        "collectionStringed": "Bone"
+    },
+    "blaze":
+    {
+        "collectionToTrack": "BLAZE_ROD",
+        "collectionStringed": "Blaze Rod"
+    },
+    "string":
+    {
+        "collectionToTrack": "STRING",
+        "collectionStringed": "String"
+    },
+    "acacia":
+    {
+        "collectionToTrack": "LOG_2",
+        "collectionStringed": "Acacia Wood"
+    },
+    "spruce":
+    {
+        "collectionToTrack": "LOG:1",
+        "collectionStringed": "Spruce Wood"
+    },
+    "jungle":
+    {
+        "collectionToTrack": "LOG:3",
+        "collectionStringed": "Jungle Wood"
+    },
+    "birch":
+    {
+        "collectionToTrack": "LOG:2",
+        "collectionStringed": "Birch Wood"
+    },
+    "oak":
+    {
+        "collectionToTrack": "LOG",
+        "collectionStringed": "Oak Wood"
+    },
+    "dark":
+    {
+        "collectionToTrack": "LOG_2:1",
+        "collectionStringed": "Dark Oak Wood"
+    },
+    "lily":
+    {
+        "collectionToTrack": "WATER_LILY",
+        "collectionStringed": "Lily Pad"
+    },
+    "prismarine_shard":
+    {
+        "collectionToTrack": "PRISMARINE_SHARD",
+        "collectionStringed": "Prismarine Shard"
+    },
+    "ink":
+    {
+        "collectionToTrack": "INK_SACK",
+        "collectionStringed": "Ink Sack"
+    },
+    "fish":
+    {
+        "collectionToTrack": "RAW_FISH",
+        "collectionStringed": "Raw Fish"
+    },
+    "pufferfish":
+    {
+        "collectionToTrack": "RAW_FISH:3",
+        "collectionStringed": "Pufferfish"
+    },
+    "clownfish":
+    {
+        "collectionToTrack": "RAW_FISH:2",
+        "collectionStringed": "Clownfish"
+    },
+    "salmon":
+    {
+        "collectionToTrack": "RAW_FISH:1",
+        "collectionStringed": "Raw Salmon"
+    },
+    "magmafish":
+    {
+        "collectionToTrack": "MAGMA_FISH",
+        "collectionStringed": "Magmafish"
+    },
+    "prismarine_crystals":
+    {
+        "collectionToTrack": "PRISMARINE_CRYSTALS",
+        "collectionStringed": "Prismarine Crystals"
+    },
+    "clay":
+    {
+        "collectionToTrack": "CLAY_BALL",
+        "collectionStringed": "Clay"
+    },
+    "sponge":
+    {
+        "collectionToTrack": "SPONGE",
+        "collectionStringed": "sponge"
+    }
 }

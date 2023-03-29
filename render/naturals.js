@@ -1,18 +1,18 @@
-import axios from "../../axios"
 import settings from "../settings"
-import constants from "../util/constants"
 import { checkInHollows, waypointRender } from "../util/helperFunctions"
 let coords = [],
  visibleCoords = []
+
 
 register("gameLoad", res => {
     coords = JSON.parse(FileLib.read("Coleweight", "data/naturalCoords.json"))
 })
 
+
 register("step", () => {
     if(!settings.showNaturals || !checkInHollows()  || coords.length < 1) return
     visibleCoords = []
-    coords.filter(coord => 
+    coords.filter(coord =>
         (((-1 * settings.naturalRange)/2 < (parseInt(Player.getX()) - coord.x)) && ((parseInt(Player.getX()) - coord.x) < settings.naturalRange/2)
         && ((-1 * settings.naturalRange)/2 < (parseInt(Player.getY()) - coord.y)) && ((parseInt(Player.getY()) - coord.y) < settings.naturalRange/2)
         && ((-1 * settings.naturalRange)/2 < (parseInt(Player.getZ()) - coord.z)) && ((parseInt(Player.getZ()) - coord.z) < settings.naturalRange/2))
@@ -27,6 +27,7 @@ register("renderWorld", () => {
     if(visibleCoords.length < 1) return
     waypointRender(visibleCoords)
 })
+
 
 register("worldUnload", () => {
     visibleCoords = []

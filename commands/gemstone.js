@@ -1,3 +1,4 @@
+import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
 import { addCommas, capitalizeFirst, findGemstonesPerHr, instaSellBZPrice } from "../util/helperFunctions"
 const PREFIX = constants.PREFIX
@@ -9,10 +10,9 @@ let statsHoverCheck = false,
  blueCheese = false,
  blockPercentage = .45
 
-module.exports =
-{ 
+registerCommand({
     aliases: ["gemstone", "gem"],
-    description: "$/hr with gemstones.",
+    description: "$/hr with gemstones. &cLess accurate than Skyhelper's.",
     options: "",
     category: "info",
     execute: (args) => {
@@ -29,10 +29,10 @@ module.exports =
                 break
             case "m1":
                 textComponents = [
-                    new TextComponent(`&7[&aUsing blue cheese omelette&7] `)
+                    new TextComponent("&7[&aUsing blue cheese omelette&7] ")
                     .setClickAction("run_command")
                     .setClickValue("/cw gemstone m2"),
-                    new TextComponent(`&7[&cNot Using blue cheese omelette&7]`)
+                    new TextComponent("&7[&cNot Using blue cheese omelette&7]")
                     .setClickAction("run_command")
                     .setClickValue("/cw gemstone m3")
                 ]
@@ -42,16 +42,16 @@ module.exports =
                 blueCheese = true
             case "m3":
                 textComponents = [
-                    new TextComponent(`&7[&cRuby&7] `)
+                    new TextComponent("&7[&cRuby&7] ")
                     .setClickAction("run_command")
                     .setClickValue("/cw gemstone m4"),
-                    new TextComponent(`&7[&dJasper/Opal&7] `)
+                    new TextComponent("&7[&dJasper/Opal&7] ")
                     .setClickAction("run_command")
                     .setClickValue("/cw gemstone m5"),
-                    new TextComponent(`&7[&dJade&7] `)
+                    new TextComponent("&7[&dJade&7] ")
                     .setClickAction("run_command")
                     .setClickValue("/cw gemstone m6"),
-                    new TextComponent(`&7[&aAny other gemstone&7]`)
+                    new TextComponent("&7[&aAny other gemstone&7]")
                     .setClickAction("run_command")
                     .setClickValue("/cw gemstone m7")
                 ]
@@ -85,15 +85,22 @@ module.exports =
             })
         }
     }
-}
+})
 
 
 register("itemTooltip", (lore, item) => {
     if(!statsHoverCheck || !item.getLore()[0].startsWith("§o§aYour SkyBlock Profile")) return
     statsHoverCheck = false
+    findStats(item)
+})
 
+
+function findStats(item)
+{
     let matches
+
     setTimeout(() => {
+        if(constants.checkedGemstoneStats) return findStats(item)
         item.getLore().forEach(line => {
             if(line.includes("Mining Fortune"))
             {
@@ -112,5 +119,6 @@ register("itemTooltip", (lore, item) => {
             }
         })
         ChatLib.chat(`${PREFIX}&bLoaded stats.`)
-    }, 200);
-})
+        return
+    }, 200)
+}

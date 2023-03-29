@@ -6,40 +6,45 @@ let PogData = new PogObject("Coleweight", {
     "api_key": "",
     "professional": 0,
     "jungle_amulet": true,
-    "x": 0.5,
-    "y": 141,
     "first_time": true,
-    "tracked": {}
+    "tracked": {},
+    "museum": [],
+    "currentPet": "",
+    "effMinerEnabled": false,
+    "coleweightGui": {
+        "x": 0.5,
+        "y": 141,
+    },
+    "powdertrackerGui": {
+        "chests": 0,
+        "gemstonePowder": 0,
+        "mithrilPowder": 0,
+        "x": 0,
+        "y": 0
+    },
+    "timerGui": {
+        "x": 0,
+        "y": 0,
+        "timer": 0,
+    },
+    "stopwatchGui": {
+        "x": 0,
+        "y": 0,
+        "stopwatch": 0
+    },
+    "downtimeGui" : {
+        "x": 0,
+        "y": 0
+    },
+    "collectionGui": {
+        "x": 0,
+        "y": 0
+    },
+    "abilityGui": {
+        "x": 0,
+        "y": 0
+    }
 }, "config/.cw_data.json")
-
-let PowderData = new PogObject("Coleweight", {
-    "chests": 0,
-    "gemstonePowder": 0,
-    "mithrilPowder": 0,
-    "x": 0,
-    "y": 0
-}, "config/.powdertracker_data.json")
-
-let TimerData = new PogObject("Coleweight", {
-    "x": 0,
-    "y": 0,
-    "timer": 0
-}, "config/.timer_data.json")
-
-let DowntimeData = new PogObject("Coleweight", {
-    "x": 0,
-    "y": 0
-}, "config/.downtime_data.json")
-
-let CollectionData = new PogObject("Coleweight", {
-    "x": 0,
-    "y": 0
-}, "config/.collection_data.json")
-
-let AbilityData = new PogObject("Coleweight", {
-    "x": 0,
-    "y": 0
-}, "config/.ability_data.json")
 
 const PREFIX = "&2[CW] "
 export default constants = {
@@ -49,20 +54,38 @@ export default constants = {
     VERSION: (JSON.parse(FileLib.read("Coleweight", "metadata.json"))).version,
     CWINFO: undefined,
     data: PogData,
-    powderdata: PowderData,
-    timerdata: TimerData,
-    downtimedata: DowntimeData,
-    collectiondata: CollectionData,
-    abilitydata: AbilityData,
-    beta: false
+    beta: false,
+    checkedGemstoneStats: false,
+    settings
 }
 
 register("gameLoad", () => {
-    axios.get(`https://ninjune.dev/api/cwinfo?new=true`)
+    axios.get("https://ninjune.dev/api/cwinfo?new=true")
     .then((res) => {
         constants.CWINFO = res.data
     })
     .catch((e) => {
-        if(settings.debug) console.log(`[CW] Error loading CWINFO: ${e}`)
     })
 })
+
+
+register("chat", (lvl, pet, event) => {
+    constants.data.currentPet = pet.toLowerCase()
+    constants.data.save()
+}).setCriteria(/&cAutopet &eequipped your &.\[Lvl ([0-9]+)] &.([a-zA-Z]+)&e! &a&lVIEW RULE&r/g)
+
+
+register("chat", (message, pet, event) => {
+    if(message == "summoned")
+        constants.data.currentPet = pet.toLowerCase()
+    else if (message == "despawned")
+        constants.data.currentPet = "N/A"
+
+    constants.data.save()
+}).setCriteria(/&r&aYou ([a-zA-Z]+) your &r&.([a-zA-Z]+)&r&a!&r/g)
+
+
+register("chat", (state, event) => {
+    constants.data.effMinerEnabled = state == "Enabled"
+    constants.data.save()
+}).setCriteria(/&r&.([a-zA-Z]+) Efficient Miner&r/g)

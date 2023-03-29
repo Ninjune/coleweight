@@ -2,7 +2,7 @@ import { @Vigilant, @ButtonProperty, @SwitchProperty, @SelectorProperty, @Slider
 
 @Vigilant("Coleweight/config", "Coleweight Settings", {
     getCategoryComparator: () => (a, b) => {
-        const categories = ["General", "Naturals", "Gui", "Stats", "Foraging"];
+        const categories = ["General", "Naturals", "Gui", "Stats", "Ordered waypoints", "Foraging"];
 
         return categories.indexOf(a.name) - categories.indexOf(b.name);
     }
@@ -74,6 +74,46 @@ class Settings {
         category: "General"
     })
     debug = false;
+    
+    @SwitchProperty({
+        name: "Ordered waypoints line",
+        description: "Toggles line for ordered waypoints.",
+        category: "Ordered waypoints"
+    })
+    orderedWaypointsLine = true;
+
+    @SwitchProperty({
+        name: "Render all in 16 block radius",
+        description: "Renders all waypoints in 16 block radius with a red outline with wall phase off. &cCan cause lag.",
+        category: "Ordered waypoints"
+    })
+    orderedRenderAll = true;
+
+    @SliderProperty({
+        name: "Next waypoint distance",
+        description: "The distance the player must be in before the ordered waypoints goes to the next one.",
+        category: "Ordered waypoints",
+        min: 1,
+        max: 10
+    })
+    nextWaypointRange = 3;
+
+    @SliderProperty({
+        name: "Ordered trace line thickness",
+        description: "Thickness of trace line.",
+        category: "Ordered waypoints",
+        min: 1,
+        max: 3
+    })
+    orderedLineThickness = 1;
+
+    @SwitchProperty({
+        name: "Efficient miner with dillo warning",
+        description: "Shows a warning when you have dillo + efficient miner equipped.",
+        subcategory: "Random Features",
+        category: "General"
+    })
+    effDilloWarning = true;
 
     @SwitchProperty({
         name: "Downtime tracker",
@@ -173,6 +213,33 @@ class Settings {
     })
     moveTimerLocation() {
         ChatLib.command("cw move timer", true);
+    }
+
+    @SwitchProperty({
+        name: "Timer End Visiblity",
+        description: "Toggles visibility of timer at 0m 0s",
+        subcategory: "Timer",
+        category: "Gui"
+    })
+    timerEndVisible = false;
+
+    @SwitchProperty({
+        name: "Stopwatch",
+        description: "Toggles visibility of stopwatch (/cw stopwatch)",
+        subcategory: "Stopwatch",
+        category: "Gui"
+    })
+    stopwatchVisible = false;
+
+    @ButtonProperty({
+        name: "Change stopwatch position",
+        description: "Move the location of the stopwatch.",
+        subcategory: "Stopwatch",
+        category: "Gui",
+        placeholder: "Open"
+    })
+    moveStopwatchLocation() {
+        ChatLib.command("cw move stopwatch", true);
     }
 
     @SwitchProperty({ // Mining abilities

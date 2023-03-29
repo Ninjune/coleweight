@@ -1,10 +1,10 @@
 import axios from "../../axios"
+import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
 const PREFIX = constants.PREFIX
 
 
-module.exports =
-{ 
+registerCommand({
     aliases: ["leaderboard", "lb", "top"],
     description: "Clears lobbies for lobby marking.",
     options: "(min) [max]",
@@ -14,7 +14,7 @@ module.exports =
         {
             if(args[2] == undefined && parseInt(args[1]) == args[1] && !isNaN(parseInt(args[1])))
             {
-                axios.get(`https://ninjune.dev/api/coleweight-leaderboard?length=${args[1]}`)
+                axios.get(`https://ninjune.dev/api/coleweight-leaderboard?length=${args[1]-1}`)
                 .then(res => {
                     for(let i = 0; i < res.data.length; i++)
                     {
@@ -27,7 +27,7 @@ module.exports =
             }
             else if(parseInt(args[2]) == args[2] && !isNaN(parseInt(args[2])))
             {
-                axios.get(`https://ninjune.dev/api/coleweight-leaderboard?length=${args[2]}`)
+                axios.get(`https://ninjune.dev/api/coleweight-leaderboard?length=${args[2]-1}`)
                 .then(res => {
                     for(let i = args[1] - 1; i < res.data.length; i++)
                     {
@@ -48,4 +48,4 @@ module.exports =
             ChatLib.chat(`${PREFIX}&ePlease enter an integer! (how many positions) (or a range ie. '20 40')`)
         }
     }
-}
+})

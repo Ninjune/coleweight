@@ -1,10 +1,9 @@
+import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
 import { addCommas } from "../util/helperFunctions"
 const PREFIX = constants.PREFIX
 
-
-module.exports =
-{ 
+registerCommand({
     aliases: ["cwinfo", "info"],
     description: "Gives cwinfo.",
     options: "",
@@ -24,4 +23,4 @@ module.exports =
         "\n&4&lCollections\n" + values.collection +
         "\n&4&lMiscellaneous\n" + values.miscellaneous)
     }
-}
+})

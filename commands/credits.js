@@ -1,9 +1,9 @@
+import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
 const PREFIX = constants.PREFIX
 
 
-module.exports =
-{ 
+registerCommand({
     aliases: ["credits"],
     description: "Credits.",
     options: "",
@@ -12,4 +12,4 @@ module.exports =
     execute: (args) => {
         ChatLib.chat(`${PREFIX}&bCW was made by NinOnCubed (Ninjune#0670).`)
     }
-}
+})

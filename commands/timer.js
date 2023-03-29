@@ -1,22 +1,36 @@
+import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
 
-module.exports =
-{ 
+
+export default registerCommand({
     aliases: ["timer", "time"],
     description: "Sets timer.",
     category: "miscellaneous",
-    options: ["(time) - 30m, 1h, 30s"],
+    options: ["(set, show)"],
+    subcommands: [["set", "show"]],
     execute: (args) => {
+        let timer = constants.data.timerGui.timer
         if(args[1] == undefined)
-            constants.timerdata.timer = 0
-        else if(args[1].includes('h'))
-            constants.timerdata.timer = parseInt(args[1])*60*60 ?? 0
-        else if(args[1].includes('m'))
-            constants.timerdata.timer = parseInt(args[1])*60 ?? 0
-        else
-            constants.timerdata.timer = parseInt(args[1]) ?? 0
-        constants.timerdata.save()
+            return ChatLib.chat(`${constants.PREFIX}&bOptions are: &3set&b, &3reset&b, &3show&b, &3pause&b.`)
+        if(args[1].toLowerCase() == "set")
+        {
+            if(args[2] == undefined)
+                timer = 0
+            else if(args[2].includes("h"))
+                timer = parseInt(args[2])*60*60 ?? 0
+            else if(args[2].includes("m"))
+                timer = parseInt(args[2])*60 ?? 0
+            else
+                timer = parseInt(args[2]) ?? 0
 
-        ChatLib.chat(`${constants.PREFIX}&bSet timer to ${Math.ceil(constants.timerdata.timer/60)}m`)
+            constants.data.timerTitlePlay = true
+            ChatLib.chat(`${constants.PREFIX}&bSet timer to ${Math.floor(timer/60)}m ${Math.ceil(timer)}s`)
+        }
+        else if (args[1].toLowerCase() == "show")
+            ChatLib.chat(`${constants.PREFIX}&b${Math.floor(timer/60)}m ${Math.ceil(timer%60)}s`)
+
+
+        constants.data.timerGui.timer = timer
+        constants.data.save()
     }
-}
+})

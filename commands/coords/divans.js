@@ -1,3 +1,4 @@
+import { registerCommand } from "../../commandManager"
 import constants from "../../util/constants"
 import { waypointRender } from "../../util/helperFunctions"
 
@@ -15,15 +16,14 @@ register("worldLoad", () => {
 })
 
 
-module.exports =
-{ 
+registerCommand({
     aliases: ["divans", "divan"],
     description: "Divan treasure waypoints for Mines of Divan.",
     options: "[toggle]",
     category: "waypoints",
     execute: (args) => {
         const WAYPOINTNAME = "Divan"
-    
+
         if(args[1] != "toggle")
         {
             new TextComponent(`${PREFIX}&bGo to the middle of jade crystal then do /cw coords divans toggle.`)
@@ -34,10 +34,10 @@ module.exports =
             if(divanWaypoints[0] == undefined)
             {
                 let startPos = [Player.getX(), Player.getY(), Player.getZ()],
-                x = startPos[0], 
-                y = startPos[1], 
+                x = startPos[0],
+                y = startPos[1],
                 z = startPos[2]
-                
+
                 console.log(x + " " + y + " " + z)
                 divanWaypoints.push([x + 1, y + -40, z + -20])
                 divanWaypoints.push([x + 30, y + -39, z + -25])
@@ -79,11 +79,11 @@ module.exports =
                 divanWaypoints.push([x + 12, y + -39, z + -43])
                 ChatLib.chat(`${PREFIX}&b${WAYPOINTNAME} waypoints turned on!`)
             }
-            else 
+            else
             {
                 divanWaypoints = []
                 ChatLib.chat(`${PREFIX}&b${WAYPOINTNAME} waypoints turned off!`)
             }
         }
     }
-}
+})

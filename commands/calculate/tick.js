@@ -9,9 +9,9 @@ export function tickCommand(speed, block)
         return ChatLib.chat(constants.CALCULATEERRORMESSAGE)
     const ticks = findTick(speed, block)
     if(ticks.err) return ChatLib.chat(`${PREFIX}&cBlock must be a gemstone or positive breaking power! (or starting letter of gemstone)`)
-    
 
-    ChatLib.chat(`\n&bCurrently mining blocks in &6&l${Math.round(ticks.currentBlockTick)} ticks` + 
+
+    ChatLib.chat(`\n&bCurrently mining blocks in &6&l${Math.round(ticks.currentBlockTick)} ticks` +
     `\n&bCurrently mining shards in &6&l${Math.round(ticks.currentShardTick)} ticks` +
     `\n&bNext block tick will be at: &6&l${Math.round(ticks.nextBlockSpeed)} mining speed` +
     `\n&bNext shard tick will be at: &6&l${Math.round(ticks.nextShardSpeed)} mining speed` +
@@ -21,8 +21,8 @@ export function tickCommand(speed, block)
 
 /**
  * finds tick, returns and object with currentBlockTick & currentShardTick
- * @param {number} speed 
- * @param {string} block 
+ * @param {number} speed
+ * @param {string} block
  * @returns {object}
  */
 export function findTick(speed, block)
@@ -47,7 +47,7 @@ export function findTick(speed, block)
     }
 
     if(strength < 1) return ticks.err = true
-    
+
 
     if(ticks.currentBlockTick < Math.floor(ticks.currentBlockTick) + 0.5)
         ticks.nextBlockSpeed = strength*30/(Math.floor(ticks.currentBlockTick)-0.5)

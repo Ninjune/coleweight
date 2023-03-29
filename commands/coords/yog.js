@@ -1,3 +1,4 @@
+import { registerCommand } from "../../commandManager"
 import constants from "../../util/constants"
 import { waypointRender } from "../../util/helperFunctions"
 
@@ -16,15 +17,14 @@ register("worldLoad", () => {
 })
 
 
-module.exports =
-{ 
+registerCommand({
     aliases: ["yog"],
     description: "Yog waypoints for bal.",
     options: "[toggle]",
     category: "waypoints",
     execute: (args) => {
         const WAYPOINTNAME = "Yog"
-    
+
         if(args[1] != "toggle")
         {
             new TextComponent(`${PREFIX}&bGo to the leftmost corner of the topaz crystal facing bal close to bal then do /cw coords yog toggle.`)
@@ -35,11 +35,10 @@ module.exports =
             if(yogWaypoints[0] == undefined)
             {
                 let startPos = [Player.getX(), Player.getY(), Player.getZ()],
-                x = startPos[0], 
-                y = startPos[1], 
+                x = startPos[0],
+                y = startPos[1],
                 z = startPos[2]
-                
-                console.log(x + " " + y + " " + z)
+
                 yogWaypoints.push([x + 10, y - 7, z - 27])
                 yogWaypoints.push([x + 10, y - 7, z - 27])
                 yogWaypoints.push([x + 28, y - 8, z + 15])
@@ -59,11 +58,11 @@ module.exports =
                 yogWaypoints.push([x + 16, y - 9, z - 15])
                 ChatLib.chat(`${PREFIX}&b${WAYPOINTNAME} waypoints turned on!`)
             }
-            else 
+            else
             {
                 yogWaypoints = []
                 ChatLib.chat(`${PREFIX}&b${WAYPOINTNAME} waypoints turned off!`)
             }
         }
     }
-}
+})

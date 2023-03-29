@@ -1,9 +1,9 @@
 import constants from "../util/constants"
 import axios from "../../axios"
+import { registerCommand } from "../commandManager"
 const PREFIX = constants.PREFIX
 
-module.exports =
-{ 
+registerCommand({
     aliases: ["setkey"],
     description: "Sets Hypixel API key.",
     options: "(key)",
@@ -22,7 +22,7 @@ module.exports =
                 ChatLib.chat(`${PREFIX}&eKey is not valid!`)
         })
         .catch(err => {
-            ChatLib.chat(`${PREFIX}&eKey is not valid! if this is a mistake report: ${err}`)
+            ChatLib.chat(`${PREFIX}&eHypixel API is down (or key is wrong). if this is a mistake report: ${err}`)
         })
     }
-}
+})

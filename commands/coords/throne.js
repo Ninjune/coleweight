@@ -1,3 +1,4 @@
+import { registerCommand } from "../../commandManager"
 import constants from "../../util/constants"
 import { waypointRender } from "../../util/helperFunctions"
 
@@ -14,8 +15,8 @@ register("worldLoad", () => {
     throneWaypoints = []
 })
 
-module.exports =
-{ 
+
+registerCommand({
     aliases: ["throne"],
     description: "Throne waypoints.",
     options: "[toggle]",
@@ -45,11 +46,11 @@ module.exports =
                 throneWaypoints.push([startPos[0]+45, startPos[1]-3, startPos[2]-4])
                 ChatLib.chat(`${PREFIX}&bThrone waypoints turned on!`)
             }
-            else 
+            else
             {
                 throneWaypoints = []
                 ChatLib.chat(`${PREFIX}&bThrone waypoints turned off!`)
             }
         }
     }
-}
+})

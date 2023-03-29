@@ -1,13 +1,14 @@
-import Settings from "../settings"
+import { registerCommand } from "../commandManager"
+import settings from "../settings"
 
-module.exports =
-{ 
+
+registerCommand({
     aliases: ["settings", "config"],
     description: "Opens settings.",
     options: "",
     category: "settings",
     showInHelp: false,
     execute: (args) => {
-        Settings.openGUI()
+        settings.openGUI()
     }
-}
+})

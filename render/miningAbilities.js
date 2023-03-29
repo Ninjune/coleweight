@@ -1,6 +1,6 @@
 import settings from "../settings"
 import constants from "../util/constants"
-import { capitalizeFirst, checkInDwarven, checkInEnd, checkInHollows, drawTitle, textGui } from "../util/helperFunctions"
+import { capitalizeFirst, checkInDwarven, checkInEnd, checkInHollows, Title, textGui } from "../util/helperFunctions"
 
 const miningAbilitiesGui = new textGui()
 let activeAbilities = [],
@@ -10,7 +10,7 @@ let activeAbilities = [],
 export function openMiningAbilitiesGui()
 {
     miningAbilitiesGui.moveGui()
-}   
+}
 
 
 register("dragged", (dx, dy, x, y) => {
@@ -31,12 +31,8 @@ function checkAreas()
 register("renderOverlay", () => {
     if(!settings.miningAbilities || !checkAreas()) return
     activeAbilities.forEach(ability => {
-        if(ability.drawTitle == 1)
-        {
-            let titleResults = drawTitle(`&6[&3&kd&6] &b&l${ability.name}&6 [&3&kd&6]`, ability.drawTimestamp)
-            ability.drawTitle = titleResults.drawTitle
-            ability.drawTimestamp = titleResults.drawTimestamp
-        }
+        if(ability.title.drawState == 1)
+            ability.title.draw()
     })
 })
 
@@ -47,11 +43,11 @@ register("renderOverlay", () => {
      rightValues = []
 
     activeAbilities.forEach(ability => {
-        leftValues.push(`${ability.name} CD`)
         if(settings.miningAbilitiesSelectedIndicator && ability.name == selectedAbility)
-            rightValues.push(ability.timer + "s &eSELECTED")
+            leftValues.push(`&e${ability.name} CD`)
         else
-            rightValues.push(ability.timer + "s")
+            leftValues.push(`${ability.name} CD`)
+        rightValues.push(ability.timer + "s")
     })
 
     if(miningAbilitiesGui.moveGuiObject.isOpen() && leftValues.length < 1)
@@ -72,14 +68,14 @@ register("step", () => {
     activeAbilities.forEach(ability => {
         if(ability.timer > 0)
             ability.timer -= 1
-        else if (ability.drawTitle == 0)
-            ability.drawTitle = 1
+        else if (ability.title.drawState == 0)
+            ability.title.drawState = 1
     })
 }).setDelay(1)
 
 
 register("chat", (abilityName, event) => {
-    selectedAbility = abilityName
+    selectedAbility = capitalizeFirst(abilityName)
     addAbility(abilityName)
 }).setCriteria(/&r&aYou used your &r&6(.+) &r&aPickaxe Ability!&r/g)
 
@@ -92,11 +88,12 @@ register("worldLoad", () => {
 
 
 register("chat", (abilityName, event) => {
-    selectedAbility = abilityName
+    selectedAbility = capitalizeFirst(abilityName)
 }).setCriteria(/&r&aYou selected &r&e(.+) &r&aas your Pickaxe Ability. This ability will apply to all of your pickaxes!&r/g)
 
 
 register("chat", (cdSeconds, event) => {
+    if(selectedAbility == undefined) return
     addAbility(selectedAbility, cdSeconds)
 }).setCriteria(/&r&cThis ability is on cooldown for (.+)s.&r/g)
 
@@ -106,7 +103,6 @@ function addAbility(abilityName, timer = 0)
     let found = false
     let maxTimer
 
-    
     switch(capitalizeFirst(abilityName))
     {
         case "Pickobulus":
@@ -130,14 +126,14 @@ function addAbility(abilityName, timer = 0)
         {
             found = true
             drawTimestamp = undefined
-            ability.drawTitle = 0
+            ability.title.drawState = 0
             ability.timer = timer
         }
     })
 
     if (!found)
     {
-        let object = {timer: timer, name: capitalizeFirst(abilityName), drawTitle: 0, drawTimestamp: undefined, maxTimer: maxTimer}
+        let object = {timer, name: capitalizeFirst(abilityName), title: new Title(`&6[&3&kd&6] &b&l${capitalizeFirst(abilityName)}&6 [&3&kd&6]`), maxTimer}
 
         activeAbilities.push(object)
     }

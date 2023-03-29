@@ -106,12 +106,12 @@ function findPrio(originX, originY, originZ, blockStateToFind, prio)
     if(Player.lookingAt() != undefined && Player.lookingAt()?.getRegistryName() != "minecraft:air")
         lookingAt = Player.lookingAt()
 
-    if(lookingAt != undefined)
+    if(lookingAt instanceof Block)
     {
         rayTraceX = lookingAt.getX()
         rayTraceY = lookingAt.getY()
         rayTraceZ = lookingAt.getZ()
-    }
+    } 
 
 
     for(let x = Math.round(originX-radius); x < Math.round(originX+radius); x++) // second cube

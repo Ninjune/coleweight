@@ -1,3 +1,4 @@
+import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
 import { trace, drawEspBox } from "../util/renderUtil"
 const PREFIX = constants.PREFIX
@@ -14,8 +15,8 @@ register("renderWorld", () => {
     drawEspBox(x, y, z, 0, 0, 1, 0.86) // y no work
 })
 
-module.exports =
-{ 
+
+registerCommand({
     aliases: ["drawline", "draw"],
     description: "Draws a line to coords. (y defaults to the player's y)",
     options: "(x) [y] (z)",
@@ -46,4 +47,4 @@ module.exports =
         }
         ChatLib.chat(`${PREFIX}&bNow drawing line to &a${x} ${Math.round(y)} ${z}`)
     }
-}
+})

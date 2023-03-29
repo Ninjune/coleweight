@@ -3,12 +3,15 @@ import { hotmCalc } from "./calculate/hotmCalc"
 import { calcSpeed } from "./calculate/calcSpeed"
 import { tickCommand } from "./calculate/tick"
 import { helpCommand } from "../util/helperFunctions"
+import { registerCommand } from "../commandManager"
 
-module.exports = { 
+
+registerCommand({
     aliases: ["calc", "calculate"],
     description: "Commands for calculating things. Do '/cw calc help'.",
     options: "[help]",
     category: "info",
+    subcommands: [["tick", "hotm", "speed"]],
     execute: (args) => {
         switch((args[1] ?? "").toLowerCase())
         {
@@ -36,4 +39,4 @@ module.exports = {
                 return ChatLib.chat(constants.CALCULATEERRORMESSAGE)
         }
     }
-}
+})

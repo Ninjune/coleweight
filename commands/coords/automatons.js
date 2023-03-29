@@ -1,12 +1,13 @@
+import { registerCommand } from "../../commandManager"
 import constants from "../../util/constants"
 import { waypointRender } from "../../util/helperFunctions"
 
 const PREFIX = constants.PREFIX
 let waypoints = []
 
-export function automatons(arg) 
+export function automatons(arg)
 {
-    
+
 }
 
 register("renderWorld", () => {
@@ -18,15 +19,15 @@ register("worldLoad", () => {
     waypoints = []
 })
 
-module.exports =
-{ 
+
+registerCommand({
     aliases: ["automatons", "automaton"],
     description: "Automaton waypoints for precursor city.",
     options: "[toggle]",
     category: "waypoints",
     execute: (args) => {
         const WAYPOINTNAME = "Automatons"
-    
+
         if(args[1] != "toggle")
         {
             new TextComponent(`${PREFIX}&bStand in the pot in &3this&b picture and do /cw ${WAYPOINTNAME} toggle`)
@@ -39,10 +40,10 @@ module.exports =
             if(waypoints[0] == undefined)
             {
                 let startPos = [Player.getX(), Player.getY(), Player.getZ()],
-                x = startPos[0], 
-                y = startPos[1], 
+                x = startPos[0],
+                y = startPos[1],
                 z = startPos[2]
-                
+
                 let coordsRows = FileLib.read("Coleweight", "data/automatons.txt").split("\n")
                 coordsRows.forEach(unsplitRow => {
                     let row = unsplitRow.split(" ")
@@ -51,11 +52,11 @@ module.exports =
 
                 ChatLib.chat(`${PREFIX}&b${WAYPOINTNAME} waypoints turned on!`)
             }
-            else 
+            else
             {
                 waypoints = []
                 ChatLib.chat(`${PREFIX}&b${WAYPOINTNAME} waypoints turned off!`)
             }
         }
     }
-}
+})

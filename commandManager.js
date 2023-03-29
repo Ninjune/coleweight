@@ -1,39 +1,23 @@
-import Settings from "./settings"
-const File = Java.type("java.io.File")
-const fileNames = new File(Config.modulesFolder + "/Coleweight/commands").list()
-let commandNames = [],
- commands = [],
- fileNames2, file, meta, stop, defaultCommand
+import settings from "./settings"
+import constants from "./util/constants"
 
-fileNames.forEach(fileName => {
-    file = new File(Config.modulesFolder + "/Coleweight/commands/" + fileName)
+let commands = [],
+ commandNames = [],
+ helpCommands = {info: [], settings: [], waypoints: [], miscellaneous: []}
 
-    if(file.isDirectory())
-    {
-        meta = JSON.parse(FileLib.read("Coleweight", "commands/" + fileName + "/meta.json"))
-        if(meta.include)
-        {
-            fileNames2 = file.list()
-            fileNames2.forEach(fileName2 => {
-                if(fileName2.endsWith(".js"))
-                    commands.push(require("./commands/" + fileName + "/" + fileName2))
-            })
-        }
-    }
-    else if (!file.isDirectory())
-        commands.push(require("./commands/" + fileName))
-})
+export function registerCommand(command)
+{
+    commands.push(command)
+    commandNames.push(command.aliases[0])
+    if(command.showInHelp ?? true)
+        helpCommands[command.category].push({name: command.aliases[0], description: command.description, options: command.options})
+}
 
-commands.forEach(command => {
-    if(command.aliases[1] == "")
-        defaultCommand = command
-    else
-        commandNames.push(...command.aliases)
-})
+export default helpCommands
 
 register("command", (...args) => {
     stop = false
-    if (args == undefined || args[0] == undefined) { Settings.openGUI(); return }
+    if (args == undefined || args[0] == undefined) { settings.openGUI(); return }
 
     commands.forEach(command => {
         if((command.cw ?? true) && command.aliases.includes(args[0].toString().toLowerCase()))
@@ -43,28 +27,27 @@ register("command", (...args) => {
         }
     })
 
-    if(!stop) defaultCommand.execute(args)
+    if(!stop) ChatLib.chat(`${constants.PREFIX}&bUnknown command. Type "/cw help" to see all commands.`)
 }).setTabCompletions((args) => {
-    let output = [],
-        reloadOptions = ["coleweight", "collection"],
-        calculateOptions = ["tick", "ms2toprofessional", "hotm", "calchotm"]
-    
-    if(args[0].length == 0 || args[0] == undefined)
-        return output = commandNames
+    let output = []
 
-    switch(args[0])
-    {
-        case "reload":
-            output = findTabOutput(args[1], reloadOptions)
-            break
-        case "calculate":
-        case "calc":
-            output = findTabOutput(args[1], calculateOptions)
-            break
-        default:
-            output = findTabOutput(args[0], commandNames)
-            break
-    }
+    if(args[0].length == 0 || args[0] == undefined)
+        return commandNames
+
+    if(args[1] == undefined)
+        output = findTabOutput(args[0], commandNames)
+
+    commands.forEach(command => {
+        if(command.aliases.includes(args[0].toLowerCase()) && command.subcommands != undefined)
+        {
+            for(let i = 0; i < command.subcommands.length && i <= args.length-1; i++)
+                output = findTabOutput(args[i+1], command.subcommands[i])
+        }
+    })
+
+    if(output.length == 0)
+        output = findTabOutput(args[0], commandNames)
+
     return output
 }).setName("cw").setAliases(["coleweight"])
 
@@ -77,9 +60,9 @@ register("command", (...args) => {
         n.toLowerCase().startsWith(args.length ? args[0].toLowerCase() : "")
     )
     .sort()
-        
+
     return players
-}).setName("fetchdiscord").setAliases(["fdiscord"]);    
+}).setName("fetchdiscord").setAliases(["fdiscord"])
 
 
 function findTabOutput(input, options)
@@ -99,3 +82,38 @@ function findTabOutput(input, options)
 
     return output
 }
+
+// command registering (I HATE WRITING THESE)
+import "./commands/coords/automatons"
+import "./commands/coords/divans"
+import "./commands/coords/spiral"
+import "./commands/coords/temple"
+import "./commands/coords/throne"
+import "./commands/coords/yog"
+
+import "./commands/calculate.js"
+import "./commands/config"
+import "./commands/coords.js"
+import "./commands/credits"
+import "./commands/cw"
+import "./commands/delete"
+import "./commands/drawLine"
+import "./commands/fetchDiscord"
+import "./commands/gemstone"
+import "./commands/help"
+import "./commands/import"
+import "./commands/info"
+import "./commands/leaderboard"
+import "./commands/markingLobbies"
+import "./commands/move"
+import "./commands/optimize"
+import "./commands/ordered"
+import "./commands/reload"
+import "./commands/setdrill"
+import "./commands/setkey"
+import "./commands/stopwatch"
+import "./commands/timer"
+import "./commands/track"
+
+// clean up from some time ago (added v1.10.0)
+ChatLib.command("/cw delete commands/calculate/calculate.js", true)

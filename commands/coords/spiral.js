@@ -1,3 +1,4 @@
+import { registerCommand } from "../../commandManager"
 import constants from "../../util/constants"
 import { waypointRender } from "../../util/helperFunctions"
 
@@ -8,12 +9,13 @@ register("renderWorld", () => {
     waypointRender(spiralWaypoints, true, true)
 })
 
+
 register("worldLoad", () => {
     spiralWaypoints = []
 })
 
-module.exports =
-{ 
+
+registerCommand({
     aliases: ["spiral"],
     description: "Waypoints for spiral.",
     options: "[toggle]",
@@ -49,11 +51,11 @@ module.exports =
                 spiralWaypoints.push([startPos[0]+4, startPos[1]-23, startPos[2]+28])
                 ChatLib.chat(`${PREFIX}&bSpiral waypoints turned on!`)
             }
-            else 
+            else
             {
                 spiralWaypoints = []
                 ChatLib.chat(`${PREFIX}&bSpiral waypoints turned off!`)
             }
         }
     }
-}
+})

@@ -1,15 +1,13 @@
-const { findColeweight } = require("../util/helperFunctions")
+import { registerCommand } from "../commandManager"
+import { findColeweight } from "../util/helperFunctions"
 
-module.exports =
-{ 
-    aliases: ["find", ""],
+
+registerCommand({
+    aliases: ["find"],
     description: "Gets the Coleweight of specified user.",
-    options: "(player)",
+    options: "[player]",
     category: "info",
     execute: (args) => {
-        if(args[0] == "find")
-            findColeweight(args[1])
-        else
-            findColeweight(args[0])
+        findColeweight(args[1])
     }
-}
+})

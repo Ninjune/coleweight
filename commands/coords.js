@@ -1,12 +1,13 @@
-import { openCoordsGui } from "../render/guis/coordsGui"
+import { registerCommand } from "../commandManager"
+import { openCoordsGui } from "../render/coordsMenu"
 
-module.exports =
-{ 
-    aliases: ["coords", "coord", "cord"],
+
+registerCommand({
+    aliases: ["coords", "coord", "cord", "cords"],
     description: "Opens coords GUI.",
     options: "",
     category: "waypoints",
     execute: (args) => {
         openCoordsGui()
     }
-}
+})

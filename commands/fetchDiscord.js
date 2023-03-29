@@ -1,9 +1,10 @@
 import axios from "../../axios"
+import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
 const PREFIX = constants.PREFIX
 
-module.exports =
-{ 
+
+registerCommand({
     aliases: ["fetchdiscord"],
     description: "Finds the discord of a Hypixel player. (if linked to Hypixel)",
     options: "(IGN)",
@@ -29,4 +30,4 @@ module.exports =
             ChatLib.chat(`${PREFIX}&eInvalid name! `)
         })
     }
-}
+})
