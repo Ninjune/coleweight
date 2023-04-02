@@ -147,11 +147,12 @@ register("itemTooltip", (lore, item) => { // powder put into each perk
             let loreItemSplit = loreItem.split(' ')
             let powderType = loreItemSplit[0].removeColorCode().toLowerCase()
             let add = parseInt(loreItemSplit[2].removeColorCode().replace(',',''))
-            if(!powderTotals[powderType]){
+            
+            if(!powderTotals[powderType])
                 powderTotals[powderType] = add
-            } else if(!checkedHotmInfo) {
+            else if(!checkedHotmInfo) 
                 powderTotals[powderType] += add
-            }
+            
         } else if(!checkedHotmReset){
             let stripped = loreItem.removeColorCode().replace(/[ \-,]/g,'')
             if(!stripped.match(/(MithrilPowder$|GemstonePowder$)/g))
@@ -159,11 +160,12 @@ register("itemTooltip", (lore, item) => { // powder put into each perk
             let powderType = stripped.match(/MithrilPowder$/g) ? "mithril" : "gemstone"
             stripped = stripped.replace(/(MithrilPowder|GemstonePowder)/g,'')
             let add = parseInt(stripped)
-            if(!powderTotals[powderType]){
+
+            if(!powderTotals[powderType])
                 powderTotals[powderType] = add
-            } else if(!checkedHotmReset) {
+            else if(!checkedHotmReset) 
                 powderTotals[powderType] += add
-            }
+            
         }   
     }
     if(!!loreType?.match(/(^Heart).*/g))
