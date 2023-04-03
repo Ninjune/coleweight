@@ -562,3 +562,13 @@ export function findTick(speed, block)
 
     return ticks
 }
+
+/**
+ * Function to remove the MC color codes from strings, chainable with other string functions
+ * @returns the string without the color code
+ */
+String.prototype.removeColorCode = function() {
+    let regex = /\u00A7[0-9A-FK-OR]/ig;
+    this.replaced = this.replace(regex,'');
+    return this.replaced
+};
