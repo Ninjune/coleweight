@@ -5,9 +5,6 @@ import axios from "../../axios"
 import { findCost, findHotmObject } from "../commands/calculate/hotmCalc"
 const NBTTagString = Java.type("net.minecraft.nbt.NBTTagString")
 let powderTotals = {}
-let getPlayerDataSuccess = false
-let checkedHotmInfo = false
-let checkedHotmReset = false
 
 register("itemTooltip", (lore, item) => { // this is so bad 💀
     if(!settings.gemstoneMiningStats || item.getLore() == undefined || item.getLore()[0] == undefined || !item.getLore()[0].startsWith("§o§aYour SkyBlock Profile")) return
@@ -83,7 +80,6 @@ register("gameLoad", () => {
         if(fortunate != undefined)
             constants.data.fortunate = fortunate
         constants.data.save()
-        getPlayerDataSuccess = true
     })
 })
 
@@ -121,6 +117,7 @@ register("itemTooltip", (lore, item) => { // powder put into each perk
         let level = /Level (\d+)/g.exec(item.getLore()[1])[1]
         let hotmObjectToFind = findHotmObject(perk)
         if(hotmObjectToFind == undefined || (hotmObjectToFind.costFormula == undefined && perk != "Fortunate")) return
+
         let powderSum
 
         if(perk == "Fortunate")
@@ -132,45 +129,3 @@ register("itemTooltip", (lore, item) => { // powder put into each perk
         list.set(0, new NBTTagString(item.getLore()[1] + ` §7(§b${addCommas(Math.round(powderSum))} §l${Math.round(powderSum/powderTotals[hotmObjectToFind.powderType]*100)}%§7)💀`)) // this is a perfect solution no cap
     }).start()
 })
-
-register("itemTooltip", (lore, item) => { // powder put into each perk
-    let loreType = item.getLore()[0]?.removeColorCode()
-    if(!settings.showPowderSum || !loreType?.match(/(^Heart|^Reset).*/g) || (checkedHotmInfo && checkedHotmReset) || getPlayerDataSuccess) return
-    let loreItems = item.getLore()
-    if(!loreItems)
-        return
-
-    for(loreItem of loreItems){
-        if(!!loreType?.match(/(^Heart).*/g) && !checkedHotmInfo){
-            if(!loreItem.removeColorCode().match(/(^Mithril|^Gemstone).*/g))
-                continue
-            let loreItemSplit = loreItem.split(' ')
-            let powderType = loreItemSplit[0].removeColorCode().toLowerCase()
-            let add = parseInt(loreItemSplit[2].removeColorCode().replace(',',''))
-            
-            if(!powderTotals[powderType])
-                powderTotals[powderType] = add
-            else if(!checkedHotmInfo) 
-                powderTotals[powderType] += add
-            
-        } else if(!checkedHotmReset){
-            let stripped = loreItem.removeColorCode().replace(/[ \-,]/g,'')
-            if(!stripped.match(/(MithrilPowder$|GemstonePowder$)/g))
-                continue
-            let powderType = stripped.match(/MithrilPowder$/g) ? "mithril" : "gemstone"
-            stripped = stripped.replace(/(MithrilPowder|GemstonePowder)/g,'')
-            let add = parseInt(stripped)
-
-            if(!powderTotals[powderType])
-                powderTotals[powderType] = add
-            else if(!checkedHotmReset) 
-                powderTotals[powderType] += add
-            
-        }   
-    }
-    if(!!loreType?.match(/(^Heart).*/g))
-        checkedHotmInfo = true
-    else
-        checkedHotmReset = true
-}).setFps(2)
-

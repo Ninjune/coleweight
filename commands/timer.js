@@ -11,7 +11,7 @@ export default registerCommand({
     execute: (args) => {
         let timer = constants.data.timerGui.timer
         if(args[1] == undefined)
-            return ChatLib.chat(`${constants.PREFIX}&bOptions are: &3set&b, &3reset&b, &3show&b, &3pause&b.`)
+            return ChatLib.chat(`${constants.PREFIX}&bOptions are: &3set&b, &3show&b.`)
         if(args[1].toLowerCase() == "set")
         {
             if(args[2] == undefined)
@@ -24,10 +24,12 @@ export default registerCommand({
                 timer = parseInt(args[2]) ?? 0
 
             constants.data.timerTitlePlay = true
-            ChatLib.chat(`${constants.PREFIX}&bSet timer to ${Math.floor(timer/60)}m ${Math.ceil(timer)}s`)
+            ChatLib.chat(`${constants.PREFIX}&bSet timer to ${Math.floor(timer/60)}m ${Math.ceil(timer%60)}s`)
         }
         else if (args[1].toLowerCase() == "show")
             ChatLib.chat(`${constants.PREFIX}&b${Math.floor(timer/60)}m ${Math.ceil(timer%60)}s`)
+        else
+            return ChatLib.chat(`${constants.PREFIX}&bOptions are: &3set&b, &3show&b`)
 
 
         constants.data.timerGui.timer = timer

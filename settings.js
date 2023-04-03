@@ -1,4 +1,4 @@
-import { @Vigilant, @ButtonProperty, @SwitchProperty, @SelectorProperty, @SliderProperty, @TextProperty } from 'Vigilance'
+import { @Vigilant, @ButtonProperty, @SwitchProperty, @SelectorProperty, @SliderProperty, @TextProperty, @ColorProperty, Color } from "../Vigilance/index"
 
 @Vigilant("Coleweight/config", "Coleweight Settings", {
     getCategoryComparator: () => (a, b) => {
@@ -74,6 +74,46 @@ class Settings {
         category: "General"
     })
     debug = false;
+
+    @SwitchProperty({
+        name: "Streamer mode",
+        description: "Various features to protect against snipers.",
+        subcategory: "Streamer mode",
+        category: "General"
+    })
+    streamerMode = false;
+
+    @SwitchProperty({
+        name: "Block tab",
+        description: "Blocks tab from being rendered. (when streamer mode)",
+        subcategory: "Streamer mode",
+        category: "General"
+    })
+    streamerBlockTab = true;
+
+    @SwitchProperty({
+        name: "Block debug",
+        description: "Blocks debug menu (F3) from being rendered. (when streamer mode)",
+        subcategory: "Streamer mode",
+        category: "General"
+    })
+    streamerBlockDebug = true;
+
+    @SwitchProperty({
+        name: "Block bossbar",
+        description: "Blocks bossbar from being rendered. (when streamer mode)",
+        subcategory: "Streamer mode",
+        category: "General"
+    })
+    streamerBlockBossbar = true;
+
+    @SwitchProperty({
+        name: "Randomize lobby",
+        description: "Randomizes lobby on the sidebar. (when streamer mode)",
+        subcategory: "Streamer mode",
+        category: "General"
+    })
+    streamerRandomizeLobby = true;
     
     @SwitchProperty({
         name: "Ordered waypoints line",
@@ -83,11 +123,11 @@ class Settings {
     orderedWaypointsLine = true;
 
     @SwitchProperty({
-        name: "Render all in 16 block radius",
-        description: "Renders all waypoints in 16 block radius with a red outline with wall phase off. &cCan cause lag.",
+        name: "Setup mode",
+        description: "Renders all waypoints in 16 block radius with a red outline with wall phase off & renders an additional line to show where the player will be looking when they warp to next block. &cCan cause lag.",
         category: "Ordered waypoints"
     })
-    orderedRenderAll = true;
+    orderedSetup = false;
 
     @SliderProperty({
         name: "Next waypoint distance",
@@ -106,6 +146,13 @@ class Settings {
         max: 3
     })
     orderedLineThickness = 1;
+
+    @ColorProperty({
+        name: "Ordered color",
+        description: "Sets the color of the line.",
+        category: "Ordered waypoints"
+    })
+    orderedColor =  Color.GREEN;
 
     @SwitchProperty({
         name: "Efficient miner with dillo warning",

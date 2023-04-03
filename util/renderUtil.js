@@ -5,7 +5,15 @@ if(!GlStateManager) {
     var GL11=Java.type("org.lwjgl.opengl.GL11")
     var GlStateManager=Java.type("net.minecraft.client.renderer.GlStateManager")
 }
-export function trace(x, y, z, red, green, blue, alpha, lineWidth = 1)
+export function trace (x, y, z, red, green, blue, alpha, lineWidth = 1)
+{
+    if(Player.isSneaking())
+        drawLine(Player.getRenderX(), Player.getRenderY() + 1.54, Player.getRenderZ(), x, y, z, red, green, blue, alpha, lineWidth)
+    else
+        drawLine(Player.getRenderX(), Player.getRenderY()+1.62, Player.getRenderZ(), x, y, z, red, green, blue, alpha, lineWidth)
+}
+
+export function drawLine(x1, y1, z1, x2, y2, z2, red, green, blue, alpha, lineWidth = 1)
 {
     GL11.glBlendFunc(770,771)
     GL11.glEnable(GL11.GL_BLEND)
@@ -15,14 +23,9 @@ export function trace(x, y, z, red, green, blue, alpha, lineWidth = 1)
     GL11.glDepthMask(false)
     GlStateManager.func_179094_E()
 
-
     Tessellator.begin(GL11.GL_LINE_STRIP).colorize(red, green, blue, alpha)
-    if(Player.isSneaking())
-        Tessellator.pos(Player.getRenderX(), Player.getRenderY() + 1.54, Player.getRenderZ()).tex(0, 0)
-    else
-        Tessellator.pos(Player.getRenderX(), Player.getRenderY()+1.62, Player.getRenderZ()).tex(0, 0)
-
-    Tessellator.pos(x, y, z).tex(0, 0)
+    Tessellator.pos(x1, y1, z1).tex(0, 0)
+    Tessellator.pos(x2, y2, z2).tex(0, 0)
     Tessellator.draw()
 
     GlStateManager.func_179121_F()

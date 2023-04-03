@@ -8,6 +8,7 @@ let PogData = new PogObject("Coleweight", {
     "jungle_amulet": true,
     "first_time": true,
     "tracked": {},
+    "itemStringed": "",
     "museum": [],
     "currentPet": "",
     "effMinerEnabled": false,
@@ -82,8 +83,7 @@ register("chat", (message, pet, event) => {
         constants.data.currentPet = "N/A"
 
     constants.data.save()
-}).setCriteria(/&r&aYou ([a-zA-Z]+) your &r&.([a-zA-Z]+)&r&a!&r/g)
-
+}).setCriteria(/&r&aYou ([a-zA-Z]+) your &r&.([a-zA-Z✦ ]+)&r&a!&r/g)
 
 register("chat", (state, event) => {
     constants.data.effMinerEnabled = state == "Enabled"

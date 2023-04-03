@@ -1,6 +1,6 @@
 import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
-import { drawCoolWaypoint, trace } from "../util/renderUtil"
+import { drawCoolWaypoint, drawLine, trace } from "../util/renderUtil"
 import { getWaypoints } from "../util/waypointLoader"
 import settings from "../settings"
 
@@ -32,6 +32,15 @@ export default registerCommand({
                 else
                     ChatLib.chat(`${constants.PREFIX}&eThere was an error parsing waypoints! ${res.message}`)
 
+                for (let i = 0; i < orderedWaypoints.length-1; i++)
+                {
+                    for (let j = 0; j < orderedWaypoints.length-i-1; j++)
+                    {
+                        if (parseInt(orderedWaypoints[j].options.name) >
+                            parseInt(orderedWaypoints[j+1].options.name))
+                            swap(orderedWaypoints, j, j+1)
+                    }
+                }
                 break
             case "unload":
             case "clear":
@@ -110,10 +119,15 @@ register("renderWorld", () => {
             orderedWaypoints[renderWaypoints[i]].z, r, g, b, { name: i < 3 ? orderedWaypoints[renderWaypoints[i]].options.name : "", renderBeacon: false, phase: i < 3, alpha })
     }
     const traceWP = orderedWaypoints[renderWaypoints[2]]
+    let color = settings.orderedColor
 
-    if (settings.orderedWaypointsLine && traceWP != undefined) {
-        trace(parseInt(traceWP.x) + 0.5, parseInt(traceWP.y), parseInt(traceWP.z) + 0.5, 0, 1, 0, 0.86, settings.orderedLineThickness)
-    }
+    if (!settings.orderedSetup && settings.orderedWaypointsLine && traceWP != undefined)
+        trace(parseInt(traceWP.x) + 0.5, parseInt(traceWP.y), parseInt(traceWP.z) + 0.5, color.getRed()/255, color.getGreen()/255, color.getBlue()/255, color.getAlpha()/255, settings.orderedLineThickness)
+
+    const currentWP = orderedWaypoints[renderWaypoints[1]]
+    if(settings.orderedSetup &&currentWP != undefined && traceWP != undefined)
+        drawLine(parseInt(currentWP.x) + 0.5, parseInt(currentWP.y) + 2.65, parseInt(currentWP.z) + 0.5, parseInt(traceWP.x) + 0.5, parseInt(traceWP.y) + 0.5, parseInt(traceWP.z) + 0.5,
+                color.getRed()/255, color.getGreen()/255, color.getBlue()/255, 0.5, 100)
     decideWaypoints()
 })
 
@@ -166,7 +180,7 @@ function decideWaypoints()
     }
 
     orderedWaypoints.forEach(waypoint => {
-        if(settings.orderedRenderAll &&
+        if(settings.orderedSetup &&
             !renderWaypoints.includes(waypoint.options.name-1) &&
             Math.hypot(Player.getX() - waypoint.x, Player.getY() - waypoint.y, Player.getZ() - waypoint.z) < 16
         )
@@ -178,3 +192,11 @@ function decideWaypoints()
 register("worldLoad", () => {
     if (currentOrderedWaypointIndex >= 0) currentOrderedWaypointIndex = 0
 })
+
+
+function swap(arr, first, second)
+{
+    var temp = arr[first]
+    arr[first] = arr[second]
+    arr[second] = temp
+}
