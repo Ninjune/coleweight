@@ -122,13 +122,24 @@ export function drawEspBox (x, y, z, red, green, blue, alpha, phase = true) // t
 }
 
 // stolen from soopy
-export function drawCoolWaypoint(x, y, z, r, g, b, {name = "", showDist = name != "", phase = true, renderBeacon = true, alpha = 0.6})
+/**
+ * Renders a waypoint with some settings.
+ * @param {number} x
+ * @param {number} y
+ * @param {number} z
+ * @param {number} r 0 - 1
+ * @param {number} g 0 - 1
+ * @param {number} b 0 - 1
+ * @param {*} options name = "", showDist = name defined, phase = true, renderBeacon = true, alpha = 0.6, drawBox = true
+ */
+export function drawCoolWaypoint(x, y, z, r, g, b, {name = "", showDist = name != "", phase = true, renderBeacon = true, alpha = 0.6, drawBox = true})
 {
     let distToPlayerSq=(x-Player.getRenderX())**2+(y-(Player.getRenderY()+Player.getPlayer()["func_70047_e"]()))**2+(z-Player.getRenderZ())**2
 
     //let alpha=Math.min(1,Math.max(0,1-(distToPlayerSq-10000)/12500))
 
-    drawEspBox(x+0.5,y,z+0.5,r,g,b, alpha, phase)
+    if(drawBox)
+        drawEspBox(x+0.5,y,z+0.5,r,g,b, alpha, phase)
     //if(renderBeacon) beaconBeam(x,y+1,z,r,g,b,Math.min(1,Math.max(0,(distToPlayerSq-25)/100))*alpha,!phase)
 
     if(name||showDist){

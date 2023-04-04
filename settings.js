@@ -68,6 +68,14 @@ class Settings {
     dwarvenNotifier = false;
 
     @SwitchProperty({
+        name: "Hide items",
+        description: "Makes items invisible.",
+        subcategory: "Random Features",
+        category: "General"
+    })
+    invisibleItems = false;
+
+    @SwitchProperty({
         name: "Debug",
         description: "Toggles debug mode.",
         subcategory: "Random Features",
@@ -114,6 +122,14 @@ class Settings {
         category: "General"
     })
     streamerRandomizeLobby = true;
+
+    @SwitchProperty({
+        name: "Disable waypoints on death",
+        description: "Disables any ordered waypoints you have loaded on death. (when streamer mode)",
+        subcategory: "Streamer mode",
+        category: "General"
+    })
+    streamerDisableWaypointsOnDeath = true;
     
     @SwitchProperty({
         name: "Ordered waypoints line",
@@ -152,7 +168,14 @@ class Settings {
         description: "Sets the color of the line.",
         category: "Ordered waypoints"
     })
-    orderedColor =  Color.GREEN;
+    orderedColor = Color.GREEN;
+
+    @SwitchProperty({
+        name: "Show normal waypoint distance",
+        description: "If normal waypoints (/cw waypoint) should show distance.",
+        category: "Ordered waypoints"
+    })
+    waypointShowDistance = true;
 
     @SwitchProperty({
         name: "Efficient miner with dillo warning",

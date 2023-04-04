@@ -53,23 +53,19 @@ register("renderDebug", event => {
     if(!(settings.streamerMode && settings.streamerBlockDebug)) return
     if(timers.debug <= 0)
     {
-        ChatLib.chat(`${constants.PREFIX}&bCW has canceled opening debug menu! (disable &aStreamer Mode&b in settings if you don't want this.)`)
+        ChatLib.chat(`${constants.PREFIX}&bCW has canceled opening debug menu! (disable &aStreamer Mode&b in settings if you don't want this.) (Hit F3 to stop this message spam)`)
         timers.debug = 20
     }
     cancel(event)
 })
 
-register("renderItemIntoGui", (item, x, y, event) => {
-    if(!settings.debug) return
-    cancel(event)
-    //item.itemStack.func_150996_a(Item2.func_111206_d("minecraft:air")) // item.itemStack.setItem(Item.getByNameOrId())
-})
 
-
-register("renderHand", event => {
-    if(!settings.debug) return
-    cancel(event)
-})
+register("chat", (event) => {
+    ChatLib.chat("A")
+    if(!(settings.streamerMode && settings.streamerDisableWaypointsOnDeath)) return
+    ChatLib.chat(`${constants.PREFIX}&bCW has disabled your waypoints because you died! "/cw ordered enable" to turn them back on. (disable &aStreamer mode&b to disable this feature)`)
+    ChatLib.command("cw ordered disable", true)
+}).setChatCriteria(/^[&r&c]* . [&r&7]*You.*/g)
 
 function randomServer()
 {

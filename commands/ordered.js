@@ -4,24 +4,26 @@ import { drawCoolWaypoint, drawLine, trace } from "../util/renderUtil"
 import { getWaypoints } from "../util/waypointLoader"
 import settings from "../settings"
 
-let currentOrderedWaypointIndex = 0,
+let currentOrderedWaypointIndex = 1,
     orderedWaypoints = [],
     renderWaypoints = [],
     lastCloser = 0,
-    res
+    res,
+    enabled = true
 
 export default registerCommand({
     aliases: ["ordered", "order"],
     description: "Ordered waypoints.",
     category: "waypoints",
     options: ["(load, unload, skipto, skip, unskip)"],
-    subcommands: [["load", "unload", "skip", "skipto", "unskip", "clear"]],
+    subcommands: [["load", "unload", "skip", "skipto", "unskip", "clear", "enable", "disable"]],
     execute: (args) => {
         if(args[1] == undefined)
             return ChatLib.chat(`${constants.PREFIX}&eUnknown usage! Hit tab on "/cw ordered " to see usages.`)
 
         switch(args[1].toLowerCase())
         {
+            case "import":
             case "load":
                 res = getWaypoints(Java.type("net.minecraft.client.gui.GuiScreen").func_146277_j(), "soopy")
                 if(res.success)
@@ -65,6 +67,7 @@ export default registerCommand({
             case "skipto":
                 if(parseInt(args[2]) > 0 && parseInt(args[2]) < orderedWaypoints.length)
                 {
+                    if(parseInt(args[2]) == 1) args[2] = 2
                     currentOrderedWaypointIndex = parseInt(args[2])-2
                     ChatLib.chat(`${constants.PREFIX}&bSkipped to ${parseInt(args[2])}`)
                 }
@@ -85,6 +88,14 @@ export default registerCommand({
                 else
                     ChatLib.chat(`${constants.PREFIX}&eCant go back from 0!`)
                 break
+            case "enable":
+                enabled = true
+                ChatLib.chat(`${constants.PREFIX}&bEnabled ordered waypoints!`)
+                break
+            case "disable":
+                enabled = false
+                ChatLib.chat(`${constants.PREFIX}&bDisabled ordered waypoints!`)
+                break
             default:
                 return ChatLib.chat(`${constants.PREFIX}&eUnknown usage! Hit tab on "/cw ordered " to see usages.`)
         }
@@ -94,6 +105,7 @@ export default registerCommand({
 
 // stolen from soopy (somewhat)
 register("renderWorld", () => {
+    if(!enabled) return
     let r, g, b, alpha
     for(let i = 0; i < renderWaypoints.length; i++)
     {
@@ -127,7 +139,7 @@ register("renderWorld", () => {
     const currentWP = orderedWaypoints[renderWaypoints[1]]
     if(settings.orderedSetup &&currentWP != undefined && traceWP != undefined)
         drawLine(parseInt(currentWP.x) + 0.5, parseInt(currentWP.y) + 2.65, parseInt(currentWP.z) + 0.5, parseInt(traceWP.x) + 0.5, parseInt(traceWP.y) + 0.5, parseInt(traceWP.z) + 0.5,
-                color.getRed()/255, color.getGreen()/255, color.getBlue()/255, 0.5, 100)
+                 color.getRed()/255, color.getGreen()/255, color.getBlue()/255, 0.5, 100)
     decideWaypoints()
 })
 
@@ -190,7 +202,7 @@ function decideWaypoints()
 
 
 register("worldLoad", () => {
-    if (currentOrderedWaypointIndex >= 0) currentOrderedWaypointIndex = 0
+    if (currentOrderedWaypointIndex >= 0) currentOrderedWaypointIndex = 1
 })
 
 

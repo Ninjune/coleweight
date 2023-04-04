@@ -7,7 +7,7 @@ export function getWaypoints(data, format) {
 
     try {
         if (data.startsWith("<Skytils-Waypoint-Data>(V"))
-            return { success: false, message: "Loader doesn't support Skytils V1"}
+            return { success: false, message: "Loader doesn't support Skytils V1 (goto ninjune.dev/waypoint)"}
         else if (data.startsWith("eyJ")) // old skytils
             oldJSON = JSON.parse(B64.decode(data))
         else if (data.startsWith("[{")) // soopy from webiste??

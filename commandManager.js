@@ -105,6 +105,7 @@ import "./commands/import"
 import "./commands/info"
 import "./commands/leaderboard"
 import "./commands/markingLobbies"
+import "./commands/miningtest"
 import "./commands/move"
 import "./commands/optimize"
 import "./commands/ordered"
@@ -114,6 +115,7 @@ import "./commands/setkey"
 import "./commands/stopwatch"
 import "./commands/timer"
 import "./commands/track"
+import "./commands/waypoints"
 
 // clean up from some time ago (added v1.10.0)
 ChatLib.command("/cw delete commands/calculate/calculate.js", true)
