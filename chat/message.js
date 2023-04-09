@@ -25,7 +25,7 @@ register("chat", (level, typeOfChat, hypixelRank, username, ironman, playerMessa
     message = ChatLib.getChatMessage(event, true),
     cancel(event)
 
-    messagePrefix = message.slice(0, message.indexOf(":")) + ` &8[&6#${addCommas(cwlbPlayerData.rank)}&8]&f: `
+    messagePrefix = message.slice(0, message.indexOf(":")) + ` &8[${cwlbPlayerData.rank <= 50 ? "&b" : "&6"}#${addCommas(cwlbPlayerData.rank)}&8]&f: `
 
     newMessage.addTextComponent(messagePrefix)
 

@@ -43,6 +43,14 @@ export default registerCommand({
                             swap(orderedWaypoints, j, j+1)
                     }
                 }
+
+                for(let i = 1; i < orderedWaypoints.length; i++)
+                {
+                    if(parseInt(orderedWaypoints[i]?.options?.name) != i+1)
+                        ChatLib.chat(`${constants.PREFIX}&bNote: Waypoint ${i+1} is not in the right order or is not a number! Current is: ${parseInt(orderedWaypoints[i]?.options?.name)}`)
+                    
+                }
+
                 break
             case "unload":
             case "clear":
@@ -62,7 +70,6 @@ export default registerCommand({
                     currentOrderedWaypointIndex -= orderedWaypoints.length-1
 
                 ChatLib.chat(`${constants.PREFIX}&bSkipped ${args[2] ?? 1} vein(s).`)
-
                 break
             case "skipto":
                 if(parseInt(args[2]) > 0 && parseInt(args[2]) < orderedWaypoints.length)
@@ -96,6 +103,16 @@ export default registerCommand({
                 enabled = false
                 ChatLib.chat(`${constants.PREFIX}&bDisabled ordered waypoints!`)
                 break
+            case "delete":
+                if(orderedWaypoints.length < 1) return ChatLib.chat(`${constants.PREFIX}&eWaypoints have not been loaded!`)
+                if(args[2] == undefined) return ChatLib.chat(`${constants.PREFIX}&bUsage: '/cw ordered delete (number)'`)
+                wNum = parseInt(args[2])
+                if(wNum == undefined || wNum < 1 || wNum > orderedWaypoints.length) return ChatLib.chat(`${constants.PREFIX}&eInvalid number! Must be in range (1 - ${orderedWaypoints.length})`)
+                for(let i = wNum-1; i < orderedWaypoints.length; i++)
+                    orderedWaypoints[i].options.name = (parseInt(orderedWaypoints[i].options.name)-1).toString()
+                orderedWaypoints.splice(wNum-1, 1)
+                ChatLib.chat(`${constants.PREFIX}&bRemoved waypoint ${wNum}!`)
+                break
             default:
                 return ChatLib.chat(`${constants.PREFIX}&eUnknown usage! Hit tab on "/cw ordered " to see usages.`)
         }
@@ -127,6 +144,12 @@ register("renderWorld", () => {
             r = 1
             alpha = 0.4
         }
+        if(orderedWaypoints[renderWaypoints[i]] == undefined)
+        {
+            if(settings.debug)
+                console.log(renderWaypoints[i] + " " + i)
+            continue
+        }
         drawCoolWaypoint(orderedWaypoints[renderWaypoints[i]].x, orderedWaypoints[renderWaypoints[i]].y,
             orderedWaypoints[renderWaypoints[i]].z, r, g, b, { name: i < 3 ? orderedWaypoints[renderWaypoints[i]].options.name : "", renderBeacon: false, phase: i < 3, alpha })
     }
@@ -150,9 +173,8 @@ function decideWaypoints()
     if (orderedWaypoints.length < 1) return
 
     let beforeWaypoint = orderedWaypoints[currentOrderedWaypointIndex - 1]
-    if (beforeWaypoint != undefined) {
+    if (beforeWaypoint != undefined)
         renderWaypoints.push(beforeWaypoint.options.name-1)
-    }
 
     let currentWaypoint = orderedWaypoints[currentOrderedWaypointIndex]
     let distanceTo1 = Infinity
@@ -162,12 +184,14 @@ function decideWaypoints()
     }
 
     let nextWaypoint = orderedWaypoints[currentOrderedWaypointIndex + 1]
-    if (nextWaypoint == undefined) {
-        if (orderedWaypoints[0] != undefined) {
+    if (nextWaypoint == undefined) 
+    {
+        if (orderedWaypoints[0] != undefined)
             nextWaypoint = orderedWaypoints[0]
-        } else if (orderedWaypoints[1] != undefined) {
+        else if (orderedWaypoints[1] != undefined) 
             nextWaypoint = orderedWaypoints[1]
-        }
+        else if (orderedWaypoints[2] != undefined) 
+            nextWaypoint = orderedWaypoints[2]
     }
     let distanceTo2 = Infinity
     if (nextWaypoint != undefined) {
@@ -178,7 +202,7 @@ function decideWaypoints()
     if (lastCloser === currentOrderedWaypointIndex && distanceTo1 > distanceTo2 && distanceTo2 < settings.nextWaypointRange) {
         currentOrderedWaypointIndex++
         if (orderedWaypoints[currentOrderedWaypointIndex] == undefined)
-            currentOrderedWaypointIndex = 0
+            currentOrderedWaypointIndex = 1
         return
     }
 

@@ -61,7 +61,6 @@ register("renderDebug", event => {
 
 
 register("chat", (event) => {
-    ChatLib.chat("A")
     if(!(settings.streamerMode && settings.streamerDisableWaypointsOnDeath)) return
     ChatLib.chat(`${constants.PREFIX}&bCW has disabled your waypoints because you died! "/cw ordered enable" to turn them back on. (disable &aStreamer mode&b to disable this feature)`)
     ChatLib.command("cw ordered disable", true)

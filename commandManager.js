@@ -53,7 +53,7 @@ register("command", (...args) => {
 
 
 register("command", (...args) => {
-    commands.find(command => command.aliases[0] == "fetchdiscord").execute(args)
+   ChatLib.command("cw fetchdiscord", true)
 }).setTabCompletions((args) => {
     let players = World.getAllPlayers().map((p) => p.getName())
     .filter((n) =>

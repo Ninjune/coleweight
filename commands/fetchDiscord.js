@@ -9,7 +9,6 @@ registerCommand({
     description: "Finds the discord of a Hypixel player. (if linked to Hypixel)",
     options: "(IGN)",
     category: "miscellaneous",
-    cw: false,
     execute: (args) => {
         if(args[0] == undefined) { ChatLib.chat(`${PREFIX}&eRequires a username!`); return }
 
