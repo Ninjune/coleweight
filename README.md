@@ -1,3 +1,4 @@
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/B0B2K92P3)
 # Coleweight
 Github for:
 https://www.chattriggers.com/modules/v/Coleweight
