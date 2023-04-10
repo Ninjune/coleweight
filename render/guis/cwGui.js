@@ -13,12 +13,15 @@ let cwValues = [],
  baseColeweight = 0,
  stepsSinceLast = 0,
  coleweightHr = 0,
- cwValuesSum = 0
+ cwValuesSum = 0,
+ passPlayerCW = 0,
+ passPlayerRank = 0
 
 const cwGui = new BaseGui(["coleweightGui", "coleweight", "cw"], () => {
     if(!settings.cwToggle || constants.data.api_key == undefined) return
     let coleweightMessage = "",
-     uptimeHr = Math.floor(uptime/60/60)
+     uptimeHr = Math.floor(uptime/60/60),
+     renderString = ""
 
     coleweight > 1000 ?coleweightMessage = `&b${coleweight.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`: coleweightMessage = `&b${coleweight.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`
     if(cwValues[0] != undefined && upTimeTrack && calcCwPerHr)
@@ -32,15 +35,20 @@ const cwGui = new BaseGui(["coleweightGui", "coleweight", "cw"], () => {
     }
 
     if (!(cwGui.isOpen() || upTimeTrack)) return
-
+    renderString += `&aCW: &b${coleweightMessage}\n&aCW/hr: &b${coleweightHr}\n`
     if(uptimeHr >= 1)
-        Renderer.drawStringWithShadow(`&aCW: &b${coleweightMessage}\n&aCW/hr: &b${coleweightHr}\n&aUptime: &b${uptimeHr}h ${Math.floor(uptime/60) - uptimeHr*60}m\n&aColeweight Gained: &b${Math.ceil(cwValuesSum*100) / 100}`,
-        constants.data.coleweightGui.x, constants.data.coleweightGui.y)
+        renderString += `&aUptime: &b${uptimeHr}h ${Math.floor(uptime/60) - uptimeHr*60}m\n`
     else
-        Renderer.drawStringWithShadow(`&aCW: &b${coleweightMessage}\n&aCW/hr: &b${coleweightHr}\n&aUptime: &b${Math.floor(uptime/60)}m ${Math.floor(uptime%60)}s\n&aColeweight Gained: &b${Math.ceil(cwValuesSum*100) / 100}`,
-        constants.data.coleweightGui.x, constants.data.coleweightGui.y)
+        renderString += `&aUptime: &b${Math.floor(uptime/60)}m ${Math.floor(uptime%60)}s\n`
+    renderString += `&aColeweight Gained: &b${Math.ceil(cwValuesSum*100) / 100}\n`
+
+    if(passPlayerCW != 0 && coleweightHr === parseFloat(coleweightHr))
+        renderString += `&aTime to pass &6#${passPlayerRank}&a ${passPlayerName}:&b ${Math.round((passPlayerCW - coleweight)/coleweightHr)}h ${Math.floor((passPlayerCW - coleweight)/coleweightHr*60%60)}m`
+
+    Renderer.drawStringWithShadow(renderString, constants.data.coleweightGui.x, constants.data.coleweightGui.y)
 }, reloadColeweight)
 registerGui(cwGui)
+
 
 function reloadColeweight()
 {
@@ -48,6 +56,16 @@ function reloadColeweight()
     stepsSinceLast = 0
     cwValues = []
     uptime = 0
+
+    if(settings.cwPassPlayer == "") return
+    axios.get(`https://ninjune.dev/api/coleweight?username=${settings.cwPassPlayer}`)
+    .then(res => {
+        if(res.data.code != undefined) // good
+            return ChatLib.chat(`${constants.PREFIX}&ePass player name in settings is not a valid player!`)
+        passPlayerCW = res.data.coleweight
+        passPlayerRank = res.data.rank
+        passPlayerName = res.data.name
+    })
 }
 
 
@@ -130,3 +148,8 @@ register("step", () => {
         catch(e) { if(settings.debug) console.log(e) }
     }
 }).setFps(1)
+
+
+register("gameLoad", () => {
+    reloadColeweight()
+})

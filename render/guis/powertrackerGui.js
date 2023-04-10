@@ -14,7 +14,6 @@ let sessionRunning = false,
  seconds = 0,
  timeSinceLastGain = 0
 
-const bossBar = Java.type("net.minecraft.entity.boss.BossStatus").field_82827_c
 const powderGui = new BaseGui(["powdertrackerGui", "powdertracker", "powder"], () => {
     if (!powderGui.isOpen() && (!settings.trackerVisible || !sessionRunning)) return
 
@@ -55,6 +54,9 @@ registerGui(powderGui)
 
 function DoublePowderActive()
 {
+    const bossBar = Java.type("net.minecraft.entity.boss.BossStatus").field_82827_c
+    if(bossBar == undefined)
+        return false
     return bossBar.includes("2X POWDER")
 }
 

@@ -27,6 +27,14 @@ class Settings {
         ChatLib.command("cw move coleweight", true);
     }
 
+    @TextProperty({
+        name: "Pass player",
+        description: "Player that you want to pass in Coleweight. Case insensitive. Reload the gui with \"/cw reload coleweight\" after changing this. (leave blank for none)",
+        subcategory: "Coleweight Tracker",
+        category: "Gui"
+    })
+    cwPassPlayer = "";
+
     @SwitchProperty({
         name: "Rank chat",
         description: "Enables the Coleweight rank message after a name in chat.",
