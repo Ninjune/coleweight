@@ -84,6 +84,14 @@ class Settings {
     invisibleItems = false;
 
     @SwitchProperty({
+        name: "Auto renew Crystal Hollows Pass",
+        description: "Renews pass when the 1 minute message pops up.",
+        subcategory: "Random Features",
+        category: "General"
+    })
+    autoRenew = true;
+
+    @SwitchProperty({
         name: "Debug",
         description: "Toggles debug mode.",
         subcategory: "Random Features",

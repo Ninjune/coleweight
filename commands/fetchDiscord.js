@@ -10,9 +10,10 @@ registerCommand({
     options: "(IGN)",
     category: "miscellaneous",
     execute: (args) => {
-        if(args[0] == undefined) { ChatLib.chat(`${PREFIX}&eRequires a username!`); return }
+        let username = args[1]
+        if(username == undefined) { ChatLib.chat(`${PREFIX}&eRequires a username!`); return }
 
-        axios.get(`https://api.mojang.com/users/profiles/minecraft/${args[0]}`)
+        axios.get(`https://api.mojang.com/users/profiles/minecraft/${username}`)
         .then(mojangRes => {
             let uuid = mojangRes.data.id
             axios.get(`https://api.hypixel.net/player?key=${constants.data.api_key}&uuid=${uuid}`)
@@ -26,7 +27,7 @@ registerCommand({
             })
         })
         .catch(err => {
-            ChatLib.chat(`${PREFIX}&eInvalid name! `)
+            ChatLib.chat(`${PREFIX}&eInvalid name!`)
         })
     }
 })

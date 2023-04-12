@@ -53,7 +53,7 @@ register("command", (...args) => {
 
 
 register("command", (...args) => {
-   ChatLib.command("cw fetchdiscord", true)
+   ChatLib.command(`cw fetchdiscord ${args[1]}`, true)
 }).setTabCompletions((args) => {
     let players = World.getAllPlayers().map((p) => p.getName())
     .filter((n) =>
@@ -118,4 +118,4 @@ import "./commands/track"
 import "./commands/waypoints"
 
 // clean up from some time ago (added v1.10.0)
-ChatLib.command("/cw delete commands/calculate/calculate.js", true)
+ChatLib.command("cw delete commands/calculate/calculate.js", true)

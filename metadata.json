@@ -3,6 +3,6 @@
   "creator": "Ninjune",
   "entry": "index.js",
   "description": "Mining utilities.",
-  "version": "1.10.5",
+  "version": "1.10.6",
   "requires": ["axios", "PogData", "Vigilance", "Elementa", "BeaconBeam"]
 }
