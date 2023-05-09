@@ -91,6 +91,38 @@ class Settings {
     })
     autoRenew = true;
 
+    @TextProperty({
+        name: "Low proc",
+        description: "Your low pristine proc for notification. Leave empty to disable. Delimit multiple using ','. No other characters aside from '0'-'9' & ','. Will find even if multiple of low proc.",
+        subcategory: "Pristine proc",
+        category: "General"
+    })
+    lowProc = "";
+
+    @TextProperty({
+        name: "Proc sound",
+        description: "Sound for low proc.",
+        subcategory: "Pristine proc",
+        category: "General"
+    })
+    lowProcSound = "random.orb";
+
+    @TextProperty({
+        name: "Proc volume",
+        description: "Volume for proc sound.",
+        subcategory: "Pristine proc",
+        category: "General"
+    })
+    lowProcVolume = "1";
+
+    @TextProperty({
+        name: "Proc pitch",
+        description: "Pitch for low proc sound.",
+        subcategory: "Pristine proc",
+        category: "General"
+    })
+    lowProcPitch = "1";
+
     @SwitchProperty({
         name: "Debug",
         description: "Toggles debug mode.",

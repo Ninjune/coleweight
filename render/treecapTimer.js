@@ -38,7 +38,7 @@ register("chat", (lvl, pet, event) => {
     if(!settings.treecapTimer || !checkInPark()) return
     if(pet != "Monkey") return monkeyLevel = 0
     monkeyLevel = lvl
-}).setCriteria(/&cAutopet &eequipped your &.\[Lvl ([0-9]+)] &.([a-zA-Z]+)&e! &a&lVIEW RULE&r/g)
+}).setCriteria(/&cAutopet &eequipped your &.\[Lvl ([0-9]+)] &.([a-zA-Z ]+)(?: .)*&e! &a&lVIEW RULE&r/g)
 
 
 

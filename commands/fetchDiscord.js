@@ -13,21 +13,21 @@ registerCommand({
         let username = args[1]
         if(username == undefined) { ChatLib.chat(`${PREFIX}&eRequires a username!`); return }
 
-        axios.get(`https://api.mojang.com/users/profiles/minecraft/${username}`)
+        axios.get(`https://api.mojang.com/users/profiles/minecraft/${username}`, { headers: {"User-Agent": "Coleweight-requests"} })
         .then(mojangRes => {
             let uuid = mojangRes.data.id
-            axios.get(`https://api.hypixel.net/player?key=${constants.data.api_key}&uuid=${uuid}`)
+            axios.get(`https://api.hypixel.net/player?key=${constants.data.api_key}&uuid=${uuid}`, { headers: {"User-Agent": "Coleweight-requests"} })
             .then(hypixelRes => {
                 let discordMessage = new TextComponent(`${PREFIX}&a${mojangRes.data.name}'s Discord: `)
-                ChatLib.chat(discordMessage);
+                ChatLib.chat(discordMessage)
                 ChatLib.chat(`&b${hypixelRes.data.player.socialMedia.links.DISCORD}`)
             })
             .catch(err => {
-                ChatLib.chat(`${PREFIX}&eNo discord linked :( (or no key linked)`)
+                ChatLib.chat(`${PREFIX}&eNo discord linked :( (or no key linked)${settings.debug ? " " + err : ""}`)
             })
         })
         .catch(err => {
-            ChatLib.chat(`${PREFIX}&eInvalid name!`)
+            ChatLib.chat(`${PREFIX}&eInvalid name! ${err}`)
         })
     }
 })

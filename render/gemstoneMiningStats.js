@@ -64,7 +64,7 @@ register("itemTooltip", (lore, item) => { // this is so bad 💀
 
 
 register("gameLoad", () => {
-    axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${Player.getUUID()}`)
+    axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${Player.getUUID()}`, { headers: {"User-Agent": "Coleweight-requests"} })
     .then(res => {
         let selected = getSelectedProfile(res)?.members[Player.getUUID().replace(/-/g, "")]
          professional = selected?.mining_core?.nodes?.professional,
@@ -139,7 +139,9 @@ register("step", () => {
     for (i = 0; i < Player.getContainer().getSize(); i++)
     {
         let item = Player.getContainer().getStackInSlot(i)
-        let loreType = item?.getLore()[0]?.removeColorCode()
+        let lore = item?.getLore()
+        if(lore == undefined) return
+        let loreType = lore[0]?.removeColorCode()
         if(!settings.showPowderSum || !loreType?.match(/(^Heart|^Reset).*/g) || (checkedHotmInfo && checkedHotmReset) || getPlayerDataSuccess) continue
         let loreItems = item.getLore()
         if(!loreItems)

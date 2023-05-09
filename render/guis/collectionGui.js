@@ -3,8 +3,8 @@ import settings from "../../settings"
 import { textGui, trackCollection } from "../../util/helperFunctions"
 import { BaseGui } from "../BaseGui"
 import { registerGui } from "../../guiManager"
-import axios from "../../../axios"
 import { addNotation, getObjectValue } from "../../util/helperFunctions"
+import axios from "../../../axios"
 
 let itemStringed = "",
     trackedItem = "Collection Not set! /cw track",
@@ -85,12 +85,13 @@ function calcApi(apiPath, tempUuid)
 
     try
     {
-        axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${uuid}`)
+        axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${uuid}`, { headers: {"User-Agent": "Coleweight-requests"} })
         .then(res => {
-            for(let i=0; i < res.data.profiles.length; i+=1)
+            res = res.data
+            for(let i=0; i < res.profiles.length; i+=1)
             {
-                if(res.data.profiles[i].selected == true)
-                    profileData = res.data.profiles[i]
+                if(res.profiles[i].selected == true)
+                    profileData = res.profiles[i]
             }
             let source = getObjectValue(profileData, apiPath)[trackedItem]
 
@@ -120,6 +121,11 @@ function calcApi(apiPath, tempUuid)
             {
                 apiCallsSinceLastChange += 1
             }
+        })
+        .catch(e => {
+            if(!settings.debug) return
+            console.dir(e)
+            console.dir(e.response)
         })
     }
     catch(e) { if(settings.debug) console.log(e)}

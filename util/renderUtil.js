@@ -13,7 +13,7 @@ export function trace (x, y, z, red, green, blue, alpha, lineWidth = 1)
         drawLine(Player.getRenderX(), Player.getRenderY()+1.62, Player.getRenderZ(), x, y, z, red, green, blue, alpha, lineWidth)
 }
 
-export function drawLine(x1, y1, z1, x2, y2, z2, red, green, blue, alpha, lineWidth = 1)
+export function drawLine (x1, y1, z1, x2, y2, z2, red, green, blue, alpha, lineWidth = 1)
 {
     GL11.glBlendFunc(770,771)
     GL11.glEnable(GL11.GL_BLEND)
@@ -132,7 +132,7 @@ export function drawEspBox (x, y, z, red, green, blue, alpha, phase = true) // t
  * @param {number} b 0 - 1
  * @param {*} options name = "", showDist = name defined, phase = true, renderBeacon = true, alpha = 0.6, drawBox = true
  */
-export function drawCoolWaypoint(x, y, z, r, g, b, {name = "", showDist = name != "", phase = true, renderBeacon = true, alpha = 0.6, drawBox = true})
+export function drawCoolWaypoint(x, y, z, r, g, b, {name = "", showDist = name != "", phase = true, renderBeacon = true, alpha = 0.6, drawBox = true, nameColor = "a",})
 {
     let distToPlayerSq=(x-Player.getRenderX())**2+(y-(Player.getRenderY()+Player.getPlayer()["func_70047_e"]()))**2+(z-Player.getRenderZ())**2
 
@@ -150,7 +150,123 @@ export function drawCoolWaypoint(x, y, z, r, g, b, {name = "", showDist = name !
         let loc5=[Player.getRenderX()+(x+0.5-Player.getRenderX())/(distToPlayer/distRender),Player.getRenderY()+Player.getPlayer()["func_70047_e"]()+(y+2+20*distToPlayer/300-(Player.getRenderY()+Player.getPlayer()["func_70047_e"]()))/(distToPlayer/distRender),Player.getRenderZ()+(z+0.5-Player.getRenderZ())/(distToPlayer/distRender)]
         let loc6=[Player.getRenderX()+(x+0.5-Player.getRenderX())/(distToPlayer/distRender),Player.getRenderY()+Player.getPlayer()["func_70047_e"]()+(y+2+20*distToPlayer/300-10*distToPlayer/300-(Player.getRenderY()+Player.getPlayer()["func_70047_e"]()))/(distToPlayer/distRender),Player.getRenderZ()+(z+0.5-Player.getRenderZ())/(distToPlayer/distRender)]
 
-        if(name != "") Tessellator.drawString("\xA7a"+name,loc5[0],loc5[1],loc5[2],0,true,distRender/300,false)
+        if(name != "") Tessellator.drawString("\xA7"+nameColor+name,loc5[0],loc5[1],loc5[2],0,true,distRender/300,false)
         if(showDist) Tessellator.drawString("\xA7b("+addCommas(Math.round(distToPlayer))+"m)",name?loc6[0]:loc5[0],name?loc6[1]:loc5[1],name?loc6[2]:loc5[2],0,false,distRender/300,false)
     }
+}
+
+
+export function getBlocksAlongLine(startCoord, endCoord)
+{
+    let [x1, y1, z1] = startCoord
+    let [x2, y2, z2] = endCoord
+    const dx = Math.abs(x2 - x1)
+    const dy = Math.abs(y2 - y1)
+    const dz = Math.abs(z2 - z1)
+    const sx = x2 > x1 ? 1 : -1
+    const sy = y2 > y1 ? 1 : -1
+    const sz = z2 > z1 ? 1 : -1
+    let x = x1
+    let y = y1
+    let z = z1
+    const blocks = []
+
+    let err1 = 0, err2 = 0
+
+    if (dx >= dy && dx >= dz)
+    {
+        let err1 = 2 * dy - dx
+        let err2 = 2 * dz - dx
+
+        while (x != x2)
+        {
+            blocks.push([x, y, z])
+
+            if (err1 > -dx)
+            {
+                err1 -= 2 * dx
+                y += sy
+            }
+            if (err2 > -dx)
+            {
+                err2 -= 2 * dx
+                z += sz
+            }
+            if (err1 < err2)
+            {
+                err1 += 2 * dy
+                x += sx
+            }
+            else
+            {
+                err2 += 2 * dz
+                x += sx
+            }
+        }
+    }
+    else if (dy >= dx && dy >= dz)
+    {
+        let err1 = 2 * dx - dy
+        let err2 = 2 * dz - dy
+
+        while (y != y2)
+        {
+            blocks.push([x, y, z])
+
+            if (err1 > -dy)
+            {
+                err1 -= 2 * dy
+                x += sx
+            }
+            if (err2 > -dy)
+            {
+                err2 -= 2 * dy
+                z += sz
+            }
+            if (err1 < err2)
+            {
+                err1 += 2 * dx
+                y += sy
+            }
+            else
+            {
+                err2 += 2 * dz
+                y += sy
+            }
+        }
+    }
+    else
+    {
+        let err1 = 2 * dy - dz
+        let err2 = 2 * dx - dz
+
+        while (z != z2)
+        {
+            blocks.push([x, y, z])
+
+            if (err1 > -dz)
+            {
+                err1 -= 2 * dz
+                y += sy
+            }
+            if (err2 > -dz)
+            {
+                err2 -= 2 * dz
+                x += sx
+            }
+            if (err1 < err2)
+            {
+                err1 += 2 * dy
+                z += sz
+            }
+            else
+            {
+                err2 += 2 * dx
+                z += sz
+            }
+        }
+    }
+
+    blocks.push([x2, y2, z2])
+    return blocks
 }

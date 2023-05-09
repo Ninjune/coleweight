@@ -40,20 +40,13 @@ function checkAreas()
 }
 
 registerGui(miningAbilitiesGui)
-register("renderOverlay", () => {
-    if(!settings.miningAbilities || !checkAreas()) return
-    activeAbilities.forEach(ability => {
-        if(ability.title.drawState == 1)
-            ability.title.draw()
-    })
-})
 
 register("step", () => {
     activeAbilities.forEach(ability => {
         if(ability.timer > 0)
             ability.timer -= 1
         else if (ability.title.drawState == 0)
-            ability.title.drawState = 1
+            ability.title.draw()
     })
 }).setDelay(1)
 

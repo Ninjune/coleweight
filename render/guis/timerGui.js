@@ -3,6 +3,8 @@ import settings from "../../settings"
 import constants from "../../util/constants"
 import { Title } from "../../util/helperFunctions"
 import { BaseGui } from "../BaseGui"
+
+
 const timerGui = new BaseGui(["timerGui", "timer"], () => {
         if (!settings.timerVisible || (constants.data.timerGui.timer <= 0 && !settings.timerEndVisible && !timerGui.isOpen())) return
 
@@ -25,14 +27,8 @@ register("step", () => {
         constants.data.timerGui.timer -= 1
     else if (constants.data.timerTitlePlay)
     {
-        title.drawState = 1
+        title.draw()
         constants.data.timerTitlePlay = false
         constants.data.save()
     }
 }).setFps(1)
-
-
-register("renderOverlay", () => {
-    if(title.drawState == 1)
-        title.draw()
-})

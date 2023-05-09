@@ -1,8 +1,16 @@
 import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
-import { drawCoolWaypoint, drawLine, trace } from "../util/renderUtil"
+import { drawCoolWaypoint, drawEspBox, drawLine, getBlocksAlongLine, trace } from "../util/renderUtil"
 import { getWaypoints } from "../util/waypointLoader"
 import settings from "../settings"
+import { Title } from "../util/helperFunctions"
+
+const clipTitle = new Title("&cClip next",
+    {"scale": 2, "sound": "mob.bat.hurt", "yOffset": 50}
+)
+const etherTitle = new Title("&5Etherwarp next",
+    {"scale": 2, "sound": "mob.endermen.portal", "yOffset": 50}
+)
 
 let currentOrderedWaypointIndex = 1,
     orderedWaypoints = [],
@@ -16,7 +24,7 @@ export default registerCommand({
     description: "Ordered waypoints.",
     category: "waypoints",
     options: ["(load, unload, skipto, skip, unskip)"],
-    subcommands: [["load", "unload", "skip", "skipto", "unskip", "clear", "enable", "disable"]],
+    subcommands: [["load", "unload", "skip", "skipto", "unskip", "clear", "enable", "disable", "delete", "remove", "etherwarp", "paneclip"]],
     execute: (args) => {
         if(args[1] == undefined)
             return ChatLib.chat(`${constants.PREFIX}&eUnknown usage! Hit tab on "/cw ordered " to see usages.`)
@@ -45,12 +53,8 @@ export default registerCommand({
                 }
 
                 for(let i = 1; i < orderedWaypoints.length; i++)
-                {
                     if(parseInt(orderedWaypoints[i]?.options?.name) != i+1)
                         ChatLib.chat(`${constants.PREFIX}&bNote: Waypoint ${i+1} is not in the right order or is not a number! Current is: ${parseInt(orderedWaypoints[i]?.options?.name)}`)
-                    
-                }
-
                 break
             case "unload":
             case "clear":
@@ -104,6 +108,7 @@ export default registerCommand({
                 ChatLib.chat(`${constants.PREFIX}&bDisabled ordered waypoints!`)
                 break
             case "delete":
+            case "remove":
                 if(orderedWaypoints.length < 1) return ChatLib.chat(`${constants.PREFIX}&eWaypoints have not been loaded!`)
                 if(args[2] == undefined) return ChatLib.chat(`${constants.PREFIX}&bUsage: '/cw ordered delete (number)'`)
                 wNum = parseInt(args[2])
@@ -112,6 +117,47 @@ export default registerCommand({
                     orderedWaypoints[i].options.name = (parseInt(orderedWaypoints[i].options.name)-1).toString()
                 orderedWaypoints.splice(wNum-1, 1)
                 ChatLib.chat(`${constants.PREFIX}&bRemoved waypoint ${wNum}!`)
+                break
+            case "add":
+            case "insert":
+                if(args[2] == undefined) return ChatLib.chat(`${constants.PREFIX}&bStand where you want to add a waypoint (will be block under you) and do '/cw waypoint insert (number)'`)
+                wX = parseInt(Player.getX())
+                wY = parseInt(Player.getY())-1
+                wZ = parseInt(Player.getZ())
+                wNum = parseInt(args[2])
+                if(wNum == orderedWaypoints.length + 1)
+                {
+                    orderedWaypoints.push({x: wX, y: wY, z: wZ, r:0, g:1, b: 0, options: {name: wNum}})
+                    return ChatLib.chat(`${constants.PREFIX}&bAdded waypoint ${wNum} at ${wX}, ${wY}, ${wZ}!`)
+                }
+                if(wNum == undefined || wNum < 1 || wNum > orderedWaypoints.length) return ChatLib.chat(`${constants.PREFIX}&eInvalid number! Must be in range (1 - ${orderedWaypoints.length})`)
+
+                for(let i = wNum-1; i < orderedWaypoints.length; i++)
+                    orderedWaypoints[i].options.name = (parseInt(orderedWaypoints[i].options.name)+1).toString()
+
+                orderedWaypoints.splice(wNum-1, 0, {x: wX, y: wY, z: wZ, r:0, g:1, b: 0, options: {name: wNum.toString()}})
+                ChatLib.chat(`${constants.PREFIX}&bInserted waypoint ${wNum} at ${wX}, ${wY}, ${wZ}!`)
+            case "etherwarp":
+                if(args[2] == undefined) return ChatLib.chat(`${constants.PREFIX}&bMarks a vein as etherwarp. Usage: '/cw ordered etherwarp (number)'`)
+                wNum = parseInt(args[2])-1
+                if(orderedWaypoints[wNum] == undefined) return ChatLib.chat(`${constants.PREFIX}&bVein does not exist.`)
+
+                orderedWaypoints[wNum].options.ether = !(orderedWaypoints[wNum]?.options?.ether ?? false)
+                ChatLib.chat(`${constants.PREFIX}&bWaypoint ${wNum+1} is now ${orderedWaypoints[wNum].options.ether ? "enabled" : "disabled"} to etherwarp.`)
+
+                break
+            case "paneclip":
+                if(args[2] == undefined) return ChatLib.chat(`${constants.PREFIX}&bMarks a vein as paneclip. Usage: '/cw ordered paneclip (number)'`)
+                wNum = parseInt(args[2])-1
+                if(orderedWaypoints[wNum] == undefined) return ChatLib.chat(`${constants.PREFIX}&bVein does not exist.`)
+
+                orderedWaypoints[wNum].options.clip = !(orderedWaypoints[wNum]?.options?.clip ?? false)
+                ChatLib.chat(`${constants.PREFIX}&bWaypoint ${wNum+1} is now ${orderedWaypoints[wNum].options.ether ? "enabled" : "disabled"} to paneclip.`)
+
+                break
+            case "export":
+                ChatLib.command(`ct copy ${JSON.stringify(waypoints)}`, true)
+                ChatLib.chat(`${constants.PREFIX}&bCopied to clipboard!`)
                 break
             default:
                 return ChatLib.chat(`${constants.PREFIX}&eUnknown usage! Hit tab on "/cw ordered " to see usages.`)
@@ -160,9 +206,20 @@ register("renderWorld", () => {
         trace(parseInt(traceWP.x) + 0.5, parseInt(traceWP.y), parseInt(traceWP.z) + 0.5, color.getRed()/255, color.getGreen()/255, color.getBlue()/255, color.getAlpha()/255, settings.orderedLineThickness)
 
     const currentWP = orderedWaypoints[renderWaypoints[1]]
-    if(settings.orderedSetup &&currentWP != undefined && traceWP != undefined)
-        drawLine(parseInt(currentWP.x) + 0.5, parseInt(currentWP.y) + 2.65, parseInt(currentWP.z) + 0.5, parseInt(traceWP.x) + 0.5, parseInt(traceWP.y) + 0.5, parseInt(traceWP.z) + 0.5,
-                 color.getRed()/255, color.getGreen()/255, color.getBlue()/255, 0.5, 100)
+    if(settings.orderedSetup && currentWP != undefined && traceWP != undefined)
+    {
+        drawLine(parseInt(currentWP.x) + 0.5, parseInt(currentWP.y) + 2.65, parseInt(currentWP.z) + 0.5,
+            parseInt(traceWP.x) + 0.5, parseInt(traceWP.y) + 0.5, parseInt(traceWP.z) + 0.5,
+            color.getRed()/255, color.getGreen()/255, color.getBlue()/255, 0.5, 100)
+        /*let blocks = getBlocksAlongLine([parseInt(currentWP.x) + 0.5, parseInt(currentWP.y) + 2.65, parseInt(currentWP.z) + 0.5],
+            [parseInt(traceWP.x) + 0.5, parseInt(traceWP.y) + 0.5, parseInt(traceWP.z) + 0.5])
+        blocks.forEach(block => {
+            let blockID = World.getBlockAt(Math.floor(block[0])+0.5, Math.floor(block[1]), Math.floor(block[2])+0.5).type.getID()
+            if(blockID != 0 && blockID != 4)
+                drawEspBox(Math.floor(block[0])+0.5, Math.floor(block[1]), Math.floor(block[2])+0.5, 0, 1, 1, 0.7)
+        })*/
+    }
+
     decideWaypoints()
 })
 
@@ -184,19 +241,23 @@ function decideWaypoints()
     }
 
     let nextWaypoint = orderedWaypoints[currentOrderedWaypointIndex + 1]
-    if (nextWaypoint == undefined) 
+    if (nextWaypoint == undefined)
     {
         if (orderedWaypoints[0] != undefined)
             nextWaypoint = orderedWaypoints[0]
-        else if (orderedWaypoints[1] != undefined) 
+        else if (orderedWaypoints[1] != undefined)
             nextWaypoint = orderedWaypoints[1]
-        else if (orderedWaypoints[2] != undefined) 
+        else if (orderedWaypoints[2] != undefined)
             nextWaypoint = orderedWaypoints[2]
     }
     let distanceTo2 = Infinity
     if (nextWaypoint != undefined) {
         distanceTo2 = Math.hypot(Player.getX() - nextWaypoint.x, Player.getY() - nextWaypoint.y, Player.getZ() - nextWaypoint.z)
         renderWaypoints.push(nextWaypoint.options.name-1)
+        if (nextWaypoint.options.clip === true)
+            clipTitle.draw()
+        else if (nextWaypoint.options.ether === true)
+            etherTitle.draw()
     }
 
     if (lastCloser === currentOrderedWaypointIndex && distanceTo1 > distanceTo2 && distanceTo2 < settings.nextWaypointRange) {

@@ -94,7 +94,7 @@ register("step", () => {
                     uuid += tempUuid[i]
             }
 
-            axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${uuid}`)
+            axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${uuid}`, { headers: {"User-Agent": "Coleweight-requests"} })
             .then(res => {
                 for(let i=0; i < res.data.profiles.length; i+=1)
                 {

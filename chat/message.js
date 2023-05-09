@@ -64,7 +64,6 @@ register("step", () => {
         .chat()
         ChatLib.chat("")
     }
-    if (constants.data.api_key == undefined || constants.data.api_key == "") return
 }).setFps(1)
 
 

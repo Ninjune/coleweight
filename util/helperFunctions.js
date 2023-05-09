@@ -248,48 +248,59 @@ export function capitalizeFirst(sentence)
 /**
  * This contains a value "drawState", this dictates whether or not this draw or not. Default to 0. Check for 1 in a "renderOverlay" to draw. (must set to draw.)
  * @param {string} text
- * @param {double} scale = 5
- * @param {ms} time = 3000
- * @param {string} sound see World.playSound()
+ * @param {object} options
  * @returns
  */
 export class Title
 {
-    constructor(text, scale = 5, time = 3000, sound = "random.orb")
+    constructor(text, options = {scale: 5, time: 3000, sound: "random.orb", yOffset: 0, xOffset: 0})
     {
         this.text = text
-        this.scale = scale
-        this.time = time
-        this.sound = sound
+        this.scale = options.scale
+        this.time = options.time
+        this.sound = options.sound
+        this.sizeMultiplier = options.sizeMultiplier
+        this.yOffset = options.yOffset
+        this.xOffset = options.xOffset
         this.drawState = 0
+
+        register("renderOverlay", () => {
+            if(this.drawState == 1)
+            {
+                const title = new Text(this.text,
+                    Renderer.screen.getWidth()/2 + this.xOffset,
+                    Renderer.screen.getHeight()/2 - Renderer.screen.getHeight()/14 + this.yOffset
+                )
+                if(this.drawTimestamp == undefined)
+                {
+                    World.playSound(this.sound, 1, 1)
+                    this.drawTimestamp = Date.now()
+                    this.drawState = 1
+                }
+                else if (Date.now() - this.drawTimestamp > this.time)
+                {
+                    this.drawTimestamp = undefined
+                    this.drawState = 2
+                }
+                else
+                {
+                    title.setAlign("CENTER")
+                    .setShadow(true)
+                    .setScale(this.scale)
+                    .draw()
+                    this.drawState = 1
+                }
+            }
+        })
     }
 
     draw()
     {
-        const title = new Text(this.text, Renderer.screen.getWidth()/2, Renderer.screen.getHeight()/2 - Renderer.screen.getHeight()/14)
-        if(this.drawTimestamp == undefined)
-        {
-            World.playSound(this.sound, 1, 1)
-            this.drawTimestamp = Date.now()
-            this.drawState = 1
-        }
-        else if (Date.now() - this.drawTimestamp > this.time)
-        {
-            this.drawTimestamp = undefined
-            this.drawState = 2
-        }
-        else
-        {
-            title.setAlign("CENTER")
-            .setShadow(true)
-            .setScale(this.scale)
-            .draw()
-            this.drawState = 1
-        }
+        this.drawState = 1
     }
 }
 
-class locationChecker
+class LocationChecker
 {
     constructor(locations)
     {
@@ -311,29 +322,35 @@ class locationChecker
                 for(let locationsIndex = 0; locationsIndex < this.locations.length; locationsIndex++)
                 {
                     if(this.scoreboard[lineIndex].toString().includes(this.locations[locationsIndex]))
-                        return this.state = true
+                    {
+                        this.state = true
+                        return this.state
+                    }
                 }
             }
-            return this.state = false
+            this.state = false
+            return this.state
         }
+        else
+            return this.state
     }
 }
 
-const hollowsChecker = new locationChecker(["Goblin", "Jungle", "Mithril", "Precursor", "Magma", "Crystal", "Khazad", "Divan", "City"])
+const hollowsChecker = new LocationChecker(["Goblin", "Jungle", "Mithril", "Precursor", "Magma", "Crystal", "Khazad", "Divan", "City"])
 export function checkInHollows()
 {
     hollowsChecker.check()
     return hollowsChecker.state
 }
 
-const dwarvenChecker = new locationChecker(["Dwarven", "Royal", "Palace", "Library", "Mist", "Cliffside", "Quarry", "Gateway", "Wall", "Forge", "Far", "Burrows", "Springs", "Upper"])
+const dwarvenChecker = new LocationChecker(["Dwarven", "Royal", "Palace", "Library", "Mist", "Cliffside", "Quarry", "Gateway", "Wall", "Forge", "Far", "Burrows", "Springs", "Upper"])
 export function checkInDwarven()
 {
     dwarvenChecker.check()
     return dwarvenChecker.state
 }
 
-const foragingChecker = new locationChecker(["§aDark Thic🐍§aket", "§aBirch Par🐍§ak", "§aSpruce Wo🐍§aods", "§aSavanna W🐍§aoodland", "§aJungle Is🐍§aland", "§bForest"])
+const foragingChecker = new LocationChecker(["§aDark Thic🐍§aket", "§aBirch Par🐍§ak", "§aSpruce Wo🐍§aods", "§aSavanna W🐍§aoodland", "§aJungle Is🐍§aland", "§bForest"])
 // pov: hypixel making a working game (i do the same thing)
 export function checkInPark()
 {
@@ -342,7 +359,7 @@ export function checkInPark()
 }
 
 
-const endChecker = new locationChecker(["End", "Dragon's"])
+const endChecker = new LocationChecker(["End", "Dragon's"])
 export function checkInEnd()
 {
     endChecker.check()
@@ -438,7 +455,7 @@ export function findGemstonesPerHr(block, pristine, fortune, speed, blueCheese, 
 export function instaSellBZPrice(product)
 {
     return new Promise((resolve, reject) => {
-        axios.get("https://api.hypixel.net/skyblock/bazaar")
+        axios.get("https://api.hypixel.net/skyblock/bazaar", { headers: {"User-Agent": "Coleweight-requests"} })
         .then(res => {
             if(res.data.products[product] != undefined)
                 resolve(res.data.products[product].sell_summary[0].pricePerUnit)
@@ -572,3 +589,12 @@ export function findTick(speed, block)
     this.replaced = this.replace(regex, "")
     return this.replaced
 } // @CrazyTech4
+
+const File = Java.type("java.io.File")
+export function deleteFile(path)
+{
+    const file = new File(Config.modulesFolder + "/Coleweight/" + path)
+
+    if(file.exists())
+        file.delete()
+}

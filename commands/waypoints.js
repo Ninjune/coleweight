@@ -14,7 +14,7 @@ export default registerCommand({
     description: "Waypoints for route creation.",
     category: "waypoints",
     options: ["(load, unload, skipto, skip, unskip)"],
-    subcommands: [["load", "unload", "clear", "enable", "disable", "insert", "export", "range", "import"]],
+    subcommands: [["load", "unload", "clear", "enable", "disable", "insert", "export", "range", "import", "length", "paneclip", "etherwarp"]],
     execute: (args) => {
         if(args[1] == undefined)
             return ChatLib.chat(`${constants.PREFIX}&eUnknown usage! Hit tab on "/cw waypoint " to see usages.`)
@@ -69,6 +69,10 @@ export default registerCommand({
                     return ChatLib.chat(`${constants.PREFIX}&bAdded waypoint ${wNum} at ${wX}, ${wY}, ${wZ}!`)
                 }
                 if(wNum == undefined || wNum < 1 || wNum > waypoints.length) return ChatLib.chat(`${constants.PREFIX}&eInvalid number! Must be in range (1 - ${waypoints.length})`)
+
+                for(let i = wNum-1; i < waypoints.length; i++)
+                    waypoints[i].options.name = (parseInt(waypoints[i].options.name)+1).toString()
+
                 waypoints.splice(wNum-1, 0, {x: wX, y: wY, z: wZ, r:0, g:1, b: 0, options: {name: wNum.toString()}})
                 ChatLib.chat(`${constants.PREFIX}&bInserted waypoint ${wNum} at ${wX}, ${wY}, ${wZ}!`)
                 break
@@ -78,8 +82,10 @@ export default registerCommand({
                 if(args[2] == undefined) return ChatLib.chat(`${constants.PREFIX}&bUsage: '/cw waypoint delete (number)'`)
                 wNum = parseInt(args[2])
                 if(wNum == undefined || wNum < 1 || wNum > waypoints.length) return ChatLib.chat(`${constants.PREFIX}&eInvalid number! Must be in range (1 - ${waypoints.length})`)
+
                 for(let i = wNum-1; i < waypoints.length; i++)
                     waypoints[i].options.name = (parseInt(waypoints[i].options.name)-1).toString()
+
                 waypoints.splice(wNum-1, 1)
                 ChatLib.chat(`${constants.PREFIX}&bRemoved waypoint ${wNum}!`)
                 break
@@ -94,6 +100,24 @@ export default registerCommand({
             case "length":
                 ChatLib.chat(`${constants.PREFIX}&bCurrent length is: ${waypoints.length}`)
                 break
+            case "etherwarp":
+                if(args[2] == undefined) return ChatLib.chat(`${constants.PREFIX}&bMarks a vein as etherwarp. Usage: '/cw waypoint etherwarp (number)'`)
+                wNum = parseInt(args[2])-1
+                if(waypoints[wNum] == undefined) return ChatLib.chat(`${constants.PREFIX}&bVein does not exist.`)
+
+                waypoints[wNum].options.ether = !(waypoints[wNum]?.options?.ether ?? false)
+                ChatLib.chat(`${constants.PREFIX}&bWaypoint ${wNum+1} is now ${waypoints[wNum]?.options?.ether ? "enabled" : "disabled"} to etherwarp.`)
+
+                break
+            case "paneclip":
+                if(args[2] == undefined) return ChatLib.chat(`${constants.PREFIX}&bMarks a vein as paneclip. Usage: '/cw waypoint paneclip (number)'`)
+                wNum = parseInt(args[2])-1
+                if(waypoints[wNum] == undefined) return ChatLib.chat(`${constants.PREFIX}&bVein does not exist.`)
+
+                waypoints[wNum].options.clip = !(waypoints[wNum]?.options?.clip ?? false)
+                ChatLib.chat(`${constants.PREFIX}&bWaypoint ${wNum+1} is now ${waypoints[wNum].options.ether ? "enabled" : "disabled"} to paneclip.`)
+
+                break
             default:
                 return ChatLib.chat(`${constants.PREFIX}&eUnknown usage! Hit tab on "/cw ordered " to see usages.`)
         }
@@ -107,6 +131,7 @@ register("renderWorld", () => {
     for(let i = 0; i < waypoints.length; i++)
     {
         let draw = false
+        let options = { name: waypoints[i].options.name, renderBeacon: false, alpha, drawBox: false, showDist: settings.waypointShowDistance}
         r = 0
         g = 0
         b = 0
@@ -119,9 +144,14 @@ register("renderWorld", () => {
         else
             draw = true
 
+        if(waypoints[i].options.ether)
+            options.nameColor = "5"
+        else if(waypoints[i].options.clip)
+            options.nameColor = "c"
+
         if(draw)
             drawCoolWaypoint(waypoints[i].x, waypoints[i].y,
-                waypoints[i].z, r, g, b, { name: waypoints[i].options.name, renderBeacon: false, alpha, drawBox: false, showDist: settings.waypointShowDistance})
+                waypoints[i].z, r, g, b, options)
     }
 })
 
