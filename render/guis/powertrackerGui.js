@@ -54,7 +54,7 @@ registerGui(powderGui)
 
 function DoublePowderActive()
 {
-    const bossBar = Java.type("net.minecraft.entity.boss.BossStatus").field_82827_c
+    const bossBar = Java.type("net.minecraft.entity.boss.BossStatus")?.field_82827_c
     if(bossBar == undefined)
         return false
     return bossBar.includes("2X POWDER")

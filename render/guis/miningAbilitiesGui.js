@@ -45,7 +45,7 @@ register("step", () => {
     activeAbilities.forEach(ability => {
         if(ability.timer > 0)
             ability.timer -= 1
-        else if (ability.title.drawState == 0)
+        else if (ability.title.drawState == 0 && settings.miningAbilities)
             ability.title.draw()
     })
 }).setDelay(1)
