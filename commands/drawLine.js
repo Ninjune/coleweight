@@ -1,6 +1,6 @@
 import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
-import { trace, drawEspBox } from "../util/renderUtil"
+import { trace, drawEspBox, getBlocksAlongLine } from "../util/renderUtil"
 const PREFIX = constants.PREFIX
 
 let x = 0,
@@ -13,6 +13,10 @@ register("renderWorld", () => {
 
     trace(x, y, z, 0, 0, 1, 0.86)
     drawEspBox(x, y, z, 0, 0, 1, 0.86) // y no work
+    /*let blocks = getBlocksAlongLine([x, y, z], [Player.getX(), Player.getY() + 0.5, Player.getZ()])
+    blocks.forEach(block => {
+        drawEspBox(Math.floor(block[0])+0.5, Math.floor(block[1]), Math.floor(block[2])+0.5, 0, 1, 1, 0.7)
+    })*/
 })
 
 
@@ -45,6 +49,7 @@ registerCommand({
                 ChatLib.chat(constants.INVALIDARGS)
                 return
         }
+        
         ChatLib.chat(`${PREFIX}&bNow drawing line to &a${x} ${Math.round(y)} ${z}`)
     }
 })

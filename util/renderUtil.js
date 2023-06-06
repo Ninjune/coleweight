@@ -160,18 +160,22 @@ export function getBlocksAlongLine(startCoord, endCoord)
 {
     let [x1, y1, z1] = startCoord
     let [x2, y2, z2] = endCoord
+    x1 = parseInt(x1) - 1
+    y1 = parseInt(y1)
+    z1 = parseInt(z1) - 1
+    x2 = parseInt(x2) - 1
+    y2 = parseInt(y2)
+    z2 = parseInt(z2) - 1
     const dx = Math.abs(x2 - x1)
     const dy = Math.abs(y2 - y1)
     const dz = Math.abs(z2 - z1)
-    const sx = x2 > x1 ? 1 : -1
-    const sy = y2 > y1 ? 1 : -1
-    const sz = z2 > z1 ? 1 : -1
+    const incX = x2 > x1 ? 1 : -1
+    const incY = y2 > y1 ? 1 : -1
+    const incZ = z2 > z1 ? 1 : -1
     let x = x1
     let y = y1
     let z = z1
     const blocks = []
-
-    let err1 = 0, err2 = 0
 
     if (dx >= dy && dx >= dz)
     {
@@ -180,27 +184,28 @@ export function getBlocksAlongLine(startCoord, endCoord)
 
         while (x != x2)
         {
+            //console.log(`${x} ${y} ${z} | ${x1} ${y1} ${z1} | ${x2} ${y2} ${z2} | ${err1} ${err2}`)
             blocks.push([x, y, z])
 
             if (err1 > -dx)
             {
                 err1 -= 2 * dx
-                y += sy
+                y += incY
             }
             if (err2 > -dx)
             {
                 err2 -= 2 * dx
-                z += sz
+                z += incZ
             }
             if (err1 < err2)
             {
                 err1 += 2 * dy
-                x += sx
+                x += incX
             }
             else
             {
                 err2 += 2 * dz
-                x += sx
+                x += incX
             }
         }
     }
@@ -211,27 +216,28 @@ export function getBlocksAlongLine(startCoord, endCoord)
 
         while (y != y2)
         {
+            //console.log(`${x} ${y} ${z} | ${x1} ${y1} ${z1} | ${x2} ${y2} ${z2} | ${err1} ${err2}`)
             blocks.push([x, y, z])
 
             if (err1 > -dy)
             {
                 err1 -= 2 * dy
-                x += sx
+                x += incX
             }
             if (err2 > -dy)
             {
                 err2 -= 2 * dy
-                z += sz
+                z += incZ
             }
             if (err1 < err2)
             {
                 err1 += 2 * dx
-                y += sy
+                y += incY
             }
             else
             {
                 err2 += 2 * dz
-                y += sy
+                y += incY
             }
         }
     }
@@ -242,27 +248,28 @@ export function getBlocksAlongLine(startCoord, endCoord)
 
         while (z != z2)
         {
+            //console.log(`${x} ${y} ${z} | ${x1} ${y1} ${z1} | ${x2} ${y2} ${z2} | ${err1} ${err2}`)
             blocks.push([x, y, z])
 
             if (err1 > -dz)
             {
                 err1 -= 2 * dz
-                y += sy
+                y += incY
             }
             if (err2 > -dz)
             {
                 err2 -= 2 * dz
-                x += sx
+                x += incX
             }
             if (err1 < err2)
             {
                 err1 += 2 * dy
-                z += sz
+                z += incZ
             }
             else
             {
                 err2 += 2 * dx
-                z += sz
+                z += incZ
             }
         }
     }

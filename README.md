@@ -1,10 +1,14 @@
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/B0B2K92P3)
+<p align="center">
+<a href="https://ko-fi.com/B0B2K92P3">
+    <img src="https://ko-fi.com/img/githubbutton_sm.svg" alt="kofi" />
+</a>
+<a href="https://discord.gg/yj4P4FqHPA">
+    <img src="https://img.shields.io/discord/1022926524736872458?color=55AA55&label=discord&style=for-the-badge&labelColor=555555" />
+</a>
+</p>
+
 # Coleweight
 Github for:
 https://www.chattriggers.com/modules/v/Coleweight
-## Guide
-- Do /ct files ingame.
-- Drag the .zip into the "modules" folder.
-- Extract the .zip.
-- MAKE SURE THE FILES INSIDE THE "Coleweight-(version)" FOLDER ARE **NOT** A SUBFOLDER. There should be files like index.js and coleweight.csv inside /modules/Coleweight.
-- Do /ct load ingame.
+## Install
+- Do /ct import coleweight

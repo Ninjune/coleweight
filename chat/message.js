@@ -44,7 +44,7 @@ register("gameLoad", () => {
         cwlbData = res.data
     })
     .catch(err => {
-        ChatLib.chat(err)
+        //ChatLib.chat(err)
     })
 })
 

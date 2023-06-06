@@ -24,7 +24,7 @@ export default registerCommand({
     description: "Ordered waypoints.",
     category: "waypoints",
     options: ["(load, unload, skipto, skip, unskip)"],
-    subcommands: [["load", "unload", "skip", "skipto", "unskip", "clear", "enable", "disable", "delete", "remove", "etherwarp", "paneclip"]],
+    subcommands: [["load", "unload", "skip", "skipto", "unskip", "clear", "enable", "disable", "delete", "remove", "etherwarp", "paneclip", "add", "insert"]],
     execute: (args) => {
         if(args[1] == undefined)
             return ChatLib.chat(`${constants.PREFIX}&eUnknown usage! Hit tab on "/cw ordered " to see usages.`)
@@ -65,13 +65,16 @@ export default registerCommand({
                 ChatLib.chat(`${constants.PREFIX}&bUnloaded ordered waypoints!`)
                 break
             case "skip":
+                if(args[2] != undefined && parseInt(args[2]) != args[2])
+                    return ChatLib.chat(`${constants.PREFIX}&bNot an integer!`)
+
                 if(args[2] != undefined)
                     currentOrderedWaypointIndex += parseInt(args[2])
                 else
                     currentOrderedWaypointIndex++
 
                 while(orderedWaypoints.length > 1 && currentOrderedWaypointIndex > orderedWaypoints.length-1)
-                    currentOrderedWaypointIndex -= orderedWaypoints.length-1
+                    currentOrderedWaypointIndex -= orderedWaypoints.length
 
                 ChatLib.chat(`${constants.PREFIX}&bSkipped ${args[2] ?? 1} vein(s).`)
                 break
@@ -86,18 +89,18 @@ export default registerCommand({
                 ChatLib.chat(`${constants.PREFIX}&eSkipto must be in range 1 - ${orderedWaypoints.length-1}`)
                 break
             case "unskip":
-                if(args[2] != undefined && currentOrderedWaypointIndex - parseInt(args[2]) > 0)
-                {
+                if(args[2] != undefined && parseInt(args[2]) != args[2])
+                    return ChatLib.chat(`${constants.PREFIX}&bNot an integer!`)
+                
+                if(args[2] != undefined)
                     currentOrderedWaypointIndex -= parseInt(args[2])
-                    ChatLib.chat(`${constants.PREFIX}&bWent back ${parseInt(args[2])} waypoints.`)
-                }
-                else if(args[2] == undefined && currentOrderedWaypointIndex > 0)
-                {
-                    currentOrderedWaypointIndex--
-                    ChatLib.chat(`${constants.PREFIX}&bWent back a waypoint.`)
-                }
                 else
-                    ChatLib.chat(`${constants.PREFIX}&eCant go back from 0!`)
+                    currentOrderedWaypointIndex--
+
+                while(orderedWaypoints.length > 1 && currentOrderedWaypointIndex <= 0)
+                    currentOrderedWaypointIndex += orderedWaypoints.length-1
+
+                ChatLib.chat(`${constants.PREFIX}&bWent back ${args[2] ?? 1} waypoints.`)
                 break
             case "enable":
                 enabled = true
@@ -122,7 +125,7 @@ export default registerCommand({
             case "insert":
                 if(args[2] == undefined) return ChatLib.chat(`${constants.PREFIX}&bStand where you want to add a waypoint (will be block under you) and do '/cw waypoint insert (number)'`)
                 wX = parseInt(Player.getX())
-                wY = parseInt(Player.getY())-1
+                wY = parseInt(Player.getY()) - 1
                 wZ = parseInt(Player.getZ())
                 wNum = parseInt(args[2])
                 if(wNum == orderedWaypoints.length + 1)
@@ -137,6 +140,7 @@ export default registerCommand({
 
                 orderedWaypoints.splice(wNum-1, 0, {x: wX, y: wY, z: wZ, r:0, g:1, b: 0, options: {name: wNum.toString()}})
                 ChatLib.chat(`${constants.PREFIX}&bInserted waypoint ${wNum} at ${wX}, ${wY}, ${wZ}!`)
+                break
             case "etherwarp":
                 if(args[2] == undefined) return ChatLib.chat(`${constants.PREFIX}&bMarks a vein as etherwarp. Usage: '/cw ordered etherwarp (number)'`)
                 wNum = parseInt(args[2])-1
@@ -164,7 +168,6 @@ export default registerCommand({
         }
     }
 })
-
 
 // stolen from soopy (somewhat)
 register("renderWorld", () => {
@@ -197,20 +200,20 @@ register("renderWorld", () => {
             continue
         }
         drawCoolWaypoint(orderedWaypoints[renderWaypoints[i]].x, orderedWaypoints[renderWaypoints[i]].y,
-            orderedWaypoints[renderWaypoints[i]].z, r, g, b, { name: i < 3 ? orderedWaypoints[renderWaypoints[i]].options.name : "", renderBeacon: false, phase: i < 3, alpha })
+            orderedWaypoints[renderWaypoints[i]].z, r, g, b, { name: i < 3 && (settings.orderedSetup || settings.orderedShowText) ? orderedWaypoints[renderWaypoints[i]].options.name : "", renderBeacon: false, phase: i < 3, alpha })
     }
     const traceWP = orderedWaypoints[renderWaypoints[2]]
     let color = settings.orderedColor
 
     if (!settings.orderedSetup && settings.orderedWaypointsLine && traceWP != undefined)
-        trace(parseInt(traceWP.x) + 0.5, parseInt(traceWP.y), parseInt(traceWP.z) + 0.5, color.getRed()/255, color.getGreen()/255, color.getBlue()/255, color.getAlpha()/255, settings.orderedLineThickness)
+        trace(parseInt(traceWP.x) + 0.5, parseInt(traceWP.y) + 0.25, parseInt(traceWP.z) + 0.5, color.getRed()/255, color.getGreen()/255, color.getBlue()/255, color.getAlpha()/255, settings.orderedLineThickness)
 
     const currentWP = orderedWaypoints[renderWaypoints[1]]
     if(settings.orderedSetup && currentWP != undefined && traceWP != undefined)
     {
         drawLine(parseInt(currentWP.x) + 0.5, parseInt(currentWP.y) + 2.65, parseInt(currentWP.z) + 0.5,
             parseInt(traceWP.x) + 0.5, parseInt(traceWP.y) + 0.5, parseInt(traceWP.z) + 0.5,
-            color.getRed()/255, color.getGreen()/255, color.getBlue()/255, 0.5, 100)
+            color.getRed()/255, color.getGreen()/255, color.getBlue()/255, 0.5, settings.orderedSetupThickness)
         /*let blocks = getBlocksAlongLine([parseInt(currentWP.x) + 0.5, parseInt(currentWP.y) + 2.65, parseInt(currentWP.z) + 0.5],
             [parseInt(traceWP.x) + 0.5, parseInt(traceWP.y) + 0.5, parseInt(traceWP.z) + 0.5])
         blocks.forEach(block => {
@@ -232,6 +235,8 @@ function decideWaypoints()
     let beforeWaypoint = orderedWaypoints[currentOrderedWaypointIndex - 1]
     if (beforeWaypoint != undefined)
         renderWaypoints.push(beforeWaypoint.options.name-1)
+    else
+        renderWaypoints.push(orderedWaypoints[orderedWaypoints.length-1].options.name-1)
 
     let currentWaypoint = orderedWaypoints[currentOrderedWaypointIndex]
     let distanceTo1 = Infinity
@@ -263,7 +268,7 @@ function decideWaypoints()
     if (lastCloser === currentOrderedWaypointIndex && distanceTo1 > distanceTo2 && distanceTo2 < settings.nextWaypointRange) {
         currentOrderedWaypointIndex++
         if (orderedWaypoints[currentOrderedWaypointIndex] == undefined)
-            currentOrderedWaypointIndex = 1
+            currentOrderedWaypointIndex = 0
         return
     }
 
@@ -272,7 +277,7 @@ function decideWaypoints()
 
     if (distanceTo2 < settings.nextWaypointRange) {
         currentOrderedWaypointIndex++
-        if (!orderedWaypoints[currentOrderedWaypointIndex])
+        if (orderedWaypoints[currentOrderedWaypointIndex] == undefined)
             currentOrderedWaypointIndex = 0
     }
 

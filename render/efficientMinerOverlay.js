@@ -89,6 +89,8 @@ register("renderWorld", () => {
 }).setFps(1)*/
 
 register("step", () => {
+    if (!settings.efficientMinerOverlay)
+        return
     if(!threadActive)
         thread.start()
 }).setFps(20)
