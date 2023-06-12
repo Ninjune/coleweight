@@ -25,7 +25,6 @@ register("step", () => {
 
 
 register("gameLoad", () => {
-    axios.get("https://api.hypixel.net/resources/skyblock/items")
     .then(res => {
         if(res.data.success)
             itemData = res.data.items

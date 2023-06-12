@@ -1,8 +1,8 @@
-import axios from "../../../axios"
 import { registerGui } from "../../guiManager"
 import settings from "../../settings"
-import { addCommas, genUUID, secondsToMessage } from "../../util/helperFunctions"
+import { addCommas, secondsToMessage } from "../../util/helperFunctions"
 import { BaseGui } from "../BaseGui"
+import request from "../../../requestV2"
 // some code from soopy's version
 let money = 0
 let startTime = -1
@@ -28,12 +28,15 @@ register("chat", (gem, amount, event) => {
     if(startTime === -1)
     {
         startTime = 0
-        axios.get("https://api.hypixel.net/skyblock/bazaar", { headers: {"User-Agent": genUUID()} })
+        request({
+            url: `https://api.hypixel.net/skyblock/bazaar`,
+            json: true
+        })
         .then(res => {
             startTime = Date.now()
-            Object.keys(res.data.products).forEach(i => {
+            Object.keys(res.products).forEach(i => {
                 if(id.startsWith("FLAWED_"))
-                    gemstoneCosts[i] = settings.forceNpc ? 240 : Math.max(240, res.data.products[id].quick_status.sellPrice)
+                    gemstoneCosts[i] = settings.forceNpc ? 240 : Math.max(240, res.products[id].quick_status.sellPrice)
             })
         })
         .catch(err => {

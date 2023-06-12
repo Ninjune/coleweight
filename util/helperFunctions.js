@@ -2,6 +2,7 @@ import axios from "../../axios"
 import constants from "./constants"
 const settings = constants.settings
 import { Promise } from "../../PromiseV2"
+import request from "../../requestV2"
 const PREFIX = constants.PREFIX
 
 
@@ -226,10 +227,10 @@ export function parseNotatedInput(input)
 
 export function getSelectedProfile(res)
 {
-    for(let i=0; i < res.data.profiles.length; i+=1)
+    for(let i=0; i < res.profiles.length; i+=1)
     {
-        if(res.data.profiles[i].selected == true)
-            return res.data.profiles[i]
+        if(res.profiles[i].selected == true)
+            return res.profiles[i]
     }
 }
 
@@ -455,7 +456,7 @@ export function findGemstonesPerHr(block, pristine, fortune, speed, blueCheese, 
 export function instaSellBZPrice(product)
 {
     return new Promise((resolve, reject) => {
-        axios.get("https://api.hypixel.net/skyblock/bazaar", { headers: {"User-Agent": genUUID()} })
+        request("https://api.hypixel.net/skyblock/bazaar", { headers: {"User-Agent": genUUID()} })
         .then(res => {
             if(res.data.products[product] != undefined)
                 resolve(res.data.products[product].sell_summary[0].pricePerUnit)

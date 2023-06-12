@@ -4,5 +4,5 @@
   "entry": "index.js",
   "description": "Mining utilities.",
   "version": "1.11.0",
-  "requires": ["axios", "PogData", "Vigilance", "Elementa", "BeaconBeam"]
+  "requires": ["axios", "PogData", "Vigilance", "Elementa", "BeaconBeam", "requestV2"]
 }

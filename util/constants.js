@@ -70,6 +70,12 @@ let PogData = new PogObject("Coleweight", {
         "y": 0,
         "alignment": 0,
         "scale": 1.0
+    },
+    "ffGui": {
+        "x": 0,
+        "y": 0,
+        "alignment": 0,
+        "scale": 1.0
     }
 }, "config/data.json")
 

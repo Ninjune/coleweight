@@ -5,6 +5,7 @@ import { BaseGui } from "../BaseGui"
 import { registerGui } from "../../guiManager"
 import { addNotation, getObjectValue } from "../../util/helperFunctions"
 import axios from "../../../axios"
+import request from "../../../requestV2"
 
 let itemStringed = "",
     trackedItem = "Collection Not set! /cw track",
@@ -88,9 +89,11 @@ function calcApi(apiPath, tempUuid)
 
     try
     {
-        axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${uuid}`, { headers: {"User-Agent": genUUID()} })
+        request({
+            url: `https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${uuid}`,
+            json: true
+        })
         .then(res => {
-            res = res.data
             for(let i=0; i < res.profiles.length; i+=1)
             {
                 if(res.profiles[i].selected == true)

@@ -1,7 +1,8 @@
 import settings from "../../settings"
 import constants from "../../util/constants"
 import axios from "../../../axios"
-import { genUUID, getObjectValue, secondsToMessage } from "../../util/helperFunctions"
+import request from "../../../requestV2"
+import { getObjectValue, secondsToMessage } from "../../util/helperFunctions"
 import { BaseGui } from "../BaseGui"
 import { registerGui } from "../../guiManager"
 
@@ -89,13 +90,15 @@ register("step", () => {
                 if(tempUuid[i] != "-")
                     uuid += tempUuid[i]
             }
-
-            axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${uuid}`, { headers: {"User-Agent": genUUID()} })
+            request({
+                url: `https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${uuid}`,
+                json: true
+            })
             .then(res => {
-                for(let i=0; i < res.data.profiles.length; i+=1)
+                for(let i=0; i < res.profiles.length; i+=1)
                 {
-                    if(res.data.profiles[i].selected == true)
-                        profileData = res.data.profiles[i]
+                    if(res.profiles[i].selected == true)
+                        profileData = res.profiles[i]
                 }
 
                 for(let i = 0; i < cwinfo.length; i++)

@@ -3,6 +3,7 @@ import constants from "../util/constants"
 import { addCommas, findTick, genUUID, getSelectedProfile } from "../util/helperFunctions"
 import axios from "../../axios"
 import { findCost, findHotmObject } from "../commands/calculate/hotmCalc"
+import request from "../../requestV2"
 const NBTTagString = Java.type("net.minecraft.nbt.NBTTagString")
 let powderTotals = {}
 let getPlayerDataSuccess = false
@@ -64,7 +65,10 @@ register("itemTooltip", (lore, item) => { // this is so bad 💀
 
 
 register("gameLoad", () => {
-    axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${Player.getUUID()}`, { headers: {"User-Agent": genUUID()} })
+    request({
+        url: `https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${Player.getUUID()}`,
+        json: true
+    })
     .then(res => {
         let selected = getSelectedProfile(res)?.members[Player.getUUID().replace(/-/g, "")]
          professional = selected?.mining_core?.nodes?.professional,

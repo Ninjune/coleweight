@@ -553,6 +553,26 @@ class Settings {
     moveGyroLocation() {
         ChatLib.command("cw move gyro", true);
     }
+
+    // SUBCAT Dungeon
+    @SwitchProperty({
+        name: "M3 timer",
+        description: "Shows a timer for fire freeze in m3.",
+        subcategory: "Dungeon",
+        category: "Other"
+    })
+    m3timer = false;
+
+    @ButtonProperty({
+        name: "Change Fire Freeze Position",
+        description: "Move the location of the fire freeze timer.",
+        subcategory: "Dungeon",
+        category: "Other",
+        placeholder: "Open"
+    })
+    moveffLocation() {
+        ChatLib.command("cw move ff", true);
+    }
 }
 
 export default new Settings()
