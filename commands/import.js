@@ -2,6 +2,7 @@ import axios from "../../axios"
 import { registerCommand } from "../commandManager"
 import settings from "../settings"
 import constants from "../util/constants"
+import { load } from "./ordered"
 const PREFIX = constants.PREFIX
 
 registerCommand({
@@ -10,7 +11,7 @@ registerCommand({
     options: "[route]",
     category: "miscellaneous",
     execute: (args) => {
-        let routes = JSON.parse(FileLib.read("Coleweight", "data/routes.json"))
+        let routes = JSON.parse(FileLib.read("Coleweight", "config/routes.json"))
 
         if(args[1] == undefined)
         {
@@ -53,8 +54,12 @@ registerCommand({
             }
             else
             {
-                ChatLib.command(`ct copy ${route.stdata}`, true)
-                ChatLib.chat(`${PREFIX}&bSuccessfully copied &a${args[1]}&b route's data to clipboard! Format: &askytils`)
+                if(route.format != "soopy")
+                    ChatLib.command(`ct copy ${route.data}`, true)
+                else
+                    load(route.data)
+                
+                ChatLib.chat(`${PREFIX}&bSuccessfully ${route.format != "soopy" ? "copied" : "loaded"} &a${args[1]}&b route! Format: &a${route.format}`)
             }
         }
     }

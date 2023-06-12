@@ -1,6 +1,6 @@
 import settings from "../settings"
 import constants from "../util/constants"
-import { addCommas, findTick, getSelectedProfile } from "../util/helperFunctions"
+import { addCommas, findTick, genUUID, getSelectedProfile } from "../util/helperFunctions"
 import axios from "../../axios"
 import { findCost, findHotmObject } from "../commands/calculate/hotmCalc"
 const NBTTagString = Java.type("net.minecraft.nbt.NBTTagString")
@@ -64,7 +64,7 @@ register("itemTooltip", (lore, item) => { // this is so bad 💀
 
 
 register("gameLoad", () => {
-    axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${Player.getUUID()}`, { headers: {"User-Agent": "Coleweight-requests"} })
+    axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${Player.getUUID()}`, { headers: {"User-Agent": genUUID()} })
     .then(res => {
         let selected = getSelectedProfile(res)?.members[Player.getUUID().replace(/-/g, "")]
          professional = selected?.mining_core?.nodes?.professional,

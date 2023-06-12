@@ -1,6 +1,6 @@
 import constants from "../../util/constants"
 import settings from "../../settings"
-import { textGui, trackCollection } from "../../util/helperFunctions"
+import { genUUID, textGui, trackCollection } from "../../util/helperFunctions"
 import { BaseGui } from "../BaseGui"
 import { registerGui } from "../../guiManager"
 import { addNotation, getObjectValue } from "../../util/helperFunctions"
@@ -15,7 +15,6 @@ let itemStringed = "",
     calcItemPerHour = false,
     itemValuesSum = 0,
     itemPerHour = 0,
-    itemGui = new textGui(),
     currentItem = 0
 
 const collectionGui = new BaseGui(["collectionGui", "collection"], () => {
@@ -30,14 +29,18 @@ const collectionGui = new BaseGui(["collectionGui", "collection"], () => {
         eq != Infinity ? itemPerHour = eq : itemPerHour = "Calculating..."
         calcItemPerHour = false
     }
-    itemGui.x = constants.data.collectionGui.x
-    itemGui.y = constants.data.collectionGui.y
-    if(settings.collectionNotation)
-        itemGui.guiObject = {leftValues: leftValues, rightValues: [addNotation("oneLetters", currentItem) ?? 0, addNotation("oneLetters", itemPerHour) ?? 0, addNotation("oneLetters", itemValuesSum) ?? 0, uptimeSeconds]}
-    else
-        itemGui.guiObject = {leftValues: leftValues, rightValues: [addCommas(currentItem) ?? 0, addCommas(itemPerHour) ?? 0, addCommas(itemValuesSum) ?? 0, uptimeSeconds]}
+    let rightValues
+    let message = ""
 
-    itemGui.renderGui()
+    if(settings.collectionNotation)
+        rightValues = [addNotation("oneLetters", currentItem) ?? 0, addNotation("oneLetters", itemPerHour) ?? 0, addNotation("oneLetters", itemValuesSum) ?? 0, uptimeSeconds]
+    else
+        rightValues = [addCommas(currentItem) ?? 0, addCommas(itemPerHour) ?? 0, addCommas(itemValuesSum) ?? 0, uptimeSeconds]
+
+    leftValues.forEach((value, i) => {
+        message += "&a" + value + ": &b" + rightValues[i] + "\n"
+    })
+    return message
 }, resetVars)
 registerGui(collectionGui)
 
@@ -85,7 +88,7 @@ function calcApi(apiPath, tempUuid)
 
     try
     {
-        axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${uuid}`, { headers: {"User-Agent": "Coleweight-requests"} })
+        axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${uuid}`, { headers: {"User-Agent": genUUID()} })
         .then(res => {
             res = res.data
             for(let i=0; i < res.profiles.length; i+=1)

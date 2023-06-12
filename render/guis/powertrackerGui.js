@@ -47,7 +47,8 @@ const powderGui = new BaseGui(["powdertrackerGui", "powdertracker", "powder"], (
     lines.forEach((line) => {
         message += line + "\n"
     })
-    Renderer.drawStringWithShadow(message, constants.data.powdertrackerGui.x, constants.data.powdertrackerGui.y)
+
+    return message
 }, resetVars)
 registerGui(powderGui)
 

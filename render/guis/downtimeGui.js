@@ -1,4 +1,4 @@
-import { registerGui } from "../../guiManager"
+/*import { registerGui } from "../../guiManager"
 import settings from "../../settings"
 import constants from "../../util/constants"
 import { textGui } from "../../util/helperFunctions"
@@ -64,4 +64,4 @@ function resetVars()
     overallDowntime = 0
     timeAtLastBreak = 0
     trackingDowntime = false
-}
+}*/

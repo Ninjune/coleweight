@@ -1,12 +1,11 @@
 import { registerGui } from "../../guiManager"
 import settings from "../../settings"
-import constants from "../../util/constants"
 import { capitalizeFirst, checkInDwarven, checkInEnd, checkInHollows, Title, textGui } from "../../util/helperFunctions"
 import { BaseGui } from "../BaseGui"
 
-const miningAbilitiesText = new textGui()
 const miningAbilitiesGui = new BaseGui(["abilityGui", "miningabilities"], () => {
-    if(!miningAbilitiesGui.isOpen() && (!settings.miningAbilitiesGui || !checkAreas())) return
+    if(!miningAbilitiesGui.isOpen() && (!settings.miningAbilitiesGui || !checkAreas()))
+        return
     let leftValues = [],
      rightValues = []
 
@@ -18,17 +17,18 @@ const miningAbilitiesGui = new BaseGui(["abilityGui", "miningabilities"], () => 
         rightValues.push(ability.timer + "s")
     })
 
-    if(miningAbilitiesText.moveGuiObject.isOpen() && leftValues.length < 1)
+    if(miningAbilitiesGui.isOpen() && leftValues.length < 1)
     {
         leftValues.push("Mining Speed Boost")
         rightValues.push("0")
     }
+    let message = ""
 
-    miningAbilitiesText.guiObject = {leftValues: leftValues, rightValues: rightValues}
-    miningAbilitiesText.x = constants.data.abilityGui.x
-    miningAbilitiesText.y = constants.data.abilityGui.y
-    miningAbilitiesText.alignment = settings.miningAbilitiesAlignment
-    miningAbilitiesText.renderGui()
+    leftValues.forEach((value, i) => {
+        message += "&a" + value + ": &b" + rightValues[i] + "\n"
+    })
+
+    return message
 })
 let activeAbilities = [],
  selectedAbility

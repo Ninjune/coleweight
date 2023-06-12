@@ -1,6 +1,7 @@
 import axios from "../../axios"
 import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
+import { genUUID } from "../util/helperFunctions"
 const PREFIX = constants.PREFIX
 
 
@@ -13,10 +14,10 @@ registerCommand({
         let username = args[1]
         if(username == undefined) { ChatLib.chat(`${PREFIX}&eRequires a username!`); return }
 
-        axios.get(`https://api.mojang.com/users/profiles/minecraft/${username}`, { headers: {"User-Agent": "Coleweight-requests"} })
+        axios.get(`https://api.mojang.com/users/profiles/minecraft/${username}`, { headers: {"User-Agent": genUUID()} })
         .then(mojangRes => {
             let uuid = mojangRes.data.id
-            axios.get(`https://api.hypixel.net/player?key=${constants.data.api_key}&uuid=${uuid}`, { headers: {"User-Agent": "Coleweight-requests"} })
+            axios.get(`https://api.hypixel.net/player?key=${constants.data.api_key}&uuid=${uuid}`, { headers: {"User-Agent": genUUID()} })
             .then(hypixelRes => {
                 let discordMessage = new TextComponent(`${PREFIX}&a${mojangRes.data.name}'s Discord: `)
                 ChatLib.chat(discordMessage)

@@ -1,0 +1,4 @@
+all of config/ except .gitkeep & routes.json (don't release private routes)
+.git
+License
+README.md

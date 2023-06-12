@@ -2,7 +2,7 @@ import { @Vigilant, @ButtonProperty, @SwitchProperty, @SelectorProperty, @Slider
 
 @Vigilant("Coleweight/config", "Coleweight Settings", {
     getCategoryComparator: () => (a, b) => {
-        const categories = ["General", "Gui", "Stats", "Waypoints", "Foraging"];
+        const categories = ["General", "Gui", "Stats", "Waypoints", "Other"];
 
         return categories.indexOf(a.name) - categories.indexOf(b.name);
     }
@@ -197,6 +197,32 @@ class Settings {
     })
     streamerDisableWaypointsOnDeath = true;
     // CAT Gui
+    // SUBCAT Coin Tracker
+    @SwitchProperty({
+        name: "Coin Tracker",
+        description: "Enables the Coin tracker. Copies Soopy's method of calculating for now.",
+        subcategory: "Coin Tracker",
+        category: "Gui"
+    })
+    coinTracker = false;
+
+    @SwitchProperty({
+        name: "Force NPC",
+        description: "Forces NPC price for the coin tracker.",
+        subcategory: "Coin Tracker",
+        category: "Gui"
+    })
+    forceNPC = false;
+    @ButtonProperty({
+        name: "Change Coin Tracker Position",
+        description: "Move the location of the coin tracker.",
+        subcategory: "Coin Tracker",
+        category: "Gui",
+        placeholder: "Open"
+    })
+    moveCoinTrackerLocation() {
+        ChatLib.command("cw move coin", true);
+    }
     // SUBCAT Coleweight Tracker
     @SwitchProperty({
         name: "Coleweight tracker",
@@ -259,25 +285,6 @@ class Settings {
     moveCollectionLocation() {
         ChatLib.command("cw move collection", true);
     }
-    // SUBCAT Downtime
-    @SwitchProperty({
-        name: "Downtime tracker",
-        description: "Tracks downtime. &4&lDeprecated",
-        subcategory: "Downtime",
-        category: "Gui"
-    })
-    downtimeTracker = false;
-
-    @ButtonProperty({
-        name: "Change downtime tracker position",
-        description: "Move the location of the downtime tracker.",
-        subcategory: "Downtime",
-        category: "Gui",
-        placeholder: "Open"
-    })
-    moveDowntimeLocation() {
-        ChatLib.command("cw move downtime", true);
-    }
     // SUBCAT Efficient Miner Overlay
     @SwitchProperty({
         name: "Efficient Miner Overlay",
@@ -310,15 +317,6 @@ class Settings {
         category: "Gui"
     })
     miningAbilitiesSelectedIndicator = true;
-
-    @SelectorProperty({
-        name: "Mining abilities alignment",
-        description: "Sets the alignment of the tracker.",
-        subcategory: "Mining Abilities",
-        category: "Gui",
-        options: ["Left", "Center", "Right"]
-    })
-    miningAbilitiesAlignment = 0;
 
     @ButtonProperty({
         name: "Change mining abilities position",
@@ -354,15 +352,6 @@ class Settings {
         category: "Gui"
     })
     showRates = true;
-    
-    @SelectorProperty({
-        name: "Alignment",
-        description: "Sets the alignment of the tracker.",
-        subcategory: "Powdertracker",
-        category: "Gui",
-        options: ["Left", "Right", "Center"]
-    })
-    trackerAlignment = 0;
     
     @ButtonProperty({
         name: "Change Powdertracker position",
@@ -529,19 +518,41 @@ class Settings {
     orderedShowText = true
     // SUBCAT Normal Waypoints
     @SwitchProperty({
-        name: "Show normal waypoint distance",
+        name: "Show Normal Waypoint Distance",
         description: "If normal waypoints (/cw waypoint) should show distance.",
         category: "Waypoints",
         subcategory: "Normal Waypoints",
     })
     waypointShowDistance = true;
-    // CAT Foraging
+    // CAT Other
+    // SUBCAT Foraging
     @SwitchProperty({
-        name: "Treecap timer",
+        name: "Treecap Timer",
         description: "Shows a timer over crosshair that shows time to next treecapitator proc.",
-        category: "Foraging"
+        subcategory: "Foraging",
+        category: "Other"
     })
     treecapTimer = false;
+
+    // SUBCAT Kuudra
+    @SwitchProperty({
+        name: "Cells Alignment Tracker",
+        description: "Shows a tracker for the current cells alignment from the gyrokinetic wand.",
+        subcategory: "Kuudra",
+        category: "Other"
+    })
+    gyroTracker = false;
+
+    @ButtonProperty({
+        name: "Change Alignment Tracker Position",
+        description: "Move the location of the alignment tracker.",
+        subcategory: "Kuudra",
+        category: "Other",
+        placeholder: "Open"
+    })
+    moveGyroLocation() {
+        ChatLib.command("cw move gyro", true);
+    }
 }
 
 export default new Settings()

@@ -17,7 +17,7 @@ const stopwatchGui = new BaseGui(["stopwatchGui", "stopwatch"], () => {
     if(!constants.data.tickStopwatch)
         message += " &c&lPAUSED"
 
-    Renderer.drawStringWithShadow(message, constants.data.stopwatchGui.x, constants.data.stopwatchGui.y)
+    return message
 })
 registerGui(stopwatchGui)
 

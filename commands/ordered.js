@@ -28,33 +28,11 @@ export default registerCommand({
     execute: (args) => {
         if(args[1] == undefined)
             return ChatLib.chat(`${constants.PREFIX}&eUnknown usage! Hit tab on "/cw ordered " to see usages.`)
-
         switch(args[1].toLowerCase())
         {
             case "import":
             case "load":
-                res = getWaypoints(Java.type("net.minecraft.client.gui.GuiScreen").func_146277_j(), "soopy")
-                if(res.success)
-                {
-                    orderedWaypoints = res.waypoints
-                    ChatLib.chat(`${constants.PREFIX}&bLoaded ordered waypoints!`)
-                }
-                else
-                    ChatLib.chat(`${constants.PREFIX}&eThere was an error parsing waypoints! ${res.message}`)
-
-                for (let i = 0; i < orderedWaypoints.length-1; i++)
-                {
-                    for (let j = 0; j < orderedWaypoints.length-i-1; j++)
-                    {
-                        if (parseInt(orderedWaypoints[j].options.name) >
-                            parseInt(orderedWaypoints[j+1].options.name))
-                            swap(orderedWaypoints, j, j+1)
-                    }
-                }
-
-                for(let i = 1; i < orderedWaypoints.length; i++)
-                    if(parseInt(orderedWaypoints[i]?.options?.name) != i+1)
-                        ChatLib.chat(`${constants.PREFIX}&bNote: Waypoint ${i+1} is not in the right order or is not a number! Current is: ${parseInt(orderedWaypoints[i]?.options?.name)}`)
+                load()
                 break
             case "unload":
             case "clear":
@@ -162,6 +140,15 @@ export default registerCommand({
             case "export":
                 ChatLib.command(`ct copy ${JSON.stringify(waypoints)}`, true)
                 ChatLib.chat(`${constants.PREFIX}&bCopied to clipboard!`)
+                break
+            case "save":
+                if(args[2] == undefined)
+                    return ChatLib.chat(`${constants.PREFIX}&bUsage: /cw ordered save (name) [description, can be spaced]`)
+                let routes = JSON.parse(FileLib.read("Coleweight", "config/routes.json"))
+                routes[args[2]] = {"desc": args.slice(3).join(" ") ?? "", "format": "soopy", "data": JSON.stringify(orderedWaypoints)}
+                FileLib.write("Coleweight", "config/routes.json", JSON.stringify(routes))
+                ChatLib.chat(`${constants.PREFIX}&bSaved. Do "/cw import" to import.`)
+
                 break
             default:
                 return ChatLib.chat(`${constants.PREFIX}&eUnknown usage! Hit tab on "/cw ordered " to see usages.`)
@@ -301,4 +288,36 @@ function swap(arr, first, second)
     var temp = arr[first]
     arr[first] = arr[second]
     arr[second] = temp
+}
+
+
+export function load(route = "")
+{
+    let res
+    if(route == "")
+        res = getWaypoints(Java.type("net.minecraft.client.gui.GuiScreen").func_146277_j(), "soopy")
+    else
+        res = getWaypoints(route, "soopy")
+    
+    if(res.success)
+    {
+        orderedWaypoints = res.waypoints
+        ChatLib.chat(`${constants.PREFIX}&bLoaded ordered waypoints!`)
+    }
+    else
+        ChatLib.chat(`${constants.PREFIX}&eThere was an error parsing waypoints! ${res.message}`)
+
+    for (let i = 0; i < orderedWaypoints.length-1; i++)
+    {
+        for (let j = 0; j < orderedWaypoints.length-i-1; j++)
+        {
+            if (parseInt(orderedWaypoints[j].options.name) >
+                parseInt(orderedWaypoints[j+1].options.name))
+                swap(orderedWaypoints, j, j+1)
+        }
+    }
+
+    for(let i = 1; i < orderedWaypoints.length; i++)
+        if(parseInt(orderedWaypoints[i]?.options?.name) != i+1)
+            ChatLib.chat(`${constants.PREFIX}&bNote: Waypoint ${i+1} is not in the right order or is not a number! Current is: ${parseInt(orderedWaypoints[i]?.options?.name)}`)
 }

@@ -1,7 +1,7 @@
 import settings from "../../settings"
 import constants from "../../util/constants"
 import axios from "../../../axios"
-import { getObjectValue } from "../../util/helperFunctions"
+import { genUUID, getObjectValue, secondsToMessage } from "../../util/helperFunctions"
 import { BaseGui } from "../BaseGui"
 import { registerGui } from "../../guiManager"
 
@@ -20,7 +20,6 @@ let cwValues = [],
 const cwGui = new BaseGui(["coleweightGui", "coleweight", "cw"], () => {
     if(!settings.cwToggle || constants.data.api_key == undefined) return
     let coleweightMessage = "",
-     uptimeHr = Math.floor(uptime/60/60),
      renderString = ""
 
     coleweight > 1000 ?coleweightMessage = `&b${coleweight.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`: coleweightMessage = `&b${coleweight.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`
@@ -36,16 +35,13 @@ const cwGui = new BaseGui(["coleweightGui", "coleweight", "cw"], () => {
 
     if (!(cwGui.isOpen() || upTimeTrack)) return
     renderString += `&aCW: &b${coleweightMessage}\n&aCW/hr: &b${coleweightHr}\n`
-    if(uptimeHr >= 1)
-        renderString += `&aUptime: &b${uptimeHr}h ${Math.floor(uptime/60) - uptimeHr*60}m\n`
-    else
-        renderString += `&aUptime: &b${Math.floor(uptime/60)}m ${Math.floor(uptime%60)}s\n`
+    renderString += `&aUptime: &b${secondsToMessage(uptime)}\n`
     renderString += `&aColeweight Gained: &b${Math.ceil(cwValuesSum*100) / 100}\n`
 
     if(passPlayerCW != 0 && coleweightHr === parseFloat(coleweightHr))
         renderString += `&aTime to pass &6#${passPlayerRank}&a ${passPlayerName}:&b ${Math.round((passPlayerCW - coleweight)/coleweightHr)}h ${Math.floor((passPlayerCW - coleweight)/coleweightHr*60%60)}m`
 
-    Renderer.drawStringWithShadow(renderString, constants.data.coleweightGui.x, constants.data.coleweightGui.y)
+    return renderString
 }, reloadColeweight)
 registerGui(cwGui)
 
@@ -94,7 +90,7 @@ register("step", () => {
                     uuid += tempUuid[i]
             }
 
-            axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${uuid}`, { headers: {"User-Agent": "Coleweight-requests"} })
+            axios.get(`https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${uuid}`, { headers: {"User-Agent": genUUID()} })
             .then(res => {
                 for(let i=0; i < res.data.profiles.length; i+=1)
                 {

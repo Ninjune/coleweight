@@ -15,7 +15,7 @@ const timerGui = new BaseGui(["timerGui", "timer"], () => {
         else
             message = `&aTimer: &b${Math.floor(constants.data.timerGui.timer/60)}m ${Math.floor(constants.data.timerGui.timer%60)}s`
 
-        Renderer.drawStringWithShadow(message, constants.data.timerGui.x, constants.data.timerGui.y)
+        return message
     }
 )
 const title = new Title("&bTimer done")

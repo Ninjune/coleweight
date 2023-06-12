@@ -110,6 +110,8 @@ export function getWaypoints(data, format) {
         return { success: false, message }
     }
 }
+
+
 function weirdSoopyFormatToRealSoopyFormat(str)
 {
     let byteArray = Base64.getDecoder().decode(str)

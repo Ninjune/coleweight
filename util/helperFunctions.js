@@ -455,7 +455,7 @@ export function findGemstonesPerHr(block, pristine, fortune, speed, blueCheese, 
 export function instaSellBZPrice(product)
 {
     return new Promise((resolve, reject) => {
-        axios.get("https://api.hypixel.net/skyblock/bazaar", { headers: {"User-Agent": "Coleweight-requests"} })
+        axios.get("https://api.hypixel.net/skyblock/bazaar", { headers: {"User-Agent": genUUID()} })
         .then(res => {
             if(res.data.products[product] != undefined)
                 resolve(res.data.products[product].sell_summary[0].pricePerUnit)
@@ -468,7 +468,6 @@ export function instaSellBZPrice(product)
         })
     })
 }
-
 
 export function trackCollection(collection)
 {
@@ -597,4 +596,24 @@ export function deleteFile(path)
 
     if(file.exists())
         file.delete()
+}
+
+
+export function secondsToMessage(seconds)
+{
+    let hour = Math.floor(seconds/60/60)
+    if(hour < 1)
+        return `${Math.floor(seconds/60)}m ${Math.floor(seconds%60)}s`
+    else
+        return `${hour}h ${Math.floor(seconds/60) - hour*60}m`
+}
+
+
+export function genUUID() { // https://www.geeksforgeeks.org/how-to-create-a-guid-uuid-in-javascript/# cba to make one myself
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+    .replace(/[xy]/g, function (c) {
+        const r = Math.random() * 16 | 0, 
+            v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
 }

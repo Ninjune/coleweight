@@ -15,37 +15,63 @@ let PogData = new PogObject("Coleweight", {
     "coleweightGui": {
         "x": 0.5,
         "y": 141,
+        "alignment": 0,
+        "scale": 1.0
     },
     "powdertrackerGui": {
         "chests": 0,
         "gemstonePowder": 0,
         "mithrilPowder": 0,
         "x": 0,
-        "y": 0
+        "y": 0,
+        "alignment": 0,
+        "scale": 1.0
     },
     "timerGui": {
         "x": 0,
         "y": 0,
         "timer": 0,
+        "alignment": 0,
+        "scale": 1.0
     },
     "stopwatchGui": {
         "x": 0,
         "y": 0,
-        "stopwatch": 0
+        "stopwatch": 0,
+        "alignment": 0,
+        "scale": 1.0
     },
     "downtimeGui" : {
         "x": 0,
-        "y": 0
+        "y": 0,
+        "alignment": 0,
+        "scale": 1.0
     },
     "collectionGui": {
         "x": 0,
-        "y": 0
+        "y": 0,
+        "alignment": 0,
+        "scale": 1.0
     },
     "abilityGui": {
         "x": 0,
-        "y": 0
+        "y": 0,
+        "alignment": 0,
+        "scale": 1.0
+    },
+    "gyroGui": {
+        "x": 0,
+        "y": 0,
+        "alignment": 0,
+        "scale": 1.0
+    },
+    "coinGui": {
+        "x": 0,
+        "y": 0,
+        "alignment": 0,
+        "scale": 1.0
     }
-}, "config/.cw_data.json")
+}, "config/data.json")
 
 const PREFIX = "&2[CW] "
 export default constants = {
