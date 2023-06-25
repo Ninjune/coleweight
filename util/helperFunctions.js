@@ -351,8 +351,7 @@ export function checkInDwarven()
     return dwarvenChecker.state
 }
 
-const foragingChecker = new LocationChecker(["§aDark Thic🐍§aket", "§aBirch Par🐍§ak", "§aSpruce Wo🐍§aods", "§aSavanna W🐍§aoodland", "§aJungle Is🐍§aland", "§bForest"])
-// pov: hypixel making a working game (i do the same thing)
+const foragingChecker = new LocationChecker(["§aDark Thic", "§aBirch Par", "§aSpruce Wo", "§aSavanna W", "§aJungle Is", "§bForest"])
 export function checkInPark()
 {
     foragingChecker.check()
@@ -611,10 +610,10 @@ export function secondsToMessage(seconds)
 
 
 export function genUUID() { // https://www.geeksforgeeks.org/how-to-create-a-guid-uuid-in-javascript/# cba to make one myself
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
     .replace(/[xy]/g, function (c) {
-        const r = Math.random() * 16 | 0, 
-            v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
+        const r = Math.random() * 16 | 0,
+            v = c == "x" ? r : (r & 0x3 | 0x8)
+        return v.toString(16)
+    })
 }

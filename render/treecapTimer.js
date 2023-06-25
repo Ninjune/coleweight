@@ -46,7 +46,5 @@ register("command", () => {
     let scoreboard = Scoreboard.getLines()
 
     for(let lineIndex = 0; lineIndex < scoreboard.length; lineIndex++)
-    {
         console.log(scoreboard[lineIndex])
-    }
 }).setCommandName("showarea")

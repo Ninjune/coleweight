@@ -48,6 +48,8 @@ registerGui(collectionGui)
 // thanks to Axl#9999 for most collections in collections.json
 export function cguiTrackCollection(collection)
 {
+    if(collection == undefined)
+        return ChatLib.chat(`${constants.PREFIX}&bNot a valid collection.`)
     resetVars()
     trackCollection(collection)
     trackedItem = constants.data.tracked.item

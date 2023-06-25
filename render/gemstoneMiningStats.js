@@ -107,9 +107,9 @@ register("step", () => {
 
 
 register("itemTooltip", (lore, item) => {
-    if(item.getLore()[0].startsWith("§o§aFortunate§r"))
+    if(item.getLore()[0]?.startsWith("§o§aFortunate§r"))
         constants.data.fortunate = parseInt(item.getLore()[1].replace("§5§o§7Level ", ""))
-    else if (item.getLore()[0].startsWith("§o§aProfessional§r"))
+    else if (item.getLore()[0]?.startsWith("§o§aProfessional§r"))
         constants.data.professional = parseInt(item.getLore()[1].replace("§5§o§7Level ", ""))
     else return
     constants.data.save()
