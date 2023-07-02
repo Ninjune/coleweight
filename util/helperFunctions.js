@@ -254,20 +254,23 @@ export function capitalizeFirst(sentence)
  */
 export class Title
 {
-    constructor(text, options = {scale: 5, time: 3000, sound: "random.orb", yOffset: 0, xOffset: 0})
+    constructor({text, scale = 5, time = 3000, sound = "random.orb", yOffset = 0, xOffset = 0})
     {
         this.text = text
-        this.scale = options.scale
-        this.time = options.time
-        this.sound = options.sound
-        this.sizeMultiplier = options.sizeMultiplier
-        this.yOffset = options.yOffset
-        this.xOffset = options.xOffset
+        this.scale = scale
+        this.time = time
+        this.sound = sound
+        this.yOffset = yOffset
+        this.xOffset = xOffset
         this.drawState = 0
+        this.drawing = false
 
         register("renderOverlay", () => {
+            this.drawing = false
             if(this.drawState == 1)
             {
+                this.drawing = true
+
                 const title = new Text(this.text,
                     Renderer.screen.getWidth()/2 + this.xOffset,
                     Renderer.screen.getHeight()/2 - Renderer.screen.getHeight()/14 + this.yOffset
@@ -364,6 +367,13 @@ export function checkInEnd()
 {
     endChecker.check()
     return endChecker.state
+}
+
+const mirroverseCheck = new LocationChecker(["§fMirrorver"])
+export function checkInMirrorverse()
+{
+    mirroverseCheck.check()
+    return mirroverseCheck.state
 }
 
 

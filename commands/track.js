@@ -8,6 +8,6 @@ registerCommand({
     options: "(collection)",
     category: "settings",
     execute: (args) => {
-        cguiTrackCollection(args[1].toLowerCase())
+        cguiTrackCollection(args[1]?.toLowerCase())
     }
 })

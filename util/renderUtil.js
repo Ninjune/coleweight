@@ -35,7 +35,17 @@ export function drawLine (x1, y1, z1, x2, y2, z2, red, green, blue, alpha, lineW
     GL11.glDisable(GL11.GL_BLEND)
 }
 
-
+/**
+ * 
+ * @param {number} x x
+ * @param {number} y y
+ * @param {number} z z
+ * @param {number} red 0 - 1
+ * @param {number} green 0 - 1
+ * @param {number} blue 0 - 1
+ * @param {number} alpha 0 - 1
+ * @param {bool} phase ability to see through walls (true = see through walls)
+ */
 export function drawEspBox (x, y, z, red, green, blue, alpha, phase = true) // thanks to renderlib, don't need the whole module so I'm not adding it.
 {
     Tessellator.pushMatrix()

@@ -5,6 +5,9 @@ import constants from "../util/constants"
 import { load } from "./ordered"
 const PREFIX = constants.PREFIX
 
+if(!FileLib.exists("Coleweight", "config/routes.json"))
+    FileLib.write("Coleweight", "config/routes.json", FileLib.read("Coleweight", "data/defaultroutes"))
+
 registerCommand({
     aliases: ["import"],
     description: "Import waypoints into Skytils.",
@@ -31,12 +34,11 @@ registerCommand({
                 ChatLib.chat("")
                 ChatLib.chat(`${PREFIX}&bDo '&e/cw import (route)&b' to copy the import!`)
             })
-            
         }
         else
         {
             let route = routes[args[1].toLowerCase()]
-            if(route == undefined) 
+            if(route == undefined)
             {
                 axios.get(`https://ninjune.dev/api/cw/routes?route=${args[1]}`)
                 .then(res => {
@@ -58,7 +60,7 @@ registerCommand({
                     ChatLib.command(`ct copy ${route.data}`, true)
                 else
                     load(route.data)
-                
+
                 ChatLib.chat(`${PREFIX}&bSuccessfully ${route.format != "soopy" ? "copied" : "loaded"} &a${args[1]}&b route! Format: &a${route.format}`)
             }
         }

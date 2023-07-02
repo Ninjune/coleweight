@@ -52,7 +52,7 @@ export class BaseGui
 
         register("guiKey", (char, keyCode, gui, event) => {
             if (!this.gui.isOpen()) return
-            
+
             if (keyCode == 13)
                 constants.data[aliases[0]].scale += 0.05
             else if (keyCode == 12)
@@ -63,6 +63,8 @@ export class BaseGui
                 constants.data[aliases[0]].alignment = 1
             else if (keyCode == 205)
                 constants.data[aliases[0]].alignment = 2
+
+            constants.data.save()
         })
     }
 
