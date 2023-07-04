@@ -525,6 +525,25 @@ class Settings {
     })
     waypointShowDistance = true;
     // CAT Other
+    // SUBCAT Dungeon
+    @SwitchProperty({
+        name: "M3 timer",
+        description: "Shows a timer for fire freeze in m3.",
+        subcategory: "Dungeon",
+        category: "Other"
+    })
+    m3timer = false;
+
+    @ButtonProperty({
+        name: "Change Fire Freeze Position",
+        description: "Move the location of the fire freeze timer.",
+        subcategory: "Dungeon",
+        category: "Other",
+        placeholder: "Open"
+    })
+    moveffLocation() {
+        ChatLib.command("cw move ff", true);
+    }
     // SUBCAT Foraging
     @SwitchProperty({
         name: "Treecap Timer",
@@ -553,25 +572,24 @@ class Settings {
     moveGyroLocation() {
         ChatLib.command("cw move gyro", true);
     }
-
-    // SUBCAT Dungeon
+    // SUBCAT Rift
     @SwitchProperty({
-        name: "M3 timer",
-        description: "Shows a timer for fire freeze in m3.",
-        subcategory: "Dungeon",
+        name: "Dance Helper",
+        description: "Shows what you need to do for the dance. Should have the right timing. Cancels the normal title.",
+        subcategory: "Rift",
         category: "Other"
     })
-    m3timer = false;
+    danceTracker = false;
 
     @ButtonProperty({
-        name: "Change Fire Freeze Position",
-        description: "Move the location of the fire freeze timer.",
-        subcategory: "Dungeon",
+        name: "Change Dance Position",
+        description: "Move the location of the dance gui.",
+        subcategory: "Rift",
         category: "Other",
         placeholder: "Open"
     })
-    moveffLocation() {
-        ChatLib.command("cw move ff", true);
+    moveDanceLocation() {
+        ChatLib.command("cw move dance", true);
     }
 }
 

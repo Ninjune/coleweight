@@ -1,10 +1,9 @@
 import constants from "../../util/constants"
 import settings from "../../settings"
-import { genUUID, textGui, trackCollection } from "../../util/helperFunctions"
+import { secondsToMessage, trackCollection } from "../../util/helperFunctions"
 import { BaseGui } from "../BaseGui"
 import { registerGui } from "../../guiManager"
 import { addNotation, getObjectValue } from "../../util/helperFunctions"
-import axios from "../../../axios"
 import request from "../../../requestV2"
 
 let itemStringed = "",
@@ -34,9 +33,12 @@ const collectionGui = new BaseGui(["collectionGui", "collection"], () => {
     let message = ""
 
     if(settings.collectionNotation)
-        rightValues = [addNotation("oneLetters", currentItem) ?? 0, addNotation("oneLetters", itemPerHour) ?? 0, addNotation("oneLetters", itemValuesSum) ?? 0, uptimeSeconds]
+        rightValues = [addNotation("oneLetters", currentItem) ?? 0, addNotation("oneLetters", itemPerHour) ?? 0,
+            addNotation("oneLetters", itemValuesSum) ?? 0, secondsToMessage(uptimeSeconds)
+        ]
     else
-        rightValues = [addCommas(currentItem) ?? 0, addCommas(itemPerHour) ?? 0, addCommas(itemValuesSum) ?? 0, uptimeSeconds]
+        rightValues = [addCommas(currentItem) ?? 0, addCommas(itemPerHour) ?? 0,
+            addCommas(itemValuesSum) ?? 0, secondsToMessage(uptimeSeconds)]
 
     leftValues.forEach((value, i) => {
         message += "&a" + value + ": &b" + rightValues[i] + "\n"

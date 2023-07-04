@@ -5,12 +5,8 @@ import { getWaypoints } from "../util/waypointLoader"
 import settings from "../settings"
 import { Title } from "../util/helperFunctions"
 
-const clipTitle = new Title("&cClip next",
-    {"scale": 2, "sound": "mob.bat.hurt", "yOffset": 50}
-)
-const etherTitle = new Title("&5Etherwarp next",
-    {"scale": 2, "sound": "mob.endermen.portal", "yOffset": 50}
-)
+const clipTitle = new Title({text: "&cClip next", scale: 2, sound: "mob.bat.hurt", yOffset: 50})
+const etherTitle = new Title({text: "&5Etherwarp next","scale": 2, "sound": "mob.endermen.portal", "yOffset": 50})
 
 let currentOrderedWaypointIndex = 1,
     orderedWaypoints = [],

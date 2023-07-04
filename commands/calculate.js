@@ -37,6 +37,6 @@ registerCommand({
                 return
             default:
                 return ChatLib.chat(constants.CALCULATEERRORMESSAGE)
-        }
+       }
     }
 })
