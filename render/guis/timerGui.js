@@ -18,7 +18,8 @@ const timerGui = new BaseGui(["timerGui", "timer"], () => {
         return message
     }
 )
-const title = new Title("&bTimer done")
+const title = new Title({text: "&bTimer done"})
+
 registerGui(timerGui)
 
 

@@ -3,7 +3,7 @@ import settings from "../../settings"
 import { secondsToMessage, trackCollection } from "../../util/helperFunctions"
 import { BaseGui } from "../BaseGui"
 import { registerGui } from "../../guiManager"
-import { addNotation, getObjectValue } from "../../util/helperFunctions"
+import { addNotation, getObjectValue, addCommas } from "../../util/helperFunctions"
 import request from "../../../requestV2"
 
 let itemStringed = "",

@@ -166,124 +166,61 @@ export function drawCoolWaypoint(x, y, z, r, g, b, {name = "", showDist = name !
 }
 
 
+
 export function getBlocksAlongLine(startCoord, endCoord)
 {
-    let [x1, y1, z1] = startCoord
-    let [x2, y2, z2] = endCoord
-    x1 = parseInt(x1) - 1
-    y1 = parseInt(y1)
-    z1 = parseInt(z1) - 1
-    x2 = parseInt(x2) - 1
-    y2 = parseInt(y2)
-    z2 = parseInt(z2) - 1
-    const dx = Math.abs(x2 - x1)
-    const dy = Math.abs(y2 - y1)
-    const dz = Math.abs(z2 - z1)
-    const incX = x2 > x1 ? 1 : -1
-    const incY = y2 > y1 ? 1 : -1
-    const incZ = z2 > z1 ? 1 : -1
-    let x = x1
-    let y = y1
-    let z = z1
-    const blocks = []
+    
 
-    if (dx >= dy && dx >= dz)
-    {
-        let err1 = 2 * dy - dx
-        let err2 = 2 * dz - dx
-
-        while (x != x2)
-        {
-            //console.log(`${x} ${y} ${z} | ${x1} ${y1} ${z1} | ${x2} ${y2} ${z2} | ${err1} ${err2}`)
-            blocks.push([x, y, z])
-
-            if (err1 > -dx)
-            {
-                err1 -= 2 * dx
-                y += incY
-            }
-            if (err2 > -dx)
-            {
-                err2 -= 2 * dx
-                z += incZ
-            }
-            if (err1 < err2)
-            {
-                err1 += 2 * dy
-                x += incX
-            }
-            else
-            {
-                err2 += 2 * dz
-                x += incX
-            }
-        }
-    }
-    else if (dy >= dx && dy >= dz)
-    {
-        let err1 = 2 * dx - dy
-        let err2 = 2 * dz - dy
-
-        while (y != y2)
-        {
-            //console.log(`${x} ${y} ${z} | ${x1} ${y1} ${z1} | ${x2} ${y2} ${z2} | ${err1} ${err2}`)
-            blocks.push([x, y, z])
-
-            if (err1 > -dy)
-            {
-                err1 -= 2 * dy
-                x += incX
-            }
-            if (err2 > -dy)
-            {
-                err2 -= 2 * dy
-                z += incZ
-            }
-            if (err1 < err2)
-            {
-                err1 += 2 * dx
-                y += incY
-            }
-            else
-            {
-                err2 += 2 * dz
-                y += incY
-            }
-        }
-    }
-    else
-    {
-        let err1 = 2 * dy - dz
-        let err2 = 2 * dx - dz
-
-        while (z != z2)
-        {
-            //console.log(`${x} ${y} ${z} | ${x1} ${y1} ${z1} | ${x2} ${y2} ${z2} | ${err1} ${err2}`)
-            blocks.push([x, y, z])
-
-            if (err1 > -dz)
-            {
-                err1 -= 2 * dz
-                y += incY
-            }
-            if (err2 > -dz)
-            {
-                err2 -= 2 * dz
-                x += incX
-            }
-            if (err1 < err2)
-            {
-                err1 += 2 * dy
-                z += incZ
-            }
-            else
-            {
-                err2 += 2 * dx
-                z += incZ
-            }
-        }
-    }
-
-    blocks.push([x2, y2, z2])
-    return blocks
 }
+
+
+/** stolen from bloomcore
+ * Does a voxel traversal from the startPos (Or player eye coord by default) until it hits a non-air block.
+ * @param {[Number, Number, Number] | null} startPos - The position to start at
+ * @param {Vector3 | null} directionVector - The direction for the ray to travel in. Keep as null to use the player's look vector 
+ * @param {Number} distance 
+ * @param {BlockCheckFunction} blockCheckFunc 
+ * @param {Boolean} returnWhenTrue 
+ * @param {Boolean} stopWhenNotAir
+ */
+export const raytraceBlocks = (startPos=null, directionVector=null, distance=60, blockCheckFunc=null, returnWhenTrue=false, stopWhenNotAir=true) => {
+    // Set default values to send a raycast from the player's eye pos, along the player's look vector.
+    if (!startPos) startPos = getPlayerEyeCoords()
+    if (!directionVector) directionVector = getPlayerLookVec()
+
+    const endPos = directionVector.normalize().multiply(distance).add(startPos).getComponents()
+
+    return traverseVoxels(startPos, endPos, blockCheckFunc, returnWhenTrue, stopWhenNotAir)
+}
+
+/** stolen from bloomcore
+ * Gets the coordinates of the player's eyes.
+ * @param {Boolean} forceSneak - If the player is not sneaking, lower the Y value by 0.08 blocks.
+ * @returns 
+ */
+export const getPlayerEyeCoords = (forceSneak=false) => {
+    let x = Player.getX()
+    let y = Player.getY() + Player.getPlayer().func_70047_e()
+    let z = Player.getZ()
+
+    if (forceSneak && !Player.isSneaking()) y -= 0.08
+    return [x, y, z]
+}
+
+
+/** stolen from bloomcore
+ * Gets the player's look vector
+ * @returns {Vector3}
+ */
+export const getPlayerLookVec = () => {
+    let lookVec = Player.getPlayer().func_70040_Z() // .getLookVec()
+    return [lookVec.field_72450_a,
+        lookVec.field_72448_b,
+        lookVec.field_72449_c]
+}
+
+
+register("tick", () => {
+    //console.log(getPlayerLookVec())
+
+})
