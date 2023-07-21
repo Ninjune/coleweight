@@ -1,8 +1,15 @@
 import constants from "../util/constants"
+import { registerCommand } from "../commandManager"
 
-register("command", (points) => {
+registerCommand({
+  aliases: ["structure"],
+  description: ["Generates points to check a route for structures."],
+  options: "",
+  category: "waypoints",
+  execute: (points) => {
+  if (typeof points != "number") ChatLib.chat(`${constants.PREFIX}&aPoints must be a number.`);
   var data = Java.type('java.awt.Toolkit').getDefaultToolkit().getSystemClipboard().getContents(null).getTransferData(Java.type('java.awt.datatransfer.DataFlavor').stringFlavor);
-  ChatLib.chat(`${constants.PREFIX} &aLoaded Coleweight waypoint data.`);
+  ChatLib.chat(`${constants.PREFIX}&aLoaded Coleweight waypoint data.`);
   data = JSON.parse(data);
 
   var waypointAmount = data.length;
@@ -31,10 +38,11 @@ register("command", (points) => {
   var StringSelection = Java.type('java.awt.datatransfer.StringSelection');
   var stringSel = new StringSelection(JSON.stringify(structureCheckPoints));
   Java.type('java.awt.Toolkit').getDefaultToolkit().getSystemClipboard().setContents(stringSel, null);
-  ChatLib.chat(`${constants.PREFIX} &aPoints to check copied to clipboard. Load into Coleweight using /cw ordered load to check the route.`);
+  ChatLib.chat(`${constants.PREFIX}&aPoints to check copied to clipboard. Load into Coleweight using /cw ordered load to check the route.`);
   //}
   //else if (mode == "render") {
     //currRenderedPoints = structureCheckPoints;
   //  ChatLib.chat(`${constants.PREFIX} &aPoints rendered on screen as waypoints. Use /catclear to clear them.`);
   //}
-}).setName("coleweightstructure").setAliases("cwstructure", "structure");
+}
+});
