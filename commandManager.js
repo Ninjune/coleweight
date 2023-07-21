@@ -5,6 +5,7 @@ let commands = [],
  commandNames = [],
  helpCommands = {info: [], settings: [], waypoints: [], miscellaneous: []}
 
+
 export function registerCommand(command)
 {
     commands.push(command)

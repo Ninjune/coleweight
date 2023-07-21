@@ -166,14 +166,6 @@ export function drawCoolWaypoint(x, y, z, r, g, b, {name = "", showDist = name !
 }
 
 
-
-export function getBlocksAlongLine(startCoord, endCoord)
-{
-    
-
-}
-
-
 /** stolen from bloomcore
  * Does a voxel traversal from the startPos (Or player eye coord by default) until it hits a non-air block.
  * @param {[Number, Number, Number] | null} startPos - The position to start at

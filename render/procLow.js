@@ -1,4 +1,5 @@
 import settings from "../settings";
+import constants from "../util/constants";
 
 register("chat", (icon, type, number) => {
     if(settings.lowProc == "") return

@@ -1,6 +1,6 @@
 import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
-import { trace, drawEspBox, getBlocksAlongLine } from "../util/renderUtil"
+import { trace, drawEspBox } from "../util/renderUtil"
 const PREFIX = constants.PREFIX
 
 let x = 0,
