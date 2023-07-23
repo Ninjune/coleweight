@@ -1,6 +1,6 @@
 import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
-import { drawCoolWaypoint, drawEspBox, drawLine, getBlocksAlongLine, trace } from "../util/renderUtil"
+import { drawCoolWaypoint, drawEspBox, drawLine, trace } from "../util/renderUtil"
 import { getWaypoints } from "../util/waypointLoader"
 import settings from "../settings"
 import { Title } from "../util/helperFunctions"
@@ -196,14 +196,8 @@ register("renderWorld", () => {
     {
         drawLine(parseInt(currentWP.x) + 0.5, parseInt(currentWP.y) + 2.65, parseInt(currentWP.z) + 0.5,
             parseInt(traceWP.x) + 0.5, parseInt(traceWP.y) + 0.5, parseInt(traceWP.z) + 0.5,
-            color.getRed()/255, color.getGreen()/255, color.getBlue()/255, 0.5, settings.orderedSetupThickness)
-        /*let blocks = getBlocksAlongLine([parseInt(currentWP.x) + 0.5, parseInt(currentWP.y) + 2.65, parseInt(currentWP.z) + 0.5],
-            [parseInt(traceWP.x) + 0.5, parseInt(traceWP.y) + 0.5, parseInt(traceWP.z) + 0.5])
-        blocks.forEach(block => {
-            let blockID = World.getBlockAt(Math.floor(block[0])+0.5, Math.floor(block[1]), Math.floor(block[2])+0.5).type.getID()
-            if(blockID != 0 && blockID != 4)
-                drawEspBox(Math.floor(block[0])+0.5, Math.floor(block[1]), Math.floor(block[2])+0.5, 0, 1, 1, 0.7)
-        })*/
+            color.getRed()/255, color.getGreen()/255, color.getBlue()/255, 0.5, settings.orderedSetupThickness
+        )
     }
 
     decideWaypoints()

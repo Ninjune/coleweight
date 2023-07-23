@@ -1,6 +1,6 @@
 import { registerGui } from "../../guiManager"
 import settings from "../../settings"
-import { capitalizeFirst, checkInDwarven, checkInEnd, checkInHollows, Title, textGui } from "../../util/helperFunctions"
+import { capitalizeFirst, checkInDwarven, checkInEnd, checkInHollows, Title } from "../../util/helperFunctions"
 import { BaseGui } from "../BaseGui"
 
 const miningAbilitiesGui = new BaseGui(["abilityGui", "miningabilities"], () => {
@@ -110,7 +110,7 @@ function addAbility(abilityName, timer = 0)
 
     if (!found)
     {
-        let object = {timer, name: capitalizeFirst(abilityName), title: new Title(`&6[&3&kd&6] &b&l${capitalizeFirst(abilityName)}&6 [&3&kd&6]`), maxTimer}
+        let object = {timer, name: capitalizeFirst(abilityName), title: new Title({text: `&6[&3&kd&6] &b&l${capitalizeFirst(abilityName)}&6 [&3&kd&6]`}), maxTimer}
 
         activeAbilities.push(object)
     }

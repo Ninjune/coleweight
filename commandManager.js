@@ -5,6 +5,7 @@ let commands = [],
  commandNames = [],
  helpCommands = {info: [], settings: [], waypoints: [], miscellaneous: []}
 
+
 export function registerCommand(command)
 {
     commands.push(command)
@@ -96,7 +97,6 @@ import "./commands/config"
 import "./commands/coords.js"
 import "./commands/credits"
 import "./commands/cw"
-import "./commands/delete"
 import "./commands/deleteroute"
 import "./commands/drawLine"
 import "./commands/fetchDiscord"
@@ -111,13 +111,9 @@ import "./commands/move"
 import "./commands/optimize"
 import "./commands/ordered"
 import "./commands/reload"
-//import "./commands/setdrill"
 import "./commands/setkey"
 import "./commands/stopwatch"
+import "./commands/structure"
 import "./commands/timer"
 import "./commands/track"
 import "./commands/waypoints"
-import { deleteFile } from "./util/helperFunctions"
-
-// clean up from some time ago (added v1.10.0)
-deleteFile("commands/calculate/calculate.js")

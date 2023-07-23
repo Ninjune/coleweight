@@ -1,9 +1,9 @@
 import constants from "../../util/constants"
 import settings from "../../settings"
-import { secondsToMessage, trackCollection } from "../../util/helperFunctions"
+import { secondsToMessage } from "../../util/helperFunctions"
 import { BaseGui } from "../BaseGui"
 import { registerGui } from "../../guiManager"
-import { addNotation, getObjectValue } from "../../util/helperFunctions"
+import { addNotation, getObjectValue, addCommas } from "../../util/helperFunctions"
 import request from "../../../requestV2"
 
 let itemStringed = "",
@@ -140,6 +140,22 @@ function calcApi(apiPath, tempUuid)
     }
     catch(e) { if(settings.debug) console.log(e)}
 }
+
+
+function trackCollection(collection)
+{
+    let collections = JSON.parse(FileLib.read("Coleweight", "data/collections.json"))
+    if(collection == undefined) return ChatLib.chat(`${PREFIX}&eThat is not a valid collection! (or is not supported)`)
+    if(collection == "obby") collection = "obsidian"
+    if(collection == "cobble") collection = "cobblestone"
+    if(collections[collection.toLowerCase()] == undefined) return ChatLib.chat(`${PREFIX}&eThat is not a valid collection! (or is not supported)`)
+    constants.data.tracked.item = collections[collection].collectionToTrack
+    constants.data.tracked.itemStringed = collections[collection].collectionStringed
+    constants.data.save()
+
+    ChatLib.chat(`${PREFIX}&bSet collection to ${constants.data.tracked.itemStringed}!`)
+}
+
 
 function resetVars()
 {

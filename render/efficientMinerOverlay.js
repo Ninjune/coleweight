@@ -2,10 +2,10 @@ import { drawEspBox, trace } from "../util/renderUtil"
 import settings from "../settings"
 
 let blockStatesToFind = [
-    {name: "minecraft:wool[color=light_blue]", prio: 2}, 
-    {name: "minecraft:obsidian", prio: 0}, 
-    {name: "minecraft:prismarine[variant=prismarine_bricks]", prio: 0}, 
-    {name: "minecraft:prismarine[variant=prismarine_bricks]", prio: 0}, 
+    {name: "minecraft:wool[color=light_blue]", prio: 2},
+    {name: "minecraft:obsidian", prio: 0},
+    {name: "minecraft:prismarine[variant=prismarine_bricks]", prio: 0},
+    {name: "minecraft:prismarine[variant=prismarine_bricks]", prio: 0},
     {name: "minecraft:prismarine[variant=prismarine]", prio: 0}]
 let threadActive = false,
  maxPrio = -10000000,
@@ -20,9 +20,9 @@ let thread = new Thread(() => {
      playerY = Player.getY(),
      playerZ = Player.getZ(),
      playerReach = 4
-    
+
     if(playerX == undefined || playerY == undefined || playerZ == undefined || !World.isLoaded()) { threadActive = false; return thread.stop() }
-    
+
 
     for(let x = Math.round(playerX-playerReach); x < Math.ceil(playerX+playerReach); x++)
     {
@@ -52,9 +52,9 @@ let thread = new Thread(() => {
             tempSecondMax = tempBlocks[i]
         }
     }
-    
+
     if(tempMax == undefined || tempSecondMax == undefined) drawBlocks = []
-    else if(drawBlocks[0] != undefined && drawBlocks[1] != undefined && drawBlocks[0].x != undefined && drawBlocks[1].x != undefined && 
+    else if(drawBlocks[0] != undefined && drawBlocks[1] != undefined && drawBlocks[0].x != undefined && drawBlocks[1].x != undefined &&
         World.getBlockAt(drawBlocks[0].x, drawBlocks[0].y, drawBlocks[0].z).type.getRegistryName() === "minecraft:bedrock") // if player just mined block
     {
         drawBlocks[0] = drawBlocks[1]
@@ -73,20 +73,17 @@ let thread = new Thread(() => {
 
 
 register("renderWorld", () => {
-    if(!settings.efficientMinerOverlay || drawBlocks.length < 2 || drawBlocks[0] == undefined || drawBlocks[1] == undefined 
+    if(!settings.efficientMinerOverlay || drawBlocks.length < 2 || drawBlocks[0] == undefined || drawBlocks[1] == undefined
         || drawBlocks[0].x == undefined || drawBlocks[1].x == undefined) return
 
     try{
         trace(drawBlocks[0].x, drawBlocks[0].y + 5/10, drawBlocks[0].z, 1, 0, 0.3, 0.7, true)
         drawEspBox(drawBlocks[0].x, drawBlocks[0].y, drawBlocks[0].z, 1, 0, 0.3, 0.7, true)
         drawEspBox(drawBlocks[1].x, drawBlocks[1].y, drawBlocks[1].z, 1, 0.5, 0.3, 0.7, true)
-    } catch(err) {if(settings.debug) console.log(err)} 
-    
+    } catch(err) {if(settings.debug) console.log(err)}
+
 })
 
-/*register("step", () => { // debug, comment when done
-
-}).setFps(1)*/
 
 register("step", () => {
     if (!settings.efficientMinerOverlay)
@@ -95,6 +92,7 @@ register("step", () => {
         thread.start()
 }).setFps(20)
 
+
 register("gameUnload", () => {
     thread.stop()
 })
@@ -102,8 +100,8 @@ register("gameUnload", () => {
 
 function findPrio(originX, originY, originZ, blockStateToFind, prio)
 {
-    let radius = 2 + 1/2, 
-     blockCount = 0, 
+    let radius = 2 + 1/2,
+     blockCount = 0,
      rayTraceX, rayTraceY, rayTraceZ
     if(Player.lookingAt() != undefined && Player.lookingAt()?.getRegistryName() != "minecraft:air")
         lookingAt = Player.lookingAt()
@@ -113,7 +111,7 @@ function findPrio(originX, originY, originZ, blockStateToFind, prio)
         rayTraceX = lookingAt.getX()
         rayTraceY = lookingAt.getY()
         rayTraceZ = lookingAt.getZ()
-    } 
+    }
 
 
     for(let x = Math.round(originX-radius); x < Math.round(originX+radius); x++) // second cube
@@ -135,7 +133,7 @@ function findPrio(originX, originY, originZ, blockStateToFind, prio)
                         prio += 2/10
                 }
 
-                // RAYTRACE 
+                // RAYTRACE
                 if(lookingAt != undefined)
                 {
                     prio -= Math.abs(rayTraceX - x)/100 // = 0.01 per block of distance
@@ -169,23 +167,23 @@ function isVisible(x, y, z)
 
 function checkConnectedBlocks(x, y, z, originX, originY, originZ, blockStateToFind, distance) {
     if (World.getBlockAt(x, y, z).getState().toString() !== blockStateToFind) {
-        return false;
+        return false
     }
     if (Math.abs(x - originX) + Math.abs(y - originY) + Math.abs(z - originZ) > distance) {
-        return false;
+        return false
     }
 
     for (let dx = -1; dx <= 1; dx++) {
         for (let dy = -1; dy <= 1; dy++) {
             for (let dz = -1; dz <= 1; dz++) {
                 if (dx === 0 && dy === 0 && dz === 0) {
-                    continue;
+                    continue
                 }
                 if (!checkConnectedBlocks(x + dx, y + dy, z + dz, distance)) {
-                    return false;
+                    return false
                 }
             }
         }
     }
-    return true;
+    return true
 }

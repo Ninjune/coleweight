@@ -1,4 +1,4 @@
-/*import { // after careful consideration I have decided not to make this with elementa, if anyone wants to make it for me (be it with elementa or Renderer) make https://imgur.com/a/D0XpIUx, dm Ninjune#0670 if need help
+/*import { //
     AdditiveConstraint,
     CenterConstraint,
     ConstantColorConstraint,
@@ -19,14 +19,14 @@ let ScreenW = Renderer.screen.getWidth(),
  ScreenH = Renderer.screen.getHeight(),
  itemCount = 0
 
- class itemGui 
+ class itemGui
  {
     constructor(item)
     {
         this.item = item
         itemCount++
 
-        const textWindow = new UIBlock(new Color(0, 0, 0, 0.5)) // 320 960 
+        const textWindow = new UIBlock(new Color(0, 0, 0, 0.5)) // 320 960
         .setX(new CenterConstraint())
         .setY((ScreenH/2*itemCount + ScreenH/10.8).pixels())
         .setWidth((ScreenW/ITEM_WIDTH).pixels())
@@ -45,7 +45,7 @@ let ScreenW = Renderer.screen.getWidth(),
 
 function coordsWindow(row, column, title, command, desc, image=false, alternateText="")
 {
-    const coordWindow = new UIBlock(new Color(0, 0, 0, 0.5)) // 320 960 
+    const coordWindow = new UIBlock(new Color(0, 0, 0, 0.5)) // 320 960
     .setX(((ScreenW/3*(column))-ScreenW/3.25).pixels())
     .setY((ScreenH/2*(row-1)+ScreenH/10.8).pixels())
     .setWidth((ScreenW/COORDS_WIDTH).pixels())
@@ -110,4 +110,4 @@ export function openCoordsGui()
     })
     CoordsGui.init()
     GuiHandler.openGui(CoordsGui)
-}*/ 
+}*/

@@ -6,7 +6,7 @@ const PREFIX = constants.PREFIX
 let cwlbData = [],
  newMessage, message, messagePrefix = "", cwlbPlayerData, onward
 
-register("chat", (level, typeOfChat, hypixelRank, username, ironman, playerMessage, event) => { // CW Rank
+register("chat", (level, typeOfChat, emblem, hypixelRank, username, ironman, playerMessage, event) => { // CW Rank
     if(!settings.rankChat) return
     if(!settings.rankEverywhere && !(checkInHollows() || checkInDwarven())) return
     if(!settings.rankEverywhere && typeOfChat != "") return
@@ -36,7 +36,7 @@ register("chat", (level, typeOfChat, hypixelRank, username, ironman, playerMessa
 
     newMessage.addTextComponent(playerMessage)
     ChatLib.chat(newMessage)
-}).setCriteria(/^(\[\d+\] )?((?:(?:Guild|Party|Co-op) > )|(?:\[:v:\] ))?(\[\w+\+{0,2}\] )?(\w{1,16}) ?(♲)?(?: \[\w{1,6}\])?: (.*)$/g)
+}).setCriteria(/^(\[\d+\] )?((?:(?:Guild|Party|Co-op) > )|(?:\[:v:\] ))?(.)? ?(\[\w+\+{0,2}\] )?(\w{1,16}) ?(♲)?(?: \[\w{1,6}\])?: (.*)$/g)
 
 register("gameLoad", () => {
     axios.get("https://ninjune.dev/api/coleweight-leaderboard?length=500")

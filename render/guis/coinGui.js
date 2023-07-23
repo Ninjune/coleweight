@@ -15,7 +15,7 @@ const coinGui = new BaseGui(["coinGui", "coin", "money", "cointracker"], () => {
     if((!coinGui.isOpen() && !settings.coinTracker) || startTime <= 0)
         return
 
-    return `&a$/hr: &b$${addCommas(moneyPerHour)}\n&a$ made: &b$${addCommas(money)}&b\n&aUptime: &b${secondsToMessage((Date.now()-startTime)/1000)}`
+    return `&a$/hr: &b$${addCommas(moneyPerHour)}\n&a$ made: &b$${addCommas(Math.floor(money))}&b\n&aUptime: &b${secondsToMessage((Date.now()-startTime)/1000)}`
 }, resetVars)
 registerGui(coinGui)
 

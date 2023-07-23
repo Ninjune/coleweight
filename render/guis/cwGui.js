@@ -2,7 +2,7 @@ import settings from "../../settings"
 import constants from "../../util/constants"
 import axios from "../../../axios"
 import request from "../../../requestV2"
-import { getObjectValue, secondsToMessage } from "../../util/helperFunctions"
+import { getObjectValue, getSelectedProfile, secondsToMessage } from "../../util/helperFunctions"
 import { BaseGui } from "../BaseGui"
 import { registerGui } from "../../guiManager"
 
@@ -95,11 +95,7 @@ register("step", () => {
                 json: true
             })
             .then(res => {
-                for(let i=0; i < res.profiles.length; i+=1)
-                {
-                    if(res.profiles[i].selected == true)
-                        profileData = res.profiles[i]
-                }
+                profileData = getSelectedProfile(res)
 
                 for(let i = 0; i < cwinfo.length; i++)
                 {

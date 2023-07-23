@@ -95,7 +95,8 @@ export default constants = {
     data: PogData,
     beta: false,
     checkedGemstoneStats: false,
-    settings
+    settings,
+    isFiesta: false
 }
 
 register("gameLoad", () => {
