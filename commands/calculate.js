@@ -2,8 +2,8 @@ import constants from "../util/constants"
 import { hotmCalc } from "./calculate/hotmCalc"
 import { calcSpeed } from "./calculate/calcSpeed"
 import { tickCommand } from "./calculate/tick"
-import { helpCommand } from "../util/helperFunctions"
 import { registerCommand } from "../commandManager"
+import { helpCommand } from "./help"
 
 
 registerCommand({

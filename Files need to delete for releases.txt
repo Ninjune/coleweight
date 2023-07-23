@@ -1,4 +1,4 @@
-all of config/ except .gitkeep & routes.json (don't release private routes)
+all of config/ except .gitkeep
 .git
 License
 README.md

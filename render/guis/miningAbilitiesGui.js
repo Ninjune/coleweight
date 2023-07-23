@@ -1,6 +1,6 @@
 import { registerGui } from "../../guiManager"
 import settings from "../../settings"
-import { capitalizeFirst, checkInDwarven, checkInEnd, checkInHollows, Title, textGui } from "../../util/helperFunctions"
+import { capitalizeFirst, checkInDwarven, checkInEnd, checkInHollows, Title } from "../../util/helperFunctions"
 import { BaseGui } from "../BaseGui"
 
 const miningAbilitiesGui = new BaseGui(["abilityGui", "miningabilities"], () => {

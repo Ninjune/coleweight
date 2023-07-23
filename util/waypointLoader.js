@@ -1,7 +1,12 @@
 const Base64 = Java.type("java.util.Base64")
 const DataInputStream = Java.type("java.io.DataInputStream")
 const ByteArrayInputStream = Java.type("java.io.ByteArrayInputStream")
-
+/**
+ * 
+ * @param {String} data 
+ * @param {"soopy" | "skytils"} format 
+ * @returns
+ */
 export function getWaypoints(data, format) {
     let oldJSON, rows, tempData
 

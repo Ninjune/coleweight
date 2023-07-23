@@ -1,6 +1,5 @@
-/*
-Major credit to Fabi019 for Powdertracker module.
-*/
+// Major credit to Fabi019 for Powdertracker module.
+
 import constants from "../../util/constants"
 import settings from "../../settings"
 import { registerGui } from "../../guiManager"

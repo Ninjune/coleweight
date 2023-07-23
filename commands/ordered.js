@@ -1,6 +1,6 @@
 import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
-import { drawCoolWaypoint, drawEspBox, drawLine, getBlocksAlongLine, trace } from "../util/renderUtil"
+import { drawCoolWaypoint, drawEspBox, drawLine, trace } from "../util/renderUtil"
 import { getWaypoints } from "../util/waypointLoader"
 import settings from "../settings"
 import { Title } from "../util/helperFunctions"

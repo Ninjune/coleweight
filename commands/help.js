@@ -1,5 +1,5 @@
 import { registerCommand } from "../commandManager"
-import { capitalizeFirst, helpCommand } from "../util/helperFunctions"
+import { capitalizeFirst } from "../util/helperFunctions"
 import helpCommands from "../commandManager"
 
 
@@ -20,3 +20,16 @@ registerCommand({
         ChatLib.chat(ChatLib.getCenteredText("&b--------------------------------------------"))
     },
 })
+
+
+/**
+Chats a chat message with specified parameters.
+@param {string} command - Command
+@param {string} desc - Description
+@param {string} usage - Usage
+*/
+export function helpCommand(command, desc, usage)
+{
+    ChatLib.chat(new TextComponent(`&a◆ /cw ${command} => &b${desc}`).setHoverValue(`${"/cw " + command + " " + usage}`))
+}
+

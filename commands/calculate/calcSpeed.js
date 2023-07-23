@@ -8,7 +8,7 @@ export function calcSpeed(powder)
     let speedLevels = 1,
      professionalLevels = 1
 
-    if(powder == undefined || parseNotatedInput(powder) == "NI") return ChatLib.chat(constants.CALCULATEERRORMESSAGE)
+    if(powder == undefined || parseNotatedInput(powder) == undefined) return ChatLib.chat(constants.CALCULATEERRORMESSAGE)
     powder = parseNotatedInput(powder)
 
     while(powder > msPowder(speedLevels) + profPowder(professionalLevels))
@@ -21,7 +21,7 @@ export function calcSpeed(powder)
         {
             powder -= profPowder(professionalLevels++)
         }
-        else break 
+        else break
     }
     return ChatLib.chat(`&bGet &6&l${speedLevels} &bmining speed levels and &6&l${professionalLevels} &bprofessional levels.`)
 }

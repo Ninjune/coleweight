@@ -1,8 +1,10 @@
+import axios from "../../axios"
 import settings from "../settings"
 import constants from "../util/constants"
-import { checkInDwarven, checkInHollows, findGriefer } from "../util/helperFunctions"
+import { checkInDwarven, checkInHollows } from "../util/helperFunctions"
 const PREFIX = constants.PREFIX
 let checkedPlayers = []
+let griefers = []
 
 
 register("step", () => {
@@ -49,5 +51,39 @@ function checkMMiners()
     return checkedPlayers
 }
 
+
+/**
+ * Finds if a player is a griefer.
+ * @param {string} player
+ * @returns
+ */
+export function findGriefer(player)
+{
+    let grieferReturnObj = {}
+    grieferReturnObj.found = false
+    griefers.forEach(griefer => {
+        griefer.dateObj = new Date(0)
+        griefer.dateObj.setUTCMilliseconds(griefer.timestamp)
+
+        if(griefer.name.toLowerCase() == player.toLowerCase())
+        {
+            grieferReturnObj = griefer
+            grieferReturnObj.found = true
+        }
+    })
+    return grieferReturnObj
+}
+
+
+register("gameLoad", () => {
+    axios.get("https://ninjune.dev/api/mminers")
+    .then(res => {
+        griefers = res.data.griefers
+    })
+    .catch(err => {
+        if(!settings.debug) return
+        console.log(new Error(err).lineNumber)
+    })
+})
 
 export default ""
