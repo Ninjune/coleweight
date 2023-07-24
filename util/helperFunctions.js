@@ -152,12 +152,14 @@ export function capitalizeFirst(sentence)
 
 /**
  * This contains a value "drawState", this dictates whether or not this draw or not. Default to 0. Check for 1 in a "renderOverlay" to draw. (must set to draw.)
- * @param {string} text
- * @param {object} options
  * @returns
  */
 export class Title
 {
+    /**
+     *
+     * @param {{text: string, scale: number, time: number, sound: string, yOffset: number, xOffset: number}} param0
+     */
     constructor({text, scale = 5, time = 3000, sound = "random.orb", yOffset = 0, xOffset = 0})
     {
         this.text = text
@@ -315,4 +317,18 @@ export function secondsToMessage(seconds)
         return `${Math.floor(seconds/60)}m ${Math.floor(seconds%60)}s`
     else
         return `${hour}h ${Math.floor(seconds/60) - hour*60}m`
+}
+
+/**
+ * Calculates distance between waypoints.
+ * @param {{x: Number, y: Number, z:Number}} waypoint1
+ * @param {{x: Number, y: Number, z: Number}} waypoint2
+ * @returns
+ */
+export function distanceCalc(waypoint1, waypoint2, includeVertical = true)
+{
+    if(includeVertical)
+        return Math.hypot(waypoint1.x - waypoint2.x, waypoint1.y - waypoint2.y, waypoint1.z - waypoint2.z)
+    else
+        return Math.hypot(waypoint1.x - waypoint2.x, waypoint1.z - waypoint2.z)
 }
