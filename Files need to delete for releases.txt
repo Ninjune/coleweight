@@ -1,0 +1,4 @@
+all of config/ except .gitkeep
+.git
+License
+README.md
