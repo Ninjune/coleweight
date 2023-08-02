@@ -1,5 +1,6 @@
 import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
+import { distanceCalc } from "../util/helperFunctions"
 const PREFIX = constants.PREFIX
 let args
 
@@ -38,12 +39,6 @@ const mainThread = new Thread(() => {
 
     ChatLib.chat(`${PREFIX}&bRoute copied to clipboard! Original distance: `  + Math.round(distances.orig) + " Optimized distance: " + Math.round(distances.new))
 })
-
-
-function distanceCalc(waypoint1, waypoint2)
-{
-    return Math.sqrt((waypoint1.x - waypoint2.x)**2 + (2.5*(waypoint1.y - waypoint2.y))**2 + (waypoint1.z - waypoint2.z)**2) // height differences make a big change so count them as double distance.
-}
 
 
 function nextNeighbor(origWaypoints)

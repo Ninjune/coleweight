@@ -1,20 +1,25 @@
-import axios from "../../axios"
-import constants from "./constants"
-const settings = constants.settings
-import { Promise } from "../../PromiseV2"
-import request from "../../requestV2"
-const PREFIX = constants.PREFIX
+const File = Java.type("java.io.File")
 
-
+/**
+ * Adds commas to the number.
+ * @param {Number} num
+ * @returns
+ */
 export function addCommas(num) {
     try {
         return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
     } catch (error) {
         return 0
     }
-} // credit to senither for the regex, just don't care to make my own lol
+}
 
 
+/**
+ * Adds notation based on type to the value.
+ * @param {String} type oneLetters, shortScale, commas
+ * @param {Number} value
+ * @returns The notated value.
+ */
 export function addNotation(type, value) {
     let returnVal = value
     let notList = []
@@ -55,7 +60,13 @@ export function addNotation(type, value) {
     return returnVal
 }
 
-
+/**
+ * Renders a waypoint.
+ * @param {Number[][]} waypoints
+ * @param {Boolean} yellow If the waypoints should be yellow, default false.
+ * @param {Boolean} numbered If the waypoints should be numbered, default false.
+ * @returns
+ */
 export function waypointRender(waypoints, yellow=false, numbered=false)
 {
     let string = ""
@@ -72,129 +83,13 @@ export function waypointRender(waypoints, yellow=false, numbered=false)
     })
 }
 
-let griefers = []
 /**
- * Finds if a player is a griefer.
- * @param {string} player
+ * Gets a value from an object with a dynamic path to the value.
+ * @param {Object} obj
+ * @param {String[]} path
  * @returns
  */
-export function findGriefer(player)
-{
-    let grieferReturnObj = {}
-    grieferReturnObj.found = false
-    griefers.forEach(griefer => {
-        griefer.dateObj = new Date(0)
-        griefer.dateObj.setUTCMilliseconds(griefer.timestamp)
-
-        if(griefer.name.toLowerCase() == player.toLowerCase())
-        {
-            grieferReturnObj = griefer
-            grieferReturnObj.found = true
-        }
-    })
-    return grieferReturnObj
-}
-
-
-register("gameLoad", () => {
-    axios.get("https://ninjune.dev/api/mminers")
-    .then(res => {
-        griefers = res.data.griefers
-    })
-    .catch(err => {
-        if(!settings.debug) return
-        console.log(new Error(err).lineNumber)
-    })
-})
-
-
-export class textGui
-// guiObject format: { leftValues: [], rightValues: [] } (must have same amount of each or error).
-{
-    constructor(guiObject, x, y)
-    {
-        this.guiObject = guiObject
-        this.x = x
-        this.y = y
-        this.alignment = 0
-        this.moveGuiObject = new Gui()
-    }
-
-
-    renderGui()
-    {
-        let string = ""
-
-        this.guiObject.leftValues.forEach((leftValue, index) => {
-            if(leftValue == "Uptime")
-            {
-                let uptime = this.guiObject.rightValues[index] ?? 0,
-                uptimeHr = Math.floor(uptime/60/60)
-
-                if(uptimeHr >= 1)
-                    string += `&aUptime: &b${uptimeHr}h ${Math.floor(uptime/60) - uptimeHr*60}m\n`
-                else
-                    string += `&aUptime: &b${Math.floor(uptime/60)}m ${Math.floor(uptime%60)}s\n`
-            }
-            else
-            {
-                string += `&a${leftValue}: &b${this.guiObject.rightValues[index]}\n`
-            }
-        })
-
-        let text = new Text(string)
-        if (this.alignment == 1)
-            text.setAlign("CENTER")
-        else if (this.alignment == 2)
-            text.setAlign("RIGHT")
-        text.setShadow(true)
-        .setX(this.x)
-        .setY(this.y)
-
-        if (this.moveGuiObject.isOpen())
-        {
-            let txt = "Drag to move."
-
-            Renderer.drawStringWithShadow(txt, Renderer.screen.getWidth()/2 - Renderer.getStringWidth(txt)/2, Renderer.screen.getHeight()/2)
-        }
-
-        text.draw()
-    }
-
-
-    moveGui()
-    {
-        this.moveGuiObject.open()
-    }
-
-
-    findDrawValues()
-    {
-        let string = ""
-
-        this.guiObject.leftValues.forEach((leftValue, index) => {
-            if(leftValue == "Uptime")
-            {
-                let uptime = this.guiObject.rightValues[index] ?? 0,
-                uptimeHr = Math.floor(uptime/60/60)
-
-                if(uptimeHr >= 1)
-                    string += `&aUptime: &b${uptimeHr}h ${Math.floor(uptime/60) - uptimeHr*60}m\n`
-                else
-                    string += `&aUptime: &b${Math.floor(uptime/60)}m ${Math.floor(uptime%60)}s\n`
-            }
-            else
-            {
-                string += `&a${leftValue}: &b${this.guiObject.rightValues[index]}\n`
-            }
-        })
-
-        return string
-    }
-}
-
-
-export function getObjectValue(obj, path, def)
+export function getObjectValue(obj, path)
 {
 	let current = obj
     if(path == undefined) return undefined
@@ -221,10 +116,15 @@ export function parseNotatedInput(input)
     if(parseFloat(input) == input)
         return parseFloat(input)
     else
-        return "NI" // not integer
+        return undefined
 }
 
 
+/**
+ * Gets the selected profile.
+ * @param {Object} res The response from requesting https://api.hypixel.net/skyblock/profiles
+ * @returns Selected profile
+ */
 export function getSelectedProfile(res)
 {
     for(let i=0; i < res.profiles.length; i+=1)
@@ -234,7 +134,11 @@ export function getSelectedProfile(res)
     }
 }
 
-
+/**
+ * Capitalizes the first letter of every word in a sentence.
+ * @param {String} sentence
+ * @returns String
+ */
 export function capitalizeFirst(sentence)
 {
     if(sentence == undefined) return sentence
@@ -248,12 +152,14 @@ export function capitalizeFirst(sentence)
 
 /**
  * This contains a value "drawState", this dictates whether or not this draw or not. Default to 0. Check for 1 in a "renderOverlay" to draw. (must set to draw.)
- * @param {string} text
- * @param {object} options
  * @returns
  */
 export class Title
 {
+    /**
+     *
+     * @param {{text: string, scale: number, time: number, sound: string, yOffset: number, xOffset: number}} param0
+     */
     constructor({text, scale = 5, time = 3000, sound = "random.orb", yOffset = 0, xOffset = 0})
     {
         this.text = text
@@ -302,10 +208,20 @@ export class Title
     {
         this.drawState = 1
     }
+
+    isDrawing()
+    {
+        return this.drawing
+    }
 }
 
+// could move below to it's own file or do something else, not sure what to do with this @DocilElm
 class LocationChecker
 {
+    /**
+     *
+     * @param {String[]} locations
+     */
     constructor(locations)
     {
         this.locations = locations
@@ -377,229 +293,10 @@ export function checkInMirrorverse()
 }
 
 
-export function findColeweight(name)
-{
-    ChatLib.chat(`${PREFIX}Finding Coleweight!`)
-    let username = ""
-    if(name == undefined)
-        username = Player.getUUID()
-    else
-        username = name
-    axios.get(`https://ninjune.dev/api/coleweight?username=${username}`)
-    .then(res => {
-        if(res.data.code != undefined)
-            return ChatLib.chat(`${PREFIX}&e${res.data.error} Code: ${res.data.code}`)
-
-        let griefer = findGriefer(username), coleweightMessage
-
-        if(griefer.found)
-            coleweightMessage = new TextComponent(`${PREFIX}&b${res.data.rank}. ${res.data.name}&b's Coleweight: ${res.data.coleweight} (Top &l${res.data.percentile}&b%) &c&lHas griefed before. &cLast grief: &a${griefer.dateObj.toString().slice(4, 15)}`)
-        else
-            coleweightMessage = new TextComponent(`${PREFIX}&b${res.data.rank}. ${res.data.name}&b's Coleweight: ${res.data.coleweight} (Top &l${res.data.percentile}&b%)`)
-        coleweightMessage.setHoverValue(`&fExperience&f: &a${Math.round(res.data.experience.total*100) / 100}\n&fPowder&f: &a${Math.round(res.data.powder.total*100) / 100}\n&fCollection&f: &a${Math.round(res.data.collection.total*100) / 100}\n&fMiscellaneous&f: &a${Math.round(res.data.miscellaneous.total*100) / 100}`)
-        ChatLib.chat(coleweightMessage)
-    })
-    .catch(err => {
-        if(settings.debug) ChatLib.chat(`${PREFIX}&eError. (api may be down) ${err}`)
-        else ChatLib.chat(`${PREFIX}&eError. (api may be down)`)
-    })
-}
-
 /**
-Chats a chat message with specified parameters.
-@param {string} command - Command
-@param {string} desc - Description
-@param {string} usage - Usage
-*/
-export function helpCommand(command, desc, usage)
-{
-    ChatLib.chat(new TextComponent(`&a◆ /cw ${command} => &b${desc}`).setHoverValue(`${"/cw " + command + " " + usage}`))
-}
-
-
-function findBlockEfficiency()
-{
-
-}
-
-// code based on MattTheCuber's gemstones/hr
-/**
- *
- * @param {string} block
- * @param {number} pristine
- * @param {number} fortune
- * @param {number} speed
- * @param {boolean} blueCheese
- * @param {number} blockPercentage must be decimal
+ * Use to delete files that have been deleted and cause an incompatibility in the next CT version.
+ * @param {String} path
  */
-export function findGemstonesPerHr(block, pristine, fortune, speed, blueCheese, blockPercentage)
-{
-    const bal = block == "ruby" ? true : false
-    const percentage = blockPercentage
-
-    const msbTime = blueCheese ? 25 : 20
-    const msb = (blueCheese ? 4 : 3) * (bal ? 1.15 : 1)
-
-    const shardDrops = (2+4) / 2
-    const blockDrops = (3+6) / 2
-    const avgDrops = blockDrops * percentage + shardDrops * (1-percentage)
-
-    const miningTicksObj = findTick(speed, block)
-    const miningTicksBlocks = Math.max(4, miningTicksObj.currentBlockTick)
-    const miningTicksShards = Math.max(4, miningTicksObj.currentShardTick)
-    const miningTicks = miningTicksBlocks * percentage + miningTicksShards * (1-percentage)
-
-    const msbSpeed = speed + speed * msb
-    const msbTicksObj = findTick(msbSpeed, block)
-    const msbTicksBlocks = Math.max(4, msbTicksObj.currentBlockTick)
-    const msbTicksShards = Math.max(4, msbTicksObj.currentShardTick)
-    const msbTicks = msbTicksBlocks * percentage + msbTicksShards * (1-percentage)
-
-    const blocksPerHour = (72000 / (1 + miningTicks)) * ((120 - msbTime) / 120) + (72000 / (1 + msbTicks)) * (msbTime / 120)
-
-    const gemstonesPerHour = avgDrops * (1 + pristine * 0.79) * (1 + fortune / 100) * blocksPerHour
-    return { ticks: {blocks: miningTicksBlocks, shards: miningTicksShards, msbBlocks: msbTicksBlocks, msbShards: msbTicksShards}, gemstonesPerHour }
-}
-
-
-export function instaSellBZPrice(product)
-{
-    return new Promise((resolve, reject) => {
-        request("https://api.hypixel.net/skyblock/bazaar", { headers: {"User-Agent": genUUID()} })
-        .then(res => {
-            if(res.data.products[product] != undefined)
-                resolve(res.data.products[product].sell_summary[0].pricePerUnit)
-            else
-                resolve(0)
-        })
-        .catch(err => {
-            if(settings.debug) console.log("BZ Price: " + err)
-            reject(err)
-        })
-    })
-}
-
-export function trackCollection(collection)
-{
-    let collections = JSON.parse(FileLib.read("Coleweight", "data/collections.json"))
-    if(collection == undefined) return ChatLib.chat(`${PREFIX}&eThat is not a valid collection! (or is not supported)`)
-    if(collection == "obby") collection = "obsidian"
-    if(collection == "cobble") collection = "cobblestone"
-    if(collections[collection.toLowerCase()] == undefined) return ChatLib.chat(`${PREFIX}&eThat is not a valid collection! (or is not supported)`)
-    constants.data.tracked.item = collections[collection].collectionToTrack
-    constants.data.tracked.itemStringed = collections[collection].collectionStringed
-    constants.data.save()
-
-    ChatLib.chat(`${PREFIX}&bSet collection to ${constants.data.tracked.itemStringed}!`)
-}
-
-
-function findStrength(block)
-{
-    let strength = -1
-
-    if(block == parseInt(block) && block > 5) // change if add block to tick speed blocks in settings
-        strength = block
-    else
-    {
-        switch(block.toString().toLowerCase())
-        {
-            case "0":
-            case "green_mithril":
-                strength = 800
-                break
-            case "1":
-            case "blue_mithril":
-                strength = 1500
-                break
-            case "2":
-            case "ruby":
-            case "r":
-                strength = 2500
-                break
-            case "3":
-            case "j":
-            case "jade":
-            case "a":
-            case "amber":
-            case "amethyst":
-            case "s":
-            case "sapphire":
-                strength = 3200
-                break
-            case "4":
-            case "t":
-            case "topaz":
-            case "o":
-            case "opal":
-                strength = 4000
-            case "5":
-            case "jasper":
-                strength = 5000
-        }
-    }
-
-    return strength
-}
-
-
-/**
- * finds tick, returns and object with currentBlockTick & currentShardTick
- * @param {number} speed
- * @param {string} block
- * @returns {object}
- */
-export function findTick(speed, block)
-{
-    let ticks = {err: false},
-     strength = findStrength(block),
-     tickStrength = strength-200
-
-    ticks.currentBlockTick = strength*30/speed
-    ticks.currentShardTick = tickStrength*30/speed
-
-    if(ticks.currentBlockTick < 4.5)
-    {
-        if(ticks.currentBlockTick > 0.5)
-            ticks.currentBlockTick = 4
-    }
-
-    if(ticks.currentShardTick < 4.5)
-    {
-        if(ticks.currentShardTick > 0.5)
-            ticks.currentShardTick = 4
-    }
-
-    if(strength < 1) return ticks.err = true
-
-
-    if(ticks.currentBlockTick < Math.floor(ticks.currentBlockTick) + 0.5)
-        ticks.nextBlockSpeed = strength*30/(Math.floor(ticks.currentBlockTick)-0.5)
-    else
-        ticks.nextBlockSpeed = strength*30/(Math.floor(ticks.currentBlockTick)+0.5)
-
-    if(ticks.currentShardTick < Math.floor(ticks.currentShardTick) + 0.5)
-        ticks.nextShardSpeed = strength*30/(Math.floor(ticks.currentShardTick)-0.5)
-    else
-        ticks.nextShardSpeed = strength*30/(Math.floor(ticks.currentShardTick)+0.5)
-
-    ticks.currentBlockTick = Math.round(ticks.currentBlockTick)
-    ticks.currentShardTick = Math.round(ticks.currentShardTick)
-
-    return ticks
-}
-
-/**
- * Function to remove the MC color codes from strings, chainable with other string functions.
- * @returns the string without the color code
- */
- String.prototype.removeColorCode = function() {
-    let regex = /\u00A7[0-9A-FK-ORZ]/ig
-    this.replaced = this.replace(regex, "")
-    return this.replaced
-} // @CrazyTech4
-
-const File = Java.type("java.io.File")
 export function deleteFile(path)
 {
     const file = new File(Config.modulesFolder + "/Coleweight/" + path)
@@ -608,7 +305,11 @@ export function deleteFile(path)
         file.delete()
 }
 
-
+/**
+ * Converts seconds to a standard message.
+ * @param {Number} seconds
+ * @returns String
+ */
 export function secondsToMessage(seconds)
 {
     let hour = Math.floor(seconds/60/60)
@@ -618,12 +319,16 @@ export function secondsToMessage(seconds)
         return `${hour}h ${Math.floor(seconds/60) - hour*60}m`
 }
 
-
-export function genUUID() { // https://www.geeksforgeeks.org/how-to-create-a-guid-uuid-in-javascript/# cba to make one myself
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx"
-    .replace(/[xy]/g, function (c) {
-        const r = Math.random() * 16 | 0,
-            v = c == "x" ? r : (r & 0x3 | 0x8)
-        return v.toString(16)
-    })
+/**
+ * Calculates distance between waypoints.
+ * @param {{x: Number, y: Number, z:Number}} waypoint1
+ * @param {{x: Number, y: Number, z: Number}} waypoint2
+ * @returns
+ */
+export function distanceCalc(waypoint1, waypoint2, includeVertical = true)
+{
+    if(includeVertical)
+        return Math.hypot(waypoint1.x - waypoint2.x, waypoint1.y - waypoint2.y, waypoint1.z - waypoint2.z)
+    else
+        return Math.hypot(waypoint1.x - waypoint2.x, waypoint1.z - waypoint2.z)
 }

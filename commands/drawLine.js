@@ -12,11 +12,7 @@ register("renderWorld", () => {
     if(x == 0 && y == 0 && z == 0) return
 
     trace(x, y, z, 0, 0, 1, 0.86)
-    drawEspBox(x, y, z, 0, 0, 1, 0.86) // y no work
-    /*let blocks = getBlocksAlongLine([x, y, z], [Player.getX(), Player.getY() + 0.5, Player.getZ()])
-    blocks.forEach(block => {
-        drawEspBox(Math.floor(block[0])+0.5, Math.floor(block[1]), Math.floor(block[2])+0.5, 0, 1, 1, 0.7)
-    })*/
+    drawEspBox(x, y, z, 0, 0, 1, 0.86)
 })
 
 

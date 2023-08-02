@@ -524,6 +524,30 @@ class Settings {
         subcategory: "Normal Waypoints",
     })
     waypointShowDistance = true;
+
+    @SwitchProperty({
+        name: "Show Box",
+        description: "If normal waypoints (/cw waypoint) should show the box on the waypoint.",
+        category: "Waypoints",
+        subcategory: "Normal Waypoints",
+    })
+    waypointShowBox = false;
+
+    @SwitchProperty({
+        name: "Show Line",
+        description: "If normal waypoints (/cw waypoint) should show a line between waypoints showing where to etherwarp.",
+        category: "Waypoints",
+        subcategory: "Normal Waypoints",
+    })
+    waypointShowLine = false;
+
+    @SwitchProperty({
+        name: "Show Horizontal Distance",
+        description: "If normal waypoints (/cw waypoint) should show only horizontal (x and z) distance instead of including the y in distance calculation.",
+        category: "Waypoints",
+        subcategory: "Normal Waypoints",
+    })
+    waypointShowHorizontal = false;
     // CAT Other
     // SUBCAT Dungeon
     @SwitchProperty({

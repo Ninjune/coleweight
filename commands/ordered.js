@@ -65,7 +65,7 @@ export default registerCommand({
             case "unskip":
                 if(args[2] != undefined && parseInt(args[2]) != args[2])
                     return ChatLib.chat(`${constants.PREFIX}&bNot an integer!`)
-                
+
                 if(args[2] != undefined)
                     currentOrderedWaypointIndex -= parseInt(args[2])
                 else
@@ -134,7 +134,7 @@ export default registerCommand({
 
                 break
             case "export":
-                ChatLib.command(`ct copy ${JSON.stringify(waypoints)}`, true)
+                ChatLib.command(`ct copy ${JSON.stringify(orderedWaypoints)}`, true)
                 ChatLib.chat(`${constants.PREFIX}&bCopied to clipboard!`)
                 break
             case "save":
@@ -186,7 +186,7 @@ register("renderWorld", () => {
             orderedWaypoints[renderWaypoints[i]].z, r, g, b, { name: i < 3 && (settings.orderedSetup || settings.orderedShowText) ? orderedWaypoints[renderWaypoints[i]].options.name : "", renderBeacon: false, phase: i < 3, alpha })
     }
     const traceWP = orderedWaypoints[renderWaypoints[2]]
-    let color = settings.orderedColor
+    const color = settings.orderedColor
 
     if (!settings.orderedSetup && settings.orderedWaypointsLine && traceWP != undefined)
         trace(parseInt(traceWP.x) + 0.5, parseInt(traceWP.y) + 0.25, parseInt(traceWP.z) + 0.5, color.getRed()/255, color.getGreen()/255, color.getBlue()/255, color.getAlpha()/255, settings.orderedLineThickness)
@@ -288,7 +288,7 @@ export function load(route = "")
         res = getWaypoints(Java.type("net.minecraft.client.gui.GuiScreen").func_146277_j(), "soopy")
     else
         res = getWaypoints(route, "soopy")
-    
+
     if(res.success)
     {
         orderedWaypoints = res.waypoints

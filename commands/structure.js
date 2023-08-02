@@ -13,7 +13,7 @@ registerCommand({
             return ChatLib.chat(`${constants.PREFIX}&bPoints must be a integer!`);
         ChatLib.chat(`${constants.PREFIX}&bLoaded Coleweight waypoint data.`);
         let waypoints = getWaypoints(Java.type("net.minecraft.client.gui.GuiScreen").func_146277_j(), "soopy")
-
+        waypoints = waypoints["waypoints"];
         let waypointAmount = waypoints.length;
         let structureCheckPoints = [];
         for (let i = 0; i < points; i++) {
@@ -37,7 +37,7 @@ registerCommand({
             structureCheckPoints.push({x: x, y: y, z: z, r: 0, g: 1, b: 0, options: {name: i + 1}});
         }
 
-        ChatLib.command(`ct copy ${JSON.stringify(waypoints)}`, true)
+        ChatLib.command(`ct copy ${JSON.stringify(structureCheckPoints)}`, true)
         ChatLib.chat(`${constants.PREFIX}&bCopied structure check route to clipboard!`);
     }
 })

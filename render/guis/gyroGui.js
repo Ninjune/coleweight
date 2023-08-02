@@ -1,7 +1,6 @@
-import { registerGui } from "../../guiManager";
-import settings from "../../settings";
-import constants from "../../util/constants";
-import { BaseGui } from "../BaseGui";
+import { registerGui } from "../../guiManager"
+import settings from "../../settings"
+import { BaseGui } from "../BaseGui"
 let gyroPlayers = []
 const GYRO_COOLDOWN = 10.0
 const GYRO_DURATION = 6.0
@@ -36,8 +35,6 @@ register("chat", (name) => {
 }).setChatCriteria(/(?:&r)*&.(.+) (?:&ecasted &aCells Alignment &eon you!&r|aligned &r&a. &r&eother players!&r|&r&aaligned &r&eyourself!&r)/g)
 
 /*
-data format: [ {"name": String, "castTime": int ]
-
 using a start timestamp instead of a step with -= to the count because I assume it is better performance.
 
 round to 100ms

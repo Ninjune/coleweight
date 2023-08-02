@@ -1,9 +1,9 @@
 import settings from "../settings"
 import constants from "../util/constants"
-import { addCommas, findTick, genUUID, getSelectedProfile } from "../util/helperFunctions"
-import axios from "../../axios"
+import { addCommas, getSelectedProfile } from "../util/helperFunctions"
 import { findCost, findHotmObject } from "../commands/calculate/hotmCalc"
 import request from "../../requestV2"
+import { findTick } from "../commands/calculate/tick"
 const NBTTagString = Java.type("net.minecraft.nbt.NBTTagString")
 let powderTotals = {}
 let getPlayerDataSuccess = false
@@ -145,7 +145,7 @@ register("step", () => {
         let item = Player.getContainer().getStackInSlot(i)
         let lore = item?.getLore()
         if(lore == undefined) return
-        let loreType = lore[0]?.removeColorCode()
+        let loreType = lore[0]?.removeFormatting()
         if(!settings.showPowderSum || !loreType?.match(/(^Heart|^Reset).*/g) || (checkedHotmInfo && checkedHotmReset) || getPlayerDataSuccess) continue
         let loreItems = item.getLore()
         if(!loreItems)
@@ -154,11 +154,11 @@ register("step", () => {
         {
             if (loreType?.match(/(^Heart).*/g) && !checkedHotmInfo)
             {
-                if(!loreItem.removeColorCode().match(/(^Mithril|^Gemstone).*/g))
+                if(!loreItem.removeFormatting().match(/(^Mithril|^Gemstone).*/g))
                     continue
                 let loreItemSplit = loreItem.split(" ")
-                let powderType = loreItemSplit[0].removeColorCode().toLowerCase()
-                let add = parseInt(loreItemSplit[2].removeColorCode().replace(",",""))
+                let powderType = loreItemSplit[0].removeFormatting().toLowerCase()
+                let add = parseInt(loreItemSplit[2].removeFormatting().replace(",",""))
 
                 if(!powderTotals[powderType])
                     powderTotals[powderType] = add
@@ -168,7 +168,7 @@ register("step", () => {
             }
             else if (!checkedHotmReset)
             {
-                let stripped = loreItem.removeColorCode().replace(/[ \-,]/g,"")
+                let stripped = loreItem.removeFormatting().replace(/[ \-,]/g,"")
                 if(!stripped.match(/(MithrilPowder$|GemstonePowder$)/g))
                     continue
                 let powderType = stripped.match(/MithrilPowder$/g) ? "mithril" : "gemstone"

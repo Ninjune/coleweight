@@ -1,4 +1,3 @@
-import beaconBeam from "../../BeaconBeam/index.js"
 import { addCommas } from "./helperFunctions.js"
 
 if(!GlStateManager) {
@@ -36,7 +35,7 @@ export function drawLine (x1, y1, z1, x2, y2, z2, red, green, blue, alpha, lineW
 }
 
 /**
- * 
+ *
  * @param {number} x x
  * @param {number} y y
  * @param {number} z z
@@ -142,15 +141,16 @@ export function drawEspBox (x, y, z, red, green, blue, alpha, phase = true) // t
  * @param {number} b 0 - 1
  * @param {*} options name = "", showDist = name defined, phase = true, renderBeacon = true, alpha = 0.6, drawBox = true
  */
-export function drawCoolWaypoint(x, y, z, r, g, b, {name = "", showDist = name != "", phase = true, renderBeacon = true, alpha = 0.6, drawBox = true, nameColor = "a",})
+export function drawCoolWaypoint(x, y, z, r, g, b, {name = "", showDist = name != "", phase = true, renderBeacon = true, alpha = 0.6, drawBox = true, nameColor = "a", includeVerticalDistance = true})
 {
-    let distToPlayerSq=(x-Player.getRenderX())**2+(y-(Player.getRenderY()+Player.getPlayer()["func_70047_e"]()))**2+(z-Player.getRenderZ())**2
-
+    let distToPlayerSq = (x-Player.getRenderX())**2 + (y-(Player.getRenderY()+Player.getPlayer()["func_70047_e"]()))**2 + (z-Player.getRenderZ())**2
+    let distanceText = includeVerticalDistance ? Math.hypot(x-Player.getRenderX(), y-(Player.getRenderY() +
+        Player.getPlayer()["func_70047_e"]()), z-Player.getRenderZ()) :
+        Math.hypot(x-Player.getRenderX(), z-Player.getRenderZ())
     //let alpha=Math.min(1,Math.max(0,1-(distToPlayerSq-10000)/12500))
 
     if(drawBox)
         drawEspBox(x+0.5,y,z+0.5,r,g,b, alpha, phase)
-    //if(renderBeacon) beaconBeam(x,y+1,z,r,g,b,Math.min(1,Math.max(0,(distToPlayerSq-25)/100))*alpha,!phase)
 
     if(name||showDist){
         let distToPlayer=Math.sqrt(distToPlayerSq)
@@ -161,58 +161,6 @@ export function drawCoolWaypoint(x, y, z, r, g, b, {name = "", showDist = name !
         let loc6=[Player.getRenderX()+(x+0.5-Player.getRenderX())/(distToPlayer/distRender),Player.getRenderY()+Player.getPlayer()["func_70047_e"]()+(y+2+20*distToPlayer/300-10*distToPlayer/300-(Player.getRenderY()+Player.getPlayer()["func_70047_e"]()))/(distToPlayer/distRender),Player.getRenderZ()+(z+0.5-Player.getRenderZ())/(distToPlayer/distRender)]
 
         if(name != "") Tessellator.drawString("\xA7"+nameColor+name,loc5[0],loc5[1],loc5[2],0,true,distRender/300,false)
-        if(showDist) Tessellator.drawString("\xA7b("+addCommas(Math.round(distToPlayer))+"m)",name?loc6[0]:loc5[0],name?loc6[1]:loc5[1],name?loc6[2]:loc5[2],0,false,distRender/300,false)
+        if(showDist) Tessellator.drawString("\xA7b("+addCommas(Math.round(distanceText))+"m)",name?loc6[0]:loc5[0],name?loc6[1]:loc5[1],name?loc6[2]:loc5[2],0,false,distRender/300,false)
     }
 }
-
-
-/** stolen from bloomcore
- * Does a voxel traversal from the startPos (Or player eye coord by default) until it hits a non-air block.
- * @param {[Number, Number, Number] | null} startPos - The position to start at
- * @param {Vector3 | null} directionVector - The direction for the ray to travel in. Keep as null to use the player's look vector 
- * @param {Number} distance 
- * @param {BlockCheckFunction} blockCheckFunc 
- * @param {Boolean} returnWhenTrue 
- * @param {Boolean} stopWhenNotAir
- */
-export const raytraceBlocks = (startPos=null, directionVector=null, distance=60, blockCheckFunc=null, returnWhenTrue=false, stopWhenNotAir=true) => {
-    // Set default values to send a raycast from the player's eye pos, along the player's look vector.
-    if (!startPos) startPos = getPlayerEyeCoords()
-    if (!directionVector) directionVector = getPlayerLookVec()
-
-    const endPos = directionVector.normalize().multiply(distance).add(startPos).getComponents()
-
-    return traverseVoxels(startPos, endPos, blockCheckFunc, returnWhenTrue, stopWhenNotAir)
-}
-
-/** stolen from bloomcore
- * Gets the coordinates of the player's eyes.
- * @param {Boolean} forceSneak - If the player is not sneaking, lower the Y value by 0.08 blocks.
- * @returns 
- */
-export const getPlayerEyeCoords = (forceSneak=false) => {
-    let x = Player.getX()
-    let y = Player.getY() + Player.getPlayer().func_70047_e()
-    let z = Player.getZ()
-
-    if (forceSneak && !Player.isSneaking()) y -= 0.08
-    return [x, y, z]
-}
-
-
-/** stolen from bloomcore
- * Gets the player's look vector
- * @returns {Vector3}
- */
-export const getPlayerLookVec = () => {
-    let lookVec = Player.getPlayer().func_70040_Z() // .getLookVec()
-    return [lookVec.field_72450_a,
-        lookVec.field_72448_b,
-        lookVec.field_72449_c]
-}
-
-
-register("tick", () => {
-    //console.log(getPlayerLookVec())
-
-})
