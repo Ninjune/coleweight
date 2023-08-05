@@ -20,7 +20,7 @@ export default registerCommand({
     description: "Ordered waypoints.",
     category: "waypoints",
     options: ["(load, unload, skipto, skip, unskip)"],
-    subcommands: [["load", "unload", "skip", "skipto", "unskip", "clear", "enable", "disable", "delete", "remove", "etherwarp", "paneclip", "add", "insert"]],
+    subcommands: [["load", "unload", "export", "skip", "skipto", "unskip", "clear", "enable", "disable", "delete", "remove", "etherwarp", "paneclip", "add", "insert"]],
     execute: (args) => {
         if(args[1] == undefined)
             return ChatLib.chat(`${constants.PREFIX}&eUnknown usage! Hit tab on "/cw ordered " to see usages.`)
