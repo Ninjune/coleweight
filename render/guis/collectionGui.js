@@ -145,15 +145,15 @@ function calcApi(apiPath, tempUuid)
 function trackCollection(collection)
 {
     let collections = JSON.parse(FileLib.read("Coleweight", "data/collections.json"))
-    if(collection == undefined) return ChatLib.chat(`${PREFIX}&eThat is not a valid collection! (or is not supported)`)
+    if(collection == undefined) return ChatLib.chat(`${constants.PREFIX}&eThat is not a valid collection! (or is not supported)`)
     if(collection == "obby") collection = "obsidian"
     if(collection == "cobble") collection = "cobblestone"
-    if(collections[collection.toLowerCase()] == undefined) return ChatLib.chat(`${PREFIX}&eThat is not a valid collection! (or is not supported)`)
+    if(collections[collection.toLowerCase()] == undefined) return ChatLib.chat(`${constants.PREFIX}&eThat is not a valid collection! (or is not supported)`)
     constants.data.tracked.item = collections[collection].collectionToTrack
     constants.data.tracked.itemStringed = collections[collection].collectionStringed
     constants.data.save()
 
-    ChatLib.chat(`${PREFIX}&bSet collection to ${constants.data.tracked.itemStringed}!`)
+    ChatLib.chat(`${constants.PREFIX}&bSet collection to ${constants.data.tracked.itemStringed}!`)
 }
 
 

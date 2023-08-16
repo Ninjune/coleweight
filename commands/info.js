@@ -1,7 +1,6 @@
 import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
 import { addCommas } from "../util/helperFunctions"
-const PREFIX = constants.PREFIX
 
 registerCommand({
     aliases: ["cwinfo", "info"],
@@ -17,7 +16,7 @@ registerCommand({
         })
 
         ChatLib.chat(
-        `${PREFIX}&bEach of the following are equivalent to one unit of ColeWeight` +
+        `${constants.PREFIX}&bEach of the following are equivalent to one unit of ColeWeight` +
         "\n&4&lExperience\n" + values.experience +
         "\n&4&lPowder\n" + values.powder +
         "\n&4&lCollections\n" + values.collection +

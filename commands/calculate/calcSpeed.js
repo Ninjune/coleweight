@@ -1,7 +1,5 @@
 import constants from "../../util/constants"
 import { parseNotatedInput } from "../../util/helperFunctions"
-const PREFIX = constants.PREFIX
-
 
 export function calcSpeed(powder)
 {

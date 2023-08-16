@@ -1,14 +1,13 @@
 import constants from "../../util/constants"
-const PREFIX = constants.PREFIX
 
 export function tickCommand(speed, block)
 {
     if(speed == undefined || parseInt(speed) != speed)
-        return ChatLib.chat(`${PREFIX}&cMining speed must be an integer!`)
+        return ChatLib.chat(`${constants.PREFIX}&cMining speed must be an integer!`)
     if(block == undefined)
         return ChatLib.chat(constants.CALCULATEERRORMESSAGE)
     const ticks = findTick(speed, block)
-    if(ticks.err) return ChatLib.chat(`${PREFIX}&cBlock must be a gemstone or positive breaking power! (or starting letter of gemstone)`)
+    if(ticks.err) return ChatLib.chat(`${constants.PREFIX}&cBlock must be a gemstone or positive breaking power! (or starting letter of gemstone)`)
 
 
     ChatLib.chat(`\n&bCurrently mining blocks in &6&l${Math.round(ticks.currentBlockTick)} ticks` +

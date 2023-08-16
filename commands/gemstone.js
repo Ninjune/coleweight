@@ -1,7 +1,6 @@
 import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
 import { addCommas, capitalizeFirst } from "../util/helperFunctions"
-const PREFIX = constants.PREFIX
 let statsHoverCheck = false,
  block,
  fortune,
@@ -22,7 +21,7 @@ registerCommand({
         {
             case undefined:
                 statsHoverCheck = true
-                new TextComponent(`${PREFIX}&bHold whatever drill you plan to use, and hover over your profile in /sbmenu. &7[&eNEXT&7]`)
+                new TextComponent(`${constants.PREFIX}&bHold whatever drill you plan to use, and hover over your profile in /sbmenu. &7[&eNEXT&7]`)
                 .setClickAction("run_command")
                 .setClickValue("/cw gemstone m1")
                 .chat()
@@ -81,7 +80,7 @@ registerCommand({
             const result = findGemstonesPerHr(block, pristine, fortune, speed, blueCheese, blockPercentage)
             instaSellBZPrice(`FINE_${block.toUpperCase()}_GEM`)
             .then(bzPrice => {
-                ChatLib.chat(`${PREFIX}&b$${addCommas(Math.round(result.gemstonesPerHour*bzPrice/80/80))}/hr (&b~${addCommas(Math.round(result.gemstonesPerHour))} ${capitalizeFirst(block)} per hour.)`)
+                ChatLib.chat(`${constants.PREFIX}&b$${addCommas(Math.round(result.gemstonesPerHour*bzPrice/80/80))}/hr (&b~${addCommas(Math.round(result.gemstonesPerHour))} ${capitalizeFirst(block)} per hour.)`)
             })
         }
     }
@@ -118,7 +117,7 @@ function findStats(item)
                 pristine = parseInt(matches[1].replace(/,/g, ""))
             }
         })
-        ChatLib.chat(`${PREFIX}&bLoaded stats.`)
+        ChatLib.chat(`${constants.PREFIX}&bLoaded stats.`)
         return
     }, 200)
 }

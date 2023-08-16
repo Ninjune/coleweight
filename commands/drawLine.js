@@ -1,7 +1,6 @@
 import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
 import { trace, drawEspBox } from "../util/renderUtil"
-const PREFIX = constants.PREFIX
 
 let x = 0,
  y = 0,
@@ -29,7 +28,7 @@ registerCommand({
                 x = 0
                 y = 0
                 z = 0
-                ChatLib.chat(`${PREFIX}&bStopped drawing line.`)
+                ChatLib.chat(`${constants.PREFIX}&bStopped drawing line.`)
                 return
             case 2:
                 x = args[1]
@@ -46,6 +45,6 @@ registerCommand({
                 return
         }
         
-        ChatLib.chat(`${PREFIX}&bNow drawing line to &a${x} ${Math.round(y)} ${z}`)
+        ChatLib.chat(`${constants.PREFIX}&bNow drawing line to &a${x} ${Math.round(y)} ${z}`)
     }
 })
