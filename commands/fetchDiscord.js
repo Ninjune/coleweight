@@ -1,8 +1,6 @@
 import request from "../../requestV2"
 import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
-const PREFIX = constants.PREFIX
-
 
 registerCommand({
     aliases: ["fetchdiscord"],
@@ -11,7 +9,7 @@ registerCommand({
     category: "miscellaneous",
     execute: (args) => {
         let username = args[1]
-        if(username == undefined) { ChatLib.chat(`${PREFIX}&eRequires a username!`); return }
+        if(username == undefined) { ChatLib.chat(`${constants.PREFIX}&eRequires a username!`); return }
         request({
             url: `https://api.mojang.com/users/profiles/minecraft/${username}`,
             json: true
@@ -22,16 +20,16 @@ registerCommand({
                 json: true
             })
             .then((hypixelRes) => {
-                let discordMessage = new TextComponent(`${PREFIX}&a${mojangRes.name}'s Discord: `)
+                let discordMessage = new TextComponent(`${constants.PREFIX}&a${mojangRes.name}'s Discord: `)
                 ChatLib.chat(discordMessage)
                 ChatLib.chat(`&b${hypixelRes.player.socialMedia.links.DISCORD}`)
             })
             .catch(err => {
-                ChatLib.chat(`${PREFIX}&eNo discord linked :( (or no key linked)${settings.debug ? " " + err : ""}`)
+                ChatLib.chat(`${constants.PREFIX}&eNo discord linked :( (or no key linked)${settings.debug ? " " + err : ""}`)
             })
         })
         .catch(err => {
-            ChatLib.chat(`${PREFIX}&eInvalid name! ${err}`)
+            ChatLib.chat(`${constants.PREFIX}&eInvalid name! ${err}`)
         })
     }
 })

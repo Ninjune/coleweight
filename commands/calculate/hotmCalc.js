@@ -1,6 +1,5 @@
 import constants from "../../util/constants"
 import { addCommas } from "../../util/helperFunctions"
-const PREFIX = constants.PREFIX
 
 
 export function hotmCalc(hotmName, minLevel, maxLevel)
@@ -28,7 +27,7 @@ export function hotmCalc(hotmName, minLevel, maxLevel)
         minLevel = parseInt(minLevel)
         maxLevel = parseInt(maxLevel)
         let hotmObjectToFind = findHotmObject(hotmName)
-        if(hotmObjectToFind == undefined) return ChatLib.chat(`${PREFIX}&cDid not find HOTM perk with name '${hotmName}'!`)
+        if(hotmObjectToFind == undefined) return ChatLib.chat(`${constants.PREFIX}&cDid not find HOTM perk with name '${hotmName}'!`)
 
         maxLevel = (maxLevel < hotmObjectToFind.maxLevel ? maxLevel : hotmObjectToFind.maxLevel)
         let powderSum,

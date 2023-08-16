@@ -1,7 +1,6 @@
 import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
 import { distanceCalc } from "../util/helperFunctions"
-const PREFIX = constants.PREFIX
 let args
 
 registerCommand({
@@ -16,11 +15,11 @@ registerCommand({
 })
 
 const mainThread = new Thread(() => {
-    ChatLib.chat(`${PREFIX}Working...`)
+    ChatLib.chat(`${constants.PREFIX}Working...`)
     let routes = JSON.parse(FileLib.read("Coleweight", "../../../skytils/waypoints.json"))
     let route = routes.categories.find(route => route.name.toLowerCase() === args.slice(1).join(" ").toLowerCase())
     let origWaypoints = route?.waypoints
-    if(origWaypoints == undefined || origWaypoints.length < 2) return ChatLib.chat(`${PREFIX}&cRoute does not exist or there is less than two waypoints.`)
+    if(origWaypoints == undefined || origWaypoints.length < 2) return ChatLib.chat(`${constants.PREFIX}&cRoute does not exist or there is less than two waypoints.`)
 
     let nextNeighborObj = nextNeighbor(origWaypoints)
     let newWaypoints = nextNeighborObj.waypoints, distances = nextNeighborObj.distances
@@ -37,7 +36,7 @@ const mainThread = new Thread(() => {
 
     ChatLib.command(`ct copy ${Base64.encode(JSON.stringify(output))}`, true)
 
-    ChatLib.chat(`${PREFIX}&bRoute copied to clipboard! Original distance: `  + Math.round(distances.orig) + " Optimized distance: " + Math.round(distances.new))
+    ChatLib.chat(`${constants.PREFIX}&bRoute copied to clipboard! Original distance: `  + Math.round(distances.orig) + " Optimized distance: " + Math.round(distances.new))
 })
 
 

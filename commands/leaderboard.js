@@ -1,8 +1,6 @@
 import axios from "../../axios"
 import { registerCommand } from "../commandManager"
 import constants from "../util/constants"
-const PREFIX = constants.PREFIX
-
 
 registerCommand({
     aliases: ["leaderboard", "lb", "top"],
@@ -22,7 +20,7 @@ registerCommand({
                     }
                 })
                 .catch(err => {
-                    ChatLib.chat(`${PREFIX}&4Error! &eApi might be down.`)
+                    ChatLib.chat(`${constants.PREFIX}&4Error! &eApi might be down.`)
                 })
             }
             else if(parseInt(args[2]) == args[2] && !isNaN(parseInt(args[2])))
@@ -35,17 +33,17 @@ registerCommand({
                     }
                 })
                 .catch(err => {
-                    ChatLib.chat(`${PREFIX}&4Error! &eApi might be down.`)
+                    ChatLib.chat(`${constants.PREFIX}&4Error! &eApi might be down.`)
                 })
             }
             else
             {
-                ChatLib.chat(`${PREFIX}&ePlease enter an integer! (how many positions) (or a range ie. '20 40')`)
+                ChatLib.chat(`${constants.PREFIX}&ePlease enter an integer! (how many positions) (or a range ie. '20 40')`)
             }
         }
         else
         {
-            ChatLib.chat(`${PREFIX}&ePlease enter an integer! (how many positions) (or a range ie. '20 40')`)
+            ChatLib.chat(`${constants.PREFIX}&ePlease enter an integer! (how many positions) (or a range ie. '20 40')`)
         }
     }
 })

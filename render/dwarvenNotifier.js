@@ -1,7 +1,6 @@
 import settings from "../settings"
 import { checkInDwarven, Title } from "../util/helperFunctions"
 import constants from "../util/constants"
-const PREFIX = constants.PREFIX
 const title = new Title({text: "&2A day has passed and your &bSkymall &2perk has changed!", scale: 3})
 
 register("step", () => {
@@ -17,7 +16,7 @@ register("step", () => {
             if(matches == undefined) return ChatLib.chat("No matches.")
             if(matches[1] == "12:00" && matches[2] == "am")
             {
-                ChatLib.chat(`${PREFIX}&aA day has passed and your Skymall perk has changed!`)
+                ChatLib.chat(`${constants.PREFIX}&aA day has passed and your Skymall perk has changed!`)
                 title.draw()
             }
         }
