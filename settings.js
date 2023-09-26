@@ -223,6 +223,23 @@ class Settings {
     moveCoinTrackerLocation() {
         ChatLib.command("cw move coin", true);
     }
+
+    @SwitchProperty({
+        name: "Flawless Chat Alert",
+        description: "Enable chat alert for each flawless mined, with the average time it took.",
+        subcategory: "Coin Tracker",
+        category: "Gui"
+    })
+    flawlessAlert = true;
+    
+    @SwitchProperty({
+        name: "Flawless Sound",
+        description: "Play a sound when a flawless equivalent has been mined.",
+        subcategory: "Coin Tracker",
+        category: "Gui"
+    })
+    flawlessSound = true;
+
     // SUBCAT Coleweight Tracker
     @SwitchProperty({
         name: "Coleweight tracker",
