@@ -332,3 +332,20 @@ export function distanceCalc(waypoint1, waypoint2, includeVertical = true)
     else
         return Math.hypot(waypoint1.x - waypoint2.x, waypoint1.z - waypoint2.z)
 }
+
+/**
+ * Calculates the average of a list of numbers.
+ * @param {number[]} numbers
+ * @returns {number}
+ */
+export function calculateAverage(numbers) {
+    if (numbers.length === 0) {
+        return 0;
+    }
+
+    const sum = numbers.reduce((total, number) => total + number, 0);
+
+    const average = sum / numbers.length;
+
+    return average;
+}
