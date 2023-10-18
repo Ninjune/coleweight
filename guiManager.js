@@ -10,15 +10,16 @@ export function registerGui(gui)
 
 export default guis
 
-// gui registering (I HATE WRITING THESE)
+// gui registering
+import "./render/guis/alloyGui"
 import "./render/guis/coinGui"
-import "./render/guis/timerGui"
 import "./render/guis/collectionGui"
 import "./render/guis/cwGui"
 import "./render/guis/danceGui"
 import "./render/guis/ffGui"
 import "./render/guis/gyroGui"
 import "./render/guis/powertrackerGui"
+import "./render/guis/miningAbilitiesGui"
 //import "./render/miningAbilities"
 import "./render/guis/stopwatchGui"
-import "./render/guis/miningAbilitiesGui"
+import "./render/guis/timerGui"

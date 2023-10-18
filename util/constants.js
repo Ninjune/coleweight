@@ -34,6 +34,12 @@ let PogData = new PogObject("Coleweight", {
         "alignment": 0,
         "scale": 1.0
     },
+    "alloyGui": {
+        "x": 0,
+        "y": 0,
+        "alignment": 0,
+        "scale": 1.0
+    },
     "stopwatchGui": {
         "x": 0,
         "y": 0,

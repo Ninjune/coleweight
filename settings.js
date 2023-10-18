@@ -7,6 +7,8 @@ import { @Vigilant, @ButtonProperty, @SwitchProperty, @SelectorProperty, @Slider
         return categories.indexOf(a.name) - categories.indexOf(b.name);
     }
 })
+
+
 class Settings {
     constructor() {
         this.initialize(this);
@@ -197,6 +199,25 @@ class Settings {
     })
     streamerDisableWaypointsOnDeath = true;
     // CAT Gui
+    // SUBCAT Alloy Tracker
+    @SwitchProperty({
+        name: "Alloy Tracker",
+        description: "Enables the Alloy tracker. Displays the most recent, known alloy drop.",
+        subcategory: "Alloy Tracker",
+        category: "Gui"
+    })
+    alloyTracker = false;
+
+    @ButtonProperty({
+        name: "Change Alloy Tracker Position",
+        description: "Move the location of the alloy tracker.",
+        subcategory: "Alloy Tracker",
+        category: "Gui",
+        placeholder: "Open"
+    })
+    moveAlloyTrackerLocation() {
+        ChatLib.command("cw move alloy", true);
+    }
     // SUBCAT Coin Tracker
     @SwitchProperty({
         name: "Coin Tracker",
