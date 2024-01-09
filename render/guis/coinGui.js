@@ -21,6 +21,7 @@ registerGui(coinGui)
 
 
 register("chat", (gem, amount, event) => { 
+    ChatLib.chat("b")
     let id = "FLAWED_" + gem.toUpperCase() + "_GEM"
     lastMined = Date.now()
 
@@ -48,7 +49,7 @@ register("chat", (gem, amount, event) => {
 
     money += gemstoneCosts[id] * amount
     moneyPerHour = Math.floor(money / ((Date.now() - startTime) / (1000 * 60 * 60)))
-}).setChatCriteria(/&r&d&lPRISTINE! &r&fYou found &r&a. &r&aFlawed (.+) Gemstone &r&8x(\d+)&r&f!&r/g)
+}).setChatCriteria(/&r&d&lPRISTINE! &r&fYou found &r&a. Flawed (.+) Gemstone &r&8x(\d+)&r&f!&r/g)
 
 register("step", () => {
     if (lastMined && Date.now() - lastMined > 2 * 60000) {

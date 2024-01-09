@@ -62,7 +62,7 @@ function DoublePowderActive()
 
 
 register("chat", (value, type) => {
-    let powder = parseInt(value)
+    let powder = parseInt(value.replace(",", ""))
 
     if (DoublePowderActive())
         powder *= 2
@@ -79,7 +79,7 @@ register("chat", (value, type) => {
     constants.data.save()
     timeSinceLastGain = 0
     sessionRunning = true
-}).setCriteria(/You received \+([0-9]+) ([a-zA-Z]+) Powder./g)
+}).setCriteria(/You received \+([0-9,]+) ([a-zA-Z]+) Powder./g)
 
 register("chat", event => {
     constants.data.powdertrackerGui.chests += 1

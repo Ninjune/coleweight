@@ -17,7 +17,7 @@ export function registerCommand(command)
 export default helpCommands
 
 register("command", (...args) => {
-    stop = false
+    let stop = false
     if (args == undefined || args[0] == undefined) { settings.openGUI(); return }
 
     commands.forEach(command => {
