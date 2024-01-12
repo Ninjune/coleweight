@@ -21,7 +21,6 @@ registerGui(coinGui)
 
 
 register("chat", (gem, amount, event) => { 
-    ChatLib.chat("b")
     let id = "FLAWED_" + gem.toUpperCase() + "_GEM"
     lastMined = Date.now()
 
