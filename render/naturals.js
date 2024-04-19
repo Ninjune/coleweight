@@ -1,5 +1,5 @@
 import settings from "../settings"
-import { checkInHollows, waypointRender } from "../util/helperFunctions"
+import { hollowsChecker, waypointRender } from "../util/helperFunctions"
 let coords = [],
  visibleCoords = []
 
@@ -10,7 +10,7 @@ register("gameLoad", res => {
 
 
 register("step", () => {
-    if(!settings.showNaturals || !checkInHollows()  || coords.length < 1) return
+    if(!settings.showNaturals || !hollowsChecker.check()  || coords.length < 1) return
     visibleCoords = []
     coords.filter(coord =>
         (((-1 * settings.naturalRange)/2 < (parseInt(Player.getX()) - coord.x)) && ((parseInt(Player.getX()) - coord.x) < settings.naturalRange/2)

@@ -1,7 +1,7 @@
 import axios from "../../axios"
 import settings from "../settings"
 import constants from "../util/constants"
-import { checkInDwarven, checkInHollows } from "../util/helperFunctions"
+import { dwarvenChecker, hollowsChecker } from "../util/helperFunctions"
 const PREFIX = constants.PREFIX
 let checkedPlayers = []
 let griefers = []
@@ -26,7 +26,7 @@ register("worldLoad", () => {
 
 function checkMMiners()
 {
-    if (!settings.trackGriefers || (!settings.grieferEverywhere && !(checkInDwarven() || checkInHollows()))) return
+    if (!settings.trackGriefers || (!settings.grieferEverywhere && !(dwarvenChecker.getState() || hollowsChecker.getState()))) return
     try
     {
         const NetHandlerPlayClient = Client.getConnection(),

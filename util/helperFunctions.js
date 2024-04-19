@@ -215,7 +215,7 @@ export class Title
     }
 }
 
-// could move below to it's own file or do something else, not sure what to do with this @DocilElm
+// could move below to it's own file or do something else
 class LocationChecker
 {
     /**
@@ -228,6 +228,11 @@ class LocationChecker
         this.checkTime = Date.now()
         this.state = false
         this.scoreboard = 0
+    }
+
+    getState()
+    {
+        return this.check()
     }
 
     check()
@@ -256,42 +261,14 @@ class LocationChecker
     }
 }
 
-const hollowsChecker = new LocationChecker(["Goblin", "Jungle", "Mithril", "Precursor", "Magma", "Crystal", "Khazad", "Divan", "City"])
-export function checkInHollows()
-{
-    hollowsChecker.check()
-    return hollowsChecker.state
-}
-
-const dwarvenChecker = new LocationChecker(["Dwarven", "Royal", "Palace", "Library", "Mist", "Cliffside", "Quarry", "Gateway", "Wall", "Forge", "Far", "Burrows", "Springs", "Upper"])
-export function checkInDwarven()
-{
-    dwarvenChecker.check()
-    return dwarvenChecker.state
-}
-
-const foragingChecker = new LocationChecker(["§aDark Thic", "§aBirch Par", "§aSpruce Wo", "§aSavanna W", "§aJungle Is", "§bForest"])
-export function checkInPark()
-{
-    foragingChecker.check()
-    return foragingChecker.state
-}
-
-
-const endChecker = new LocationChecker(["End", "Dragon's"])
-export function checkInEnd()
-{
-    endChecker.check()
-    return endChecker.state
-}
-
-const mirroverseCheck = new LocationChecker(["§fMirrorver"])
-export function checkInMirrorverse()
-{
-    mirroverseCheck.check()
-    return mirroverseCheck.state
-}
-
+export const hollowsChecker = new LocationChecker(["Goblin", "Jungle", "Mithril", "Precursor", "Magma", "Crystal", "Khazad", "Divan", "City"])
+export const dwarvenChecker = new LocationChecker(["Dwarven", "Royal", "Palace", "Library", "Mist", "Cliffside", "Quarry", "Gateway", "Wall", "Forge", "Far", "Burrows", "Springs", "Upper", "Glacite"])
+export const foragingChecker = new LocationChecker(["§aDark Thic", "§aBirch Par", "§aSpruce Wo", "§aSavanna W", "§aJungle Is", "§bForest"])
+export const endChecker = new LocationChecker(["End", "Dragon's"])
+export const mirroverseCheck = new LocationChecker(["§fMirrorver"])
+export const mineshaftCheck = new LocationChecker(["shaft"])
+export const gardenCheck = new LocationChecker(["Garden"])
+export const gunpowderCheck = new LocationChecker(["§bGunpowder"])
 
 /**
  * Use to delete files that have been deleted and cause an incompatibility in the next CT version.
@@ -321,7 +298,7 @@ export function secondsToMessage(seconds)
 
 /**
  * Calculates distance between waypoints.
- * @param {{x: Number, y: Number, z:Number}} waypoint1
+ * @param {{x: Number, y: Number, z: Number}} waypoint1
  * @param {{x: Number, y: Number, z: Number}} waypoint2
  * @returns
  */
@@ -331,4 +308,15 @@ export function distanceCalc(waypoint1, waypoint2, includeVertical = true)
         return Math.hypot(waypoint1.x - waypoint2.x, waypoint1.y - waypoint2.y, waypoint1.z - waypoint2.z)
     else
         return Math.hypot(waypoint1.x - waypoint2.x, waypoint1.z - waypoint2.z)
+}
+
+/**
+ * Returns whether the playing is holding a drill, gemstone gauntlet, picko or not
+ * @returns {boolean}
+ */
+export function isPlayerHoldingDrill()
+{
+    let itemId = Player.getHeldItem()?.getItemNBT()?.getTag("tag")?.getTag("ExtraAttributes")?.getTag("id")?.toString()?.toLowerCase()
+
+    return itemId != undefined && (itemId.includes("drill") || itemId.includes("gemstone_gauntlet") || itemId.includes("pickonimbus"))
 }

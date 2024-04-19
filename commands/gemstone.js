@@ -12,7 +12,7 @@ let statsHoverCheck = false,
 
 registerCommand({
     aliases: ["gemstone", "gem"],
-    description: "$/hr with gemstones. &cLess accurate than Skyhelper's.",
+    description: "$/hr with gemstones. &cLess accurate than Skyhelper's. &4&lDeprecated",
     options: "",
     category: "info",
     execute: (args) => {
@@ -164,7 +164,7 @@ function findStats(item)
  }
 
 
- function instaSellBZPrice(product)
+function instaSellBZPrice(product)
 {
     return new Promise((resolve, reject) => {
         request("https://api.hypixel.net/skyblock/bazaar")

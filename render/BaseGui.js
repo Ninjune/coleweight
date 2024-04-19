@@ -1,5 +1,5 @@
-import axios from "../../axios"
-import constants from "../util/constants"
+import constants from "../util/constants";
+
 /**
  * The base for a gui in the mod.
  */
@@ -13,68 +13,68 @@ export class BaseGui
      */
     constructor(aliases, renderOverlayCallback, reloadCallback)
     {
-        this.reloadCallback = reloadCallback
-        this.aliases = aliases
-        this.gui = new Gui()
+        this.reloadCallback = reloadCallback;
+        this.aliases = aliases;
+        this.gui = new Gui();
         this.reloadCallback = reloadCallback == undefined ? reloadCallback : () => {
-            reloadCallback()
-            ChatLib.chat(`${constants.PREFIX}&bReloaded ${aliases[0]}!`)
-        }
+            reloadCallback();
+            ChatLib.chat(`${constants.PREFIX}&bReloaded ${aliases[0]}!`);
+        };
 
         register("dragged", (dx, dy, x, y) => {
-            if (!this.gui.isOpen()) return
-            constants.data[aliases[0]].x = x
-            constants.data[aliases[0]].y = y // - ... to account for s: ...
-            constants.data.save()
-        })
+            if (!this.gui.isOpen()) return;
+            constants.data[aliases[0]].x = x;
+            constants.data[aliases[0]].y = y; // - ... to account for s: ...
+            constants.data.save();
+        });
 
         register("renderOverlay", () => {
             if (this.gui.isOpen())
             {
-                let txt = "Drag to move. Use +/- to increase/decrease gui size. Use arrow keys to set alignment."
-                Renderer.drawStringWithShadow(txt, Renderer.screen.getWidth()/2 - Renderer.getStringWidth(txt)/2, Renderer.screen.getHeight()/2)
+                let txt = "Drag to move. Use +/- to increase/decrease gui size. Use arrow keys to set alignment.";
+                Renderer.drawStringWithShadow(txt, Renderer.screen.getWidth()/2 - Renderer.getStringWidth(txt)/2, Renderer.screen.getHeight()/2);
             }
 
-            let message = renderOverlayCallback()
+            let message = renderOverlayCallback();
             if(this.gui.isOpen())
-                message = `&f&os: ${constants.data[aliases[0]].scale.toFixed(2)}&r\n` + (message ?? "")
-            let text = new Text(message ?? "")
-            text.setX(constants.data[aliases[0]].x)
-            text.setY(constants.data[aliases[0]].y - (this.gui.isOpen() ? 10*constants.data[aliases[0]].scale : 0)) // addition to account for "s: ..."
+                message = `&f&os: ${constants.data[aliases[0]].scale.toFixed(2)}&r\n` + (message ?? "");
+            let text = new Text(message ?? "");
+            text.setX(constants.data[aliases[0]].x);
+            text.setY(constants.data[aliases[0]].y - (this.gui.isOpen() ? 10*constants.data[aliases[0]].scale : 0)); // addition to account for "s: ..."
             if(constants.data[aliases[0]].alignment == 1)
-                text.setAlign("CENTER")
+                text.setAlign("CENTER");
             else if(constants.data[aliases[0]].alignment == 2)
-                text.setAlign("RIGHT")
-            text.setScale(parseFloat(constants.data[aliases[0]].scale))
-            text.setShadow(true)
-            text.draw()
-        })
+                text.setAlign("RIGHT");
+            text.setScale(parseFloat(constants.data[aliases[0]].scale));
+            text.setShadow(true);
+            text.draw();
+        });
 
         register("guiKey", (char, keyCode, gui, event) => {
-            if (!this.gui.isOpen()) return
+            if (!this.gui.isOpen()) return;
 
             if (keyCode == 13)
-                constants.data[aliases[0]].scale += 0.05
+                constants.data[aliases[0]].scale += 0.05;
             else if (keyCode == 12)
-                constants.data[aliases[0]].scale -= 0.05
+                constants.data[aliases[0]].scale -= 0.05;
             else if (keyCode == 203)
-                constants.data[aliases[0]].alignment = 0
+                constants.data[aliases[0]].alignment = 0;
             else if (keyCode == 208 || keyCode == 200)
-                constants.data[aliases[0]].alignment = 1
+                constants.data[aliases[0]].alignment = 1;
             else if (keyCode == 205)
-                constants.data[aliases[0]].alignment = 2
+                constants.data[aliases[0]].alignment = 2;
 
-            constants.data.save()
-        })
+            constants.data.save();
+        });
     }
 
     isOpen()
     {
-        return this.gui.isOpen()
+        return this.gui.isOpen();
     }
 
     open()
     {
-        return this.gui.open()
+        return this.gui.open();
     }
 }

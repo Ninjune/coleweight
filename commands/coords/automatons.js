@@ -32,7 +32,7 @@ registerCommand({
         {
             new TextComponent(`${PREFIX}&bStand in the pot in &3this&b picture and do /cw ${WAYPOINTNAME} toggle`)
             .setClickAction("open_url")
-            .setClickValue("https://media.discordapp.net/attachments/1049475464667856926/1052749218055475210/image.png")
+            .setClickValue("https://i.imgur.com/i4V5tzU.png")
             .chat()
         }
         else

@@ -155,27 +155,34 @@ export default registerCommand({
 // stolen from soopy (somewhat)
 register("renderWorld", () => {
     if(!enabled) return
-    let r, g, b, alpha
+    let r, g, b, alpha, wpColor
     for(let i = 0; i < renderWaypoints.length; i++)
     {
+        wpColor = undefined; 
         r = 0
         g = 0
         b = 0
-        alpha = 0.6
+        alpha = 0.6;
         if(i == 0)
-            b = 1
+            wpColor = settings.orderedPrevColor;
         else if (i == 1)
-            g = 1
+            wpColor = settings.orderedCurColor;
         else if(i == 2)
-        {
-            r = 1
-            g = 1
-        }
+            wpColor = settings.orderedNextColor;
         else if(i >= 3)
         {
             r = 1
             alpha = 0.4
         }
+
+        if(wpColor != undefined)
+        {
+            r = wpColor.getRed()/255;
+            g = wpColor.getGreen()/255;
+            b = wpColor.getBlue()/255;
+            alpha = wpColor.getAlpha()/255;
+        }
+
         if(orderedWaypoints[renderWaypoints[i]] == undefined)
         {
             if(settings.debug)
@@ -186,17 +193,17 @@ register("renderWorld", () => {
             orderedWaypoints[renderWaypoints[i]].z, r, g, b, { name: i < 3 && (settings.orderedSetup || settings.orderedShowText) ? orderedWaypoints[renderWaypoints[i]].options.name : "", renderBeacon: false, phase: i < 3, alpha })
     }
     const traceWP = orderedWaypoints[renderWaypoints[2]]
-    const color = settings.orderedColor
+    const lineColor = settings.orderedColor
 
     if (!settings.orderedSetup && settings.orderedWaypointsLine && traceWP != undefined)
-        trace(parseInt(traceWP.x) + 0.5, parseInt(traceWP.y) + 0.25, parseInt(traceWP.z) + 0.5, color.getRed()/255, color.getGreen()/255, color.getBlue()/255, color.getAlpha()/255, settings.orderedLineThickness)
+        trace(parseInt(traceWP.x) + 0.5, parseInt(traceWP.y) + 0.25, parseInt(traceWP.z) + 0.5, lineColor.getRed()/255, lineColor.getGreen()/255, lineColor.getBlue()/255, lineColor.getAlpha()/255, settings.orderedLineThickness)
 
     const currentWP = orderedWaypoints[renderWaypoints[1]]
     if(settings.orderedSetup && currentWP != undefined && traceWP != undefined)
     {
         drawLine(parseInt(currentWP.x) + 0.5, parseInt(currentWP.y) + 2.65, parseInt(currentWP.z) + 0.5,
             parseInt(traceWP.x) + 0.5, parseInt(traceWP.y) + 0.5, parseInt(traceWP.z) + 0.5,
-            color.getRed()/255, color.getGreen()/255, color.getBlue()/255, 0.5, settings.orderedSetupThickness
+            lineColor.getRed()/255, lineColor.getGreen()/255, lineColor.getBlue()/255, 0.5, settings.orderedSetupThickness
         )
     }
 

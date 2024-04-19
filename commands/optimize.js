@@ -6,7 +6,7 @@ let args
 
 registerCommand({
     aliases: ["optimize"],
-    description: "Optimizes routes for Skytils (next neighbour algorithm, y values are 2.5x the distance). Routes must only contain vein nodes! no bombs! This is probably only good for coal/long routes like coal because of the different variables when doing other forms of mining.",
+    description: "Optimizes routes for Skytils (next neighbour algorithm, y values are 2.5x the distance). Routes must only contain vein nodes! no bombs! This is probably only good for coal/long routes like coal because of the different variables when doing other forms of mining. &4&lDeprecated",
     options: "(skytils route category name)",
     category: "miscellaneous",
     execute: (argsT) => { // thanks rAnalysis for helping.

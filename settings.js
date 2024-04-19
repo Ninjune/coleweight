@@ -150,6 +150,14 @@ class Settings {
         category: "General"
     })
     effDilloWarning = true;
+
+    @SwitchProperty({
+        name: "Glacite tunnels waypoints",
+        description: "Shows colored waypoints where gem types are in the Glacite Tunnels.",
+        subcategory: "General",
+        category: "General"
+    })
+    tunnelsWaypoints = true;
     // SUBCAT Streamer Mode
     @SwitchProperty({
         name: "Streamer mode",
@@ -234,6 +242,7 @@ class Settings {
         category: "Gui"
     })
     forceNPC = false;
+
     @ButtonProperty({
         name: "Change Coin Tracker Position",
         description: "Move the location of the coin tracker.",
@@ -244,10 +253,19 @@ class Settings {
     moveCoinTrackerLocation() {
         ChatLib.command("cw move coin", true);
     }
+
+    @SelectorProperty({
+        name: "Gemstone Type",
+        description: "Sets the type of gemstones to use for coin tracker for bazaar prices.",
+        subcategory: "Coin Tracker",
+        category: "Gui",
+        options: ["Perfect", "Flawless", "Fine", "Flawed", "Rough"]
+    })
+    gemstoneType = 2;
     // SUBCAT Coleweight Tracker
     @SwitchProperty({
         name: "Coleweight tracker",
-        description: "Enables the Coleweight tracker. (gain coleweight for a few mins for it to show up)",
+        description: "&4Deprecated &7Enables the Coleweight tracker. (gain coleweight for a few mins for it to show up)",
         subcategory: "Coleweight Tracker",
         category: "Gui"
     })
@@ -274,7 +292,7 @@ class Settings {
     // SUBCAT Collection
     @SwitchProperty({
         name: "Collection tracker",
-        description: "Tracks collections ('/cw track (collection)' to set).",
+        description: "&4Deprecated &7Tracks collections ('/cw track (collection)' to set).",
         subcategory: "Collection",
         category: "Gui"
     })
@@ -314,6 +332,31 @@ class Settings {
         category: "Gui"
     })
     efficientMinerOverlay = false;
+    
+    // SUBCAT Metal Detector Solver
+    @SwitchProperty({
+        name: "Metal Detector Solver",
+        description: "Toggles the metal detector solver for mines of divan treasure chests.",
+        subcategory: "Metal Detector Solver",
+        category: "Gui"
+    })
+    metalDetectorSolver = false;
+
+    @SwitchProperty({
+        name: "Alert Tools",
+        description: "Toggles showing a title when the player has all tools.",
+        subcategory: "Metal Detector Solver",
+        category: "Gui"
+    })
+    alertTools = false;
+
+    @SwitchProperty({
+        name: "Mute Metal Detector Sound",
+        description: "Mutes the metal detector sound (I hate it).",
+        subcategory: "Metal Detector Solver",
+        category: "Gui"
+    })
+    muteMetalDetectorSound = false;
     // SUBCAT Mining Abilities
     @SwitchProperty({ 
         name: "Mining abilities",
@@ -349,6 +392,14 @@ class Settings {
     moveAbilitiesLocation() {
         ChatLib.command("cw move miningabilities", true);
     }
+
+    @SwitchProperty({
+        name: "Mining abilities quickswitch",
+        description: "Will redirect clicks to rotate through abilities in HOTM menu then close it. basis: neu wardrobe swap w/ keybinds, soopy custom guis",
+        subcategory: "Mining Abilities",
+        category: "Gui"
+    })
+    miningAbilitiesQuickswitch = false;
     // SUBCAT Powdertracker
     @SwitchProperty({ 
         name: "Show powdertracker",
@@ -523,12 +574,36 @@ class Settings {
     orderedLineThickness = 3;
 
     @ColorProperty({
-        name: "Ordered color",
+        name: "Ordered line color",
         description: "Sets the color of the line.",
         category: "Waypoints",
         subcategory: "Ordered Waypoints"
     })
     orderedColor = Color.GREEN;
+
+    @ColorProperty({
+        name: "Ordered previous color",
+        description: "Sets the color of the previous waypoint.",
+        category: "Waypoints",
+        subcategory: "Ordered Waypoints"
+    })
+    orderedPrevColor = Color.BLUE;
+
+    @ColorProperty({
+        name: "Ordered current color",
+        description: "Sets the color of the current waypoint.",
+        category: "Waypoints",
+        subcategory: "Ordered Waypoints"
+    })
+    orderedCurColor = Color.GREEN;
+
+    @ColorProperty({
+        name: "Ordered next color",
+        description: "Sets the color of the next waypoint.",
+        category: "Waypoints",
+        subcategory: "Ordered Waypoints"
+    })
+    orderedNextColor = Color.YELLOW;
 
     @SwitchProperty({
         name: "Show Text",
@@ -569,6 +644,14 @@ class Settings {
         subcategory: "Normal Waypoints",
     })
     waypointShowHorizontal = false;
+
+    @SwitchProperty({
+        name: "Creeper Waypoints",
+        description: "Waypoints for sneaky creepers in deep cavern.",
+        subcategory: "Normal Waypoints",
+        category: "Other"
+    })
+    creeperWaypoints = false;
     // CAT Other
     // SUBCAT Dungeon
     @SwitchProperty({
@@ -636,6 +719,22 @@ class Settings {
     moveDanceLocation() {
         ChatLib.command("cw move dance", true);
     }
+    // SUBCAT UYOR
+    @SwitchProperty({
+        name: "Corpse Finder",
+        description: "&4(Use at Your Own Risk) &7ESP for corpses in glacite mineshafts. Based on Nwjn's version (credit to him). ",
+        subcategory: "UYOR",
+        category: "Other"
+    })
+    corpseEsp = false;
+
+    @SwitchProperty({
+        name: "Pest Finder",
+        description: "&4(Use at Your Own Risk) &7ESP for pests in garden. Basis: skytils has an esp for corleone features/impl/mining/MiningFeatures.kt#L364. also other mods have player esp (dungeon guide, sba) or box starred enemies (soopy/bettermap).",
+        subcategory: "UYOR",
+        category: "Other"
+    })
+    pestEsp = false;
 }
 
 export default new Settings()

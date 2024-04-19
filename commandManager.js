@@ -84,7 +84,7 @@ function findTabOutput(input, options)
     return output
 }
 
-// command registering (I HATE WRITING THESE)
+// command registering
 import "./commands/coords/automatons"
 import "./commands/coords/divans"
 import "./commands/coords/spiral"
@@ -110,7 +110,9 @@ import "./commands/miningtest"
 import "./commands/move"
 import "./commands/optimize"
 import "./commands/ordered"
+import "./commands/rankcolor"
 import "./commands/reload"
+import "./commands/resetabilities"
 import "./commands/setkey"
 import "./commands/stopwatch"
 import "./commands/structure"

@@ -6,7 +6,7 @@ const PREFIX = constants.PREFIX
 
 registerCommand({
     aliases: ["leaderboard", "lb", "top"],
-    description: "Clears lobbies for lobby marking.",
+    description: "Coleweight leaderboard.",
     options: "(min) [max]",
     category: "info",
     execute: (args) => {

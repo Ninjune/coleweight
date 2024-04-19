@@ -1,11 +1,11 @@
 import settings from "../settings"
-import { checkInPark } from "../util/helperFunctions"
+import { foragingChecker } from "../util/helperFunctions"
 
 treecapCooldown = 0.0
 monkeyLevel = 0
 
 register("renderOverlay", () => {
-    if(!settings.treecapTimer || !checkInPark()) return
+    if(!settings.treecapTimer || !foragingChecker.check()) return
     // ChatLib.chat(Player.getHeldItem().getItemNBT().getTag('tag').getTag('ExtraAttributes').getTag("id").toString())
     let itemId = Player.getHeldItem()?.getItemNBT()?.getTag("tag")?.getTag("ExtraAttributes")?.getTag("id")?.toString()
     if(!(itemId == "\"TREECAPITATOR_AXE\"" || itemId == "\"ASPECT_OF_THE_VOID\"" || Player?.getHeldItem()?.getRegistryName() == "minecraft:fishing_rod")) return
@@ -14,7 +14,7 @@ register("renderOverlay", () => {
 })
 
 register("step", () => {
-    if(!settings.treecapTimer || !checkInPark()) return
+    if(!settings.treecapTimer || !foragingChecker.check()) return
     if(treecapCooldown > 0)
     {
         let multipler = 1 + Math.floor(1/2 * parseInt(monkeyLevel))/100
@@ -27,7 +27,7 @@ register("step", () => {
 
 
 register("blockBreak", (block) => {
-    if(!settings.treecapTimer || !checkInPark()) return
+    if(!settings.treecapTimer || !foragingChecker.check()) return
     let blockRegistryName = block.type.getRegistryName()
     if (treecapCooldown > 0.5 || !(blockRegistryName == "minecraft:log" || blockRegistryName == "minecraft:log2")) return
     treecapCooldown = 2.0
@@ -35,7 +35,7 @@ register("blockBreak", (block) => {
 
 
 register("chat", (lvl, pet, event) => {
-    if(!settings.treecapTimer || !checkInPark()) return
+    if(!settings.treecapTimer || !foragingChecker.check()) return
     if(pet != "Monkey") return monkeyLevel = 0
     monkeyLevel = lvl
 }).setCriteria(/&cAutopet &eequipped your &.\[Lvl ([0-9]+)] &.([a-zA-Z ]+)(?: .)*&e! &a&lVIEW RULE&r/g)

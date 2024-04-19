@@ -1,6 +1,6 @@
 import { registerGui } from "../../guiManager"
 import settings from "../../settings"
-import { checkInMirrorverse, Title } from "../../util/helperFunctions"
+import { mirroverseCheck, Title } from "../../util/helperFunctions"
 import { drawEspBox } from "../../util/renderUtil"
 import { BaseGui } from "../BaseGui"
 let danceTime = 0 // dance time is when the game checks for player failed challenge
@@ -20,7 +20,7 @@ const blocks = [ [-265, 32, -108],
 ]
 
 const danceGui = new BaseGui(["danceGui", "dance"], () => {
-    if(!settings.danceTracker || !checkInMirrorverse())
+    if(!settings.danceTracker || !mirroverseCheck.check())
         return
     const modifiedTime = Date.now()
 

@@ -201,11 +201,11 @@ register("renderWorld", () => {
                 )
             }
 
-            if(distanceCalc({x: Player.getX(), y: playerY, z: Player.getZ()}, waypoints[i], false) >= 128)
+            /*if(distanceCalc({x: Player.getX(), y: playerY, z: Player.getZ()}, waypoints[i], false) >= 128) // removed, may add later
             {
                 maxDistanceTitle.text = `&cYou are out of range of waypoint ${i+1}.`
                 maxDistanceTitle.draw()
-            }
+            }*/
         }
 
         if(settings.waypointShowHorizontal)

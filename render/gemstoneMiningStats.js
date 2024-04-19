@@ -2,11 +2,9 @@ import settings from "../settings"
 import constants from "../util/constants"
 import { addCommas, getSelectedProfile } from "../util/helperFunctions"
 import { findCost, findHotmObject } from "../commands/calculate/hotmCalc"
-import request from "../../requestV2"
 import { findTick } from "../commands/calculate/tick"
 const NBTTagString = Java.type("net.minecraft.nbt.NBTTagString")
 let powderTotals = {}
-let getPlayerDataSuccess = false
 let checkedHotmInfo = false
 let checkedHotmReset = false
 
@@ -64,32 +62,6 @@ register("itemTooltip", (lore, item) => { // this is so bad 💀
 })
 
 
-register("gameLoad", () => {
-    request({
-        url: `https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${Player.getUUID()}`,
-        json: true
-    })
-    .then(res => {
-        let selected = getSelectedProfile(res)?.members[Player.getUUID().replace(/-/g, "")]
-         professional = selected?.mining_core?.nodes?.professional,
-         fortunate = selected?.mining_core?.nodes?.fortunate
-
-        powderTotals = {
-            gemstone: (selected?.mining_core?.powder_gemstone_total ?? 0)
-              + (selected?.mining_core?.powder_spent_gemstone ?? 0),
-            mithril: (selected?.mining_core?.powder_mithril_total ?? 0)
-              + (selected?.mining_core?.powder_spent_mithril ?? 0)
-        }
-
-        if(professional != undefined)
-            constants.data.professional = professional
-        if(fortunate != undefined)
-            constants.data.fortunate = fortunate
-        constants.data.save()
-        getPlayerDataSuccess = true
-    })
-})
-
 register("step", () => {
     let inventoryName = Player?.getContainer()?.getName()?.toString()
     if(inventoryName == undefined) return
@@ -107,9 +79,9 @@ register("step", () => {
 
 
 register("itemTooltip", (lore, item) => {
-    if(item.getLore()[0]?.startsWith("§o§aFortunate§r"))
+    if(item.getLore()[0]?.includes("Fortunate"))
         constants.data.fortunate = parseInt(item.getLore()[1].replace("§5§o§7Level ", ""))
-    else if (item.getLore()[0]?.startsWith("§o§aProfessional§r"))
+    else if (item.getLore()[0]?.includes("Professional"))
         constants.data.professional = parseInt(item.getLore()[1].replace("§5§o§7Level ", ""))
     else return
     constants.data.save()
@@ -139,14 +111,14 @@ register("itemTooltip", (lore, item) => { // powder put into each perk
 
 register("step", () => {
     let inventoryName = Player?.getContainer()?.getName()?.toString()
-    if(inventoryName == undefined || !inventoryName.includes("Heart of the Mountain") || getPlayerDataSuccess) return
+    if(inventoryName == undefined || !inventoryName.includes("Heart of the Mountain")) return
     for (i = 0; i < Player.getContainer().getSize(); i++)
     {
         let item = Player.getContainer().getStackInSlot(i)
         let lore = item?.getLore()
         if(lore == undefined) return
         let loreType = lore[0]?.removeFormatting()
-        if(!settings.showPowderSum || !loreType?.match(/(^Heart|^Reset).*/g) || (checkedHotmInfo && checkedHotmReset) || getPlayerDataSuccess) continue
+        if(!settings.showPowderSum || !loreType?.match(/(^Heart|^Reset).*/g) || (checkedHotmInfo && checkedHotmReset)) continue
         let loreItems = item.getLore()
         if(!loreItems)
             continue
@@ -164,7 +136,6 @@ register("step", () => {
                     powderTotals[powderType] = add
                 else if(!checkedHotmInfo)
                     powderTotals[powderType] += add
-
             }
             else if (!checkedHotmReset)
             {

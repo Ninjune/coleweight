@@ -1,6 +1,6 @@
 import { registerGui } from "../../guiManager"
 import settings from "../../settings"
-import { capitalizeFirst, checkInDwarven, checkInEnd, checkInHollows, Title } from "../../util/helperFunctions"
+import { capitalizeFirst, dwarvenChecker, endChecker, hollowsChecker, isPlayerHoldingDrill, Title } from "../../util/helperFunctions"
 import { BaseGui } from "../BaseGui"
 
 const miningAbilitiesGui = new BaseGui(["abilityGui", "miningabilities"], () => {
@@ -35,7 +35,7 @@ let activeAbilities = [],
 
 function checkAreas()
 {
-    if(checkInDwarven() || checkInHollows() || checkInEnd()) return true
+    if(dwarvenChecker.check() || hollowsChecker.check() || endChecker.check()) return true
     return false
 }
 
@@ -70,7 +70,7 @@ register("chat", (abilityName, event) => {
 
 
 register("chat", (cdSeconds, event) => {
-    if(selectedAbility == undefined) return
+    if(selectedAbility == undefined || !isPlayerHoldingDrill()) return
     addAbility(selectedAbility, cdSeconds)
 }).setCriteria(/&r&cThis ability is on cooldown for (.+)s.&r/g)
 
