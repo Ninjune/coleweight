@@ -1,9 +1,10 @@
 import settings from "../settings";
+import { dwarvenChecker } from "../util/helperFunctions";
 import { drawCoolWaypoint } from "../util/renderUtil"
 
 let waypoints = JSON.parse(FileLib.read("Coleweight", "data/glaciteTunnels.json"))
 register("renderWorld", () => {
-    if(!settings.tunnelsWaypoints)
+    if(!settings.tunnelsWaypoints || !dwarvenChecker.check())
         return;
     let rgb;
 

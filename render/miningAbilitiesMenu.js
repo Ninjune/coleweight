@@ -2,13 +2,14 @@ import settings from "../settings";
 import constants from "../util/constants";
 
 let justChanged = false
+let quickswitchActive = false;
 let firstIteration = true;
 let abilities = []
 let page = 0;
 let nextAbility = 0;
 let clickedAbility = false
 register("guiMouseClick", (x, y, button, gui, event) => {
-    if(!settings.miningAbilitiesQuickswitch)
+    if(!quickswitchActive)
         return;
     const inventory = Player.getContainer();
     if(!isHotmMenu(inventory))
@@ -25,7 +26,7 @@ register("guiMouseClick", (x, y, button, gui, event) => {
             {
                 abilities.push({page: page, slot: i})
                 if(settings.debug)
-                    ChatLib.chat("page: " + page + " slot: " + i)
+                    console.log("page: " + page + " slot: " + i)
             }
         }
 
@@ -63,12 +64,6 @@ register("guiMouseClick", (x, y, button, gui, event) => {
 })
 
 
-register("command", () => {
-    abilities.forEach(ability => {
-        ChatLib.chat(ability.page + " " + ability.slot)
-    })
-}).setCommandName("liststuff")
-
 register("chat", () => {
     resetAbilities()
 }).setChatCriteria("Reset your Heart of the Mountain! Your Perks and Abilities have been reset.")
@@ -79,7 +74,19 @@ register("guiClosed", (gui) => {
         return;
     page = 0;
     clickedAbility = false;
+    quickswitchActive = false;
 })
+
+
+export function quickswitch()
+{
+    quickswitchActive = true;
+    justChanged = true;
+    Client.scheduleTask(4, () => {
+        justChanged = false
+    });
+    ChatLib.command("hotm")
+}
 
 
 export function resetAbilities()
@@ -88,6 +95,7 @@ export function resetAbilities()
     firstIteration = true;
     page = 0;
     nextAbility = 0;
+    quickswitchActive = false;
 }
 
 

@@ -392,14 +392,6 @@ class Settings {
     moveAbilitiesLocation() {
         ChatLib.command("cw move miningabilities", true);
     }
-
-    @SwitchProperty({
-        name: "Mining abilities quickswitch",
-        description: "Will redirect clicks to rotate through abilities in HOTM menu then close it. basis: neu wardrobe swap w/ keybinds, soopy custom guis",
-        subcategory: "Mining Abilities",
-        category: "Gui"
-    })
-    miningAbilitiesQuickswitch = false;
     // SUBCAT Powdertracker
     @SwitchProperty({ 
         name: "Show powdertracker",
