@@ -13,7 +13,6 @@ register("guiMouseClick", (x, y, button, gui, event) => {
     const inventory = Player.getContainer();
     if(!isHotmMenu(inventory))
         return;
-    //ChatLib.chat(page + " " + nextAbility)
     event.setCanceled(true)
     if(firstIteration)
     {
@@ -68,17 +67,13 @@ register("chat", () => {
 
 
 register("guiClosed", (gui) => {
-    if(Player.getContainer().getName() != "container") // closed menu
+    if(Player.getContainer()?.getName() != "container") // closed menu
         return;
     page = 0;
     clickedAbility = false;
     quickswitchActive = false;
 })
 
-
-register("step", () => {
-    //ChatLib.chat()
-}).setFps(4)
 
 export function quickswitch()
 {
