@@ -158,6 +158,14 @@ class Settings {
         category: "General"
     })
     tunnelsWaypoints = true;
+
+    @SwitchProperty({
+        name: "Party transfer command",
+        description: "Enables party command !ptme or ?pt or .ptme etc. to transfer party",
+        subcategory: "General",
+        category: "General"
+    })
+    transferCommand = false;
     // SUBCAT Streamer Mode
     @SwitchProperty({
         name: "Streamer mode",
@@ -426,6 +434,25 @@ class Settings {
     })
     movePowderLocation() {
         ChatLib.command("cw move powdertracker", true);
+    }
+    // SUBCAT Scrap tracker
+    @SwitchProperty({
+        name: "Scrap tracker",
+        description: "&7Enables the Scrap tracker for the Glacite Mineshaft. Gain 1 scrap for it to show up. /cw reload scrap to reset.",
+        subcategory: "Scrap Tracker",
+        category: "Gui"
+    })
+    scrapGui = false;
+
+    @ButtonProperty({
+        name: "Change Scrap tracker position",
+        description: "Move the location of the scrap tracker.",
+        subcategory: "Scrap Tracker",
+        category: "Gui",
+        placeholder: "Open"
+    })
+    moveCwLocation() {
+        ChatLib.command("cw move scrap", true);
     }
     // SUBCAT Stopwatch
     @SwitchProperty({

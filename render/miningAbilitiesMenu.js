@@ -1,7 +1,6 @@
 import settings from "../settings";
 import constants from "../util/constants";
 
-let justChanged = false
 let quickswitchActive = false;
 let firstIteration = true;
 let abilities = []
@@ -30,17 +29,16 @@ register("guiMouseClick", (x, y, button, gui, event) => {
             }
         }
 
-        switch(page)
+        if(page == 0)
         {
-        case 0:
             click(8, false, "RIGHT");
             page++
-            break;
-        case 1:
+        }
+        else
+        {
             firstIteration = false;
             ChatLib.chat(`${constants.PREFIX}&bSuccessfully recorded available abilities!`)
             Client.currentGui.close()
-            break;
         }
     }
     else
@@ -70,7 +68,7 @@ register("chat", () => {
 
 
 register("guiClosed", (gui) => {
-    if(justChanged)
+    if(Player.getContainer().getName() != "container") // closed menu
         return;
     page = 0;
     clickedAbility = false;
@@ -78,13 +76,13 @@ register("guiClosed", (gui) => {
 })
 
 
+register("step", () => {
+    //ChatLib.chat()
+}).setFps(4)
+
 export function quickswitch()
 {
     quickswitchActive = true;
-    justChanged = true;
-    Client.scheduleTask(4, () => {
-        justChanged = false
-    });
     ChatLib.command("hotm")
 }
 
@@ -113,10 +111,6 @@ function isHotmMenu(inventory)
 function click(slot, shift, clickType)
 {
     Player.getContainer().click(slot, shift, clickType);
-    justChanged = true;
-    Client.scheduleTask(4, () => {
-        justChanged = false
-    });
 }
 
 /*register("guiOpened", (event) => {
