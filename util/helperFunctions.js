@@ -267,7 +267,7 @@ export const foragingChecker = new LocationChecker(["§aDark Thic", "§aBirch Pa
 export const endChecker = new LocationChecker(["End", "Dragon's"])
 export const mirroverseCheck = new LocationChecker(["§fMirrorver"])
 export const mineshaftCheck = new LocationChecker(["shaft"])
-export const gardenCheck = new LocationChecker(["Garden"])
+export const gardenCheck = new LocationChecker(["Garde"])
 export const gunpowderCheck = new LocationChecker(["§bGunpowder"])
 
 /**

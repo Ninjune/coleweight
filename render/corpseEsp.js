@@ -15,7 +15,7 @@ register("renderWorld", () => {
     for(let i = 0; i < entities.length; i++)
     {
         let helmetName = new EntityLivingBase(entities[i].getEntity()).getItemInSlot(4)?.getName()?.removeFormatting()
-        if (claimed.some(e => entities[i].getPos().distance(e) < 15) || !helmetName)
+        if (claimed.some(e => entities[i].getPos().distance(e) < 5) || !helmetName)
             continue
         let text, rgb
         switch (helmetName) {
@@ -46,9 +46,9 @@ register("renderWorld", () => {
 })
 
 
-register("chat", () => {
+register("chat", (corpse) => {
     claimed.push(Player.asPlayerMP().getPos())
-}).setCriteria("  FROZEN CORPSE LOOT! ")
+}).setCriteria(/\s(.+) CORPSE LOOT!\s/)
 
 
 register("worldUnload", () => {

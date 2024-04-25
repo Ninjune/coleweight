@@ -92,6 +92,16 @@ function addAbility(abilityName, timer = 0)
                 timer = 60
             maxTimer = 60
             break
+        case "Gemstone Infusion":
+            if(timer <= 0)
+                timer = 140
+            maxTimer = 140
+            break
+        case "Hazardous Miner":
+            if(timer <= 0)
+                timer = 140
+            maxTimer = 140
+            break
         default:
             if(timer <= 0)
                 timer = 120
