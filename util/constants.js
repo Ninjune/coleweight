@@ -153,7 +153,6 @@ register("worldLoad", () => {
 // ct load
 updateRegisters()
 
-
 // Event handler for GUI settings close.
 register("guiClosed", (event) => {
     updateRegisters();

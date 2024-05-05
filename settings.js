@@ -502,6 +502,14 @@ class Settings {
         options: ["Green Mithril", "Blue Mithril", "Ruby", "Normal gemstone (jade, amethyst, etc)", "Topaz/Opal", "Jasper"]
     })
     tickSpeedBlock = 3;
+
+    @SwitchProperty({
+        name: "Supercraft amount",
+        description: "Shows max amount you can supercraft in the menu.",
+        subcategory: "Stats",
+        category: "Stats"
+    })
+    superCraft = true;
     // CAT Waypoints
     // SUBCAT Naturals
     @SwitchProperty({

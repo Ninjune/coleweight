@@ -81,20 +81,20 @@ function addAbility(abilityName, timer = 0)
     switch(capitalizeFirst(abilityName))
     {
         case "Pickobulus":
-            if(timer <= 0)
-                timer = 110
             maxTimer = 110
             break
         case "Vein seeker":
-            if(timer <= 0)
-                timer = 60
             maxTimer = 60
             break
+        case "Gemstone Infusion":
+        case "Hazardous Miner":
+            maxTimer = 140
+            break
         default:
-            if(timer <= 0)
-                timer = 120
             maxTimer = 120
     }
+    if(timer <= 0)
+        timer = maxTimer
 
     activeAbilities.forEach(ability => {
         if(ability.name == capitalizeFirst(abilityName))
