@@ -16,7 +16,7 @@ const gemstoneCosts = {};
 
 
 const coinGui = new BaseGui(["coinGui", "coin", "money", "cointracker"], () => {
-    if((!coinGui.isOpen() && !settings.coinTracker) || startTime <= 0)
+    if(startTime <= 0)
         return;
 
     let type;
@@ -40,7 +40,7 @@ const coinGui = new BaseGui(["coinGui", "coin", "money", "cointracker"], () => {
     }
 
     return `&a(${lastGemstone} ${type} @ &b${addCommas(lastPrice)}&a)\n&a$/hr: &b$${addCommas(moneyPerHour)}\n&a$ made: &b$${addCommas(Math.floor(money))}&b\n&aUptime: &b${secondsToMessage((Date.now()-startTime)/1000)}`;
-}, resetVars);
+}, () => { return coinGui.isOpen() || settings.coinTracker } , resetVars);
 registerGui(coinGui);
 
 

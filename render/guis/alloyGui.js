@@ -9,11 +9,8 @@ import { secondsToMessage } from "../../util/helperFunctions"
 var latestAlloy = -1
 var lastUpdate = -1
 const alloyGui = new BaseGui(["alloyGui", "alloy", "divanAlloy", "alloytracker"], () => {
-    if(!alloyGui.isOpen() && !settings.alloyTracker)
-        return
-
     return `&aLast alloy: &b${secondsToMessage((new Date().getTime()-latestAlloy)/1000)} ago`
-}, reloadAlloy)
+}, () => { return alloyGui.isOpen() || settings.alloyTracker} , reloadAlloy)
 registerGui(alloyGui)
 
 function reloadAlloy()

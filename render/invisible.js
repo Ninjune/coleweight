@@ -1,23 +1,21 @@
 import settings from "../settings"
-import { hollowsChecker } from "../util/helperFunctions"
+import { hollowsChecker, registerWhen } from "../util/helperFunctions"
 const EntityArmorStand = Java.type("net.minecraft.entity.item.EntityArmorStand");
 const EntitySlime = Java.type("net.minecraft.entity.monster.EntitySlime");
 
-register("renderItemIntoGui", (item, x, y, event) => {
-    if(!settings.invisibleItems) return
+registerWhen(register("renderItemIntoGui", (item, x, y, event) => {
     cancel(event)
     //item.itemStack.func_150996_a(Item2.func_111206_d("minecraft:air")) // item.itemStack.setItem(Item.getByNameOrId())
-})
+}), () => { return settings.invisibleItems })
 
 
-register("renderHand", event => {
-    if(!settings.invisibleItems) return
+registerWhen(register("renderHand", event => {
     cancel(event)
-})
+}), () => { return settings.invisibleItems })
 
 
-register("renderEntity", (entity, position, partialTicks, event) => {
-    if(!hollowsChecker.check() || !countSludge() || settings.debug)
+registerWhen(register("renderEntity", (entity, position, partialTicks, event) => {
+    if(!countSludge())
         return;
     entity = entity.getEntity();
     const CTEntity = new Entity(entity);
@@ -27,7 +25,7 @@ register("renderEntity", (entity, position, partialTicks, event) => {
         CTEntity.getName().includes("Sludge")
     )
         cancel(event);
-})
+}), () => { return hollowsChecker.check() && !settings.debug})
 
 
 function countSludge()

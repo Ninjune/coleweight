@@ -6,8 +6,6 @@ const GYRO_COOLDOWN = 10.0
 const GYRO_DURATION = 6.0
 
 const gyroGui = new BaseGui(["gyroGui", "gyro", "alignment", "align"], () => {
-    if(!gyroGui.isOpen() && !settings.gyroTracker)
-        return
     // check and remove from array players whose cooldowns are < 0
     gyroPlayers = gyroPlayers.filter(player => Date.now()-player.castTime <= GYRO_COOLDOWN*1000)
     let aligned = gyroPlayers.some(player => GYRO_DURATION*1000-(Date.now()-player.castTime) >= 0)
@@ -22,7 +20,7 @@ const gyroGui = new BaseGui(["gyroGui", "gyro", "alignment", "align"], () => {
         message += "&aYou: &b0.0\n"
 
     return message
-}, () => { gyroPlayers = [] })
+}, () => { return gyroGui.isOpen() || settings.gyroTracker }, () => { gyroPlayers = [] })
 registerGui(gyroGui)
 
 

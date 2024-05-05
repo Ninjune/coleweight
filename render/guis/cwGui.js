@@ -19,7 +19,7 @@ let cwValues = [],
  passPlayerRank = 0
 
 const cwGui = new BaseGui(["coleweightGui", "coleweight", "cw"], () => {
-    if(!settings.cwToggle || constants.data.api_key == undefined) return
+    if(constants.data.api_key == undefined) return
     let coleweightMessage = "",
      renderString = ""
 
@@ -43,7 +43,7 @@ const cwGui = new BaseGui(["coleweightGui", "coleweight", "cw"], () => {
         renderString += `&aTime to pass &6#${passPlayerRank}&a ${passPlayerName}:&b ${Math.round((passPlayerCW - coleweight)/coleweightHr)}h ${Math.floor((passPlayerCW - coleweight)/coleweightHr*60%60)}m`
 
     return renderString
-}, reloadColeweight)
+}, () => { return settings.cwToggle } , reloadColeweight)
 registerGui(cwGui)
 
 

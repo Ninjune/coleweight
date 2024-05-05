@@ -14,8 +14,8 @@ let sessionRunning = false,
  timeSinceLastGain = 0
 
 const powderGui = new BaseGui(["powdertrackerGui", "powdertracker", "powder"], () => {
-    if (!powderGui.isOpen() && (!settings.trackerVisible || !sessionRunning)) return
-
+    if(!sessionRunning)
+        return
     let uptimeHr = Math.floor(seconds/60/60),
      lines = [],
      message = ""
@@ -48,7 +48,7 @@ const powderGui = new BaseGui(["powdertrackerGui", "powdertracker", "powder"], (
     })
 
     return message
-}, resetVars)
+}, () => { return powderGui.isOpen() || settings.trackerVisible }, resetVars)
 registerGui(powderGui)
 
 

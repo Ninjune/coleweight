@@ -1,5 +1,5 @@
 import settings from "../settings"
-import { hollowsChecker, waypointRender } from "../util/helperFunctions"
+import { hollowsChecker, registerWhen, waypointRender } from "../util/helperFunctions"
 let coords = [],
  visibleCoords = []
 
@@ -9,8 +9,8 @@ register("gameLoad", res => {
 })
 
 
-register("step", () => {
-    if(!settings.showNaturals || !hollowsChecker.check()  || coords.length < 1) return
+registerWhen(register("step", () => {
+    if(coords.length < 1) return
     visibleCoords = []
     coords.filter(coord =>
         (((-1 * settings.naturalRange)/2 < (parseInt(Player.getX()) - coord.x)) && ((parseInt(Player.getX()) - coord.x) < settings.naturalRange/2)
@@ -19,14 +19,13 @@ register("step", () => {
     ).forEach(coord => {
         visibleCoords.push([coord.x, coord.y, coord.z])
     })
-}).setFps(1)
+}).setFps(1), () => { return settings.showNaturals && hollowsChecker.check() })
 
 
-register("renderWorld", () => {
-    if(!settings.showNaturals) return
+registerWhen(register("renderWorld", () => {
     if(visibleCoords.length < 1) return
     waypointRender(visibleCoords)
-})
+}), () => { return settings.showNaturals })
 
 
 register("worldUnload", () => {

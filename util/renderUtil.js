@@ -143,16 +143,16 @@ export function drawEspBox (x, y, z, red, green, blue, alpha, phase = true) // t
  */
 export function drawCoolWaypoint(x, y, z, r, g, b, {name = "", showDist = name != "", phase = true, renderBeacon = true, alpha = 0.6, drawBox = true, nameColor = "a", includeVerticalDistance = true})
 {
-    let distToPlayerSq = (x-Player.getRenderX())**2 + (y-(Player.getRenderY()+Player.getPlayer()["func_70047_e"]()))**2 + (z-Player.getRenderZ())**2
-    let distanceText = includeVerticalDistance ? Math.hypot(x-Player.getRenderX(), y-(Player.getRenderY() +
-        Player.getPlayer()["func_70047_e"]()), z-Player.getRenderZ()) :
-        Math.hypot(x-Player.getRenderX(), z-Player.getRenderZ())
-    //let alpha=Math.min(1,Math.max(0,1-(distToPlayerSq-10000)/12500))
-
     if(drawBox)
         drawEspBox(x+0.5,y,z+0.5,r,g,b, alpha, phase)
 
-    if(name||showDist){
+    if(name || showDist){
+        let distToPlayerSq = (x-Player.getRenderX())**2 + (y-(Player.getRenderY()+Player.getPlayer()["func_70047_e"]()))**2 + (z-Player.getRenderZ())**2
+        let distanceText = includeVerticalDistance ? Math.hypot(x-Player.getRenderX(), y-(Player.getRenderY() +
+        Player.getPlayer()["func_70047_e"]()), z-Player.getRenderZ()) :
+        Math.hypot(x-Player.getRenderX(), z-Player.getRenderZ())
+        //let alpha=Math.min(1,Math.max(0,1-(distToPlayerSq-10000)/12500))
+
         let distToPlayer=Math.sqrt(distToPlayerSq)
 
         let distRender=Math.min(distToPlayer,50)

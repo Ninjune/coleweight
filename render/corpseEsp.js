@@ -1,15 +1,13 @@
 // basis: https://github.com/Skytils/SkytilsMod/blob/293ebf80522daf105da19ddb8ad27fa4fc5f9af9/src/main/kotlin/gg/skytils/skytilsmod/features/impl/mining/MiningFeatures.kt#L364 & nwjn esps: matcho + corpse
 import settings from "../settings"
-import { mineshaftCheck } from "../util/helperFunctions"
+import { mineshaftCheck, registerWhen } from "../util/helperFunctions"
 import { drawCoolWaypoint } from "../util/renderUtil"
 
 // Credit: Nwjn for most of this...if it ain't broke don't fix it ig
 const EntityArmorStand = Java.type("net.minecraft.entity.item.EntityArmorStand")
 let exit = false
 let claimed = []
-register("renderWorld", () => {
-    if(!settings.corpseEsp || !mineshaftCheck.check())
-        return
+registerWhen(register("renderWorld", () => {
     const entities = World.getAllEntitiesOfType(EntityArmorStand.class).filter(a => a?.getName() == "Armor Stand" && !a.isInvisible())
       
     for(let i = 0; i < entities.length; i++)
@@ -43,7 +41,7 @@ register("renderWorld", () => {
             rgb[0], rgb[1], rgb[2], {name: text, showDist: true}
         )
     }
-})
+}), () => { return settings.corpseEsp && mineshaftCheck.check() })
 
 
 register("chat", (corpse) => {

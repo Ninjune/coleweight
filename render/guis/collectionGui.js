@@ -19,7 +19,7 @@ let itemStringed = "",
 
 const collectionGui = new BaseGui(["collectionGui", "collection"], () => {
     let leftValues = [`${itemStringed}`, `${itemStringed}/hr`, `${itemStringed} gained`, "Uptime"]
-    if(!settings.collectionTracker || !(settings.showCollectionTrackerAlways || trackingItem || trackedItem == "" || collectionGui.isOpen())) return
+    if(!(settings.showCollectionTrackerAlways || trackingItem || trackedItem == "")) return
     if(itemValues[0] != undefined && calcItemPerHour)
     {
         itemValuesSum = 0
@@ -44,7 +44,7 @@ const collectionGui = new BaseGui(["collectionGui", "collection"], () => {
         message += "&a" + value + ": &b" + rightValues[i] + "\n"
     })
     return message
-}, resetVars)
+}, () => { return settings.collectionTracker || collectionGui.isOpen() }, resetVars)
 registerGui(collectionGui)
 
 // thanks to Axl#9999 for most collections in collections.json

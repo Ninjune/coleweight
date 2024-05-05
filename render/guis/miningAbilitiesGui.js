@@ -4,8 +4,6 @@ import { capitalizeFirst, dwarvenChecker, endChecker, hollowsChecker, isPlayerHo
 import { BaseGui } from "../BaseGui"
 
 const miningAbilitiesGui = new BaseGui(["abilityGui", "miningabilities"], () => {
-    if(!miningAbilitiesGui.isOpen() && (!settings.miningAbilitiesGui || !checkAreas()))
-        return
     let leftValues = [],
      rightValues = []
 
@@ -29,7 +27,7 @@ const miningAbilitiesGui = new BaseGui(["abilityGui", "miningabilities"], () => 
     })
 
     return message
-})
+}, () => { return miningAbilitiesGui.isOpen() || (settings.miningAbilitiesGui && checkAreas()) })
 let activeAbilities = [],
  selectedAbility
 
@@ -91,16 +89,6 @@ function addAbility(abilityName, timer = 0)
             if(timer <= 0)
                 timer = 60
             maxTimer = 60
-            break
-        case "Gemstone Infusion":
-            if(timer <= 0)
-                timer = 140
-            maxTimer = 140
-            break
-        case "Hazardous Miner":
-            if(timer <= 0)
-                timer = 140
-            maxTimer = 140
             break
         default:
             if(timer <= 0)

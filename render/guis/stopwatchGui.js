@@ -5,8 +5,6 @@ import { BaseGui } from "../BaseGui"
 
 
 const stopwatchGui = new BaseGui(["stopwatchGui", "stopwatch"], () => {
-    if (!settings.stopwatchVisible) return
-
     let hr = Math.floor(constants.data.stopwatch/60/60), message
 
     if(hr >= 1)
@@ -18,7 +16,7 @@ const stopwatchGui = new BaseGui(["stopwatchGui", "stopwatch"], () => {
         message += " &c&lPAUSED"
 
     return message
-})
+}, () => { return settings.stopwatchVisible })
 registerGui(stopwatchGui)
 
 

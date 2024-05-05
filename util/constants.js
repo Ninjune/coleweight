@@ -1,6 +1,8 @@
 import PogObject from "PogData"
 import axios from "../../axios"
 import settings from "../settings"
+import { updateRegisters } from "./helperFunctions"
+
 
 let PogData = new PogObject("Coleweight", {
     "api_key": "",
@@ -141,3 +143,23 @@ register("chat", (state, event) => {
     constants.data.effMinerEnabled = state == "Enabled"
     constants.data.save()
 }).setCriteria(/&r&.([a-zA-Z]+) Efficient Miner&r/g)
+
+
+register("worldLoad", () => {
+    updateRegisters()
+})
+
+
+// ct load
+updateRegisters()
+
+
+// Event handler for GUI settings close.
+register("guiClosed", (event) => {
+    updateRegisters();
+});
+
+
+register("guiOpened", (event) => {
+    updateRegisters();
+});

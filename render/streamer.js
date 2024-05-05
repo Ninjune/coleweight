@@ -1,11 +1,10 @@
 import settings from "../settings"
 import constants from "../util/constants"
+import { registerWhen } from "../util/helperFunctions"
 let sidebarUpdated = false, currentServer, timers = { debug: -1, playerList: -1}
 const Item2 = Java.type("net.minecraft.item.Item")
 
-register("step", () => {
-    if(!settings.streamerMode) return
-
+registerWhen(register("step", () => {
     if(settings.streamerRandomizeLobby && !sidebarUpdated)
     {
         let serverScore, date
@@ -28,17 +27,15 @@ register("step", () => {
     Object.keys(timers).forEach(key => {
         timers[key]--
     })
-}).setFps(20)
+}).setFps(20), () => { return settings.streamerMode })
 
 
-register("renderBossHealth", event => {
-    if(!(settings.streamerMode && settings.streamerBlockBossbar)) return
+registerWhen(register("renderBossHealth", event => {
     cancel(event)
-})
+}), () => { return settings.streamerMode && settings.streamerBlockBossbar})
 
 
-register("renderPlayerList", event => {
-    if(!(settings.streamerMode && settings.streamerBlockTab)) return
+registerWhen(register("renderPlayerList", event => {
     if(timers.playerList <= 0)
     {
         timers.playerList = 20
@@ -46,18 +43,17 @@ register("renderPlayerList", event => {
     }
 
     cancel(event)
-})
+}), () => { return settings.streamerMode && settings.streamerBlockTab })
 
 
-register("renderDebug", event => {
-    if(!(settings.streamerMode && settings.streamerBlockDebug)) return
+registerWhen(register("renderDebug", event => {
     if(timers.debug <= 0)
     {
         ChatLib.chat(`${constants.PREFIX}&bCW has canceled opening debug menu! (disable &aStreamer Mode&b in settings if you don't want this.) (Hit F3 to stop this message spam)`)
         timers.debug = 20
     }
     cancel(event)
-})
+}), () => { return settings.streamerMode && settings.streamerBlockDebug })
 
 
 register("chat", (event) => {

@@ -20,8 +20,6 @@ const blocks = [ [-265, 32, -108],
 ]
 
 const danceGui = new BaseGui(["danceGui", "dance"], () => {
-    if(!settings.danceTracker || !mirroverseCheck.check())
-        return
     const modifiedTime = Date.now()
 
     let dance = false
@@ -58,7 +56,7 @@ const danceGui = new BaseGui(["danceGui", "dance"], () => {
     const nextTime = currentTime+2
     let message = `${danceData[danceIndex-1]}&7: &b${Math.max(currentTime, 0).toFixed(2)}\n${danceData[danceIndex]}&7: &b${nextTime.toFixed(2)}`
     return `${danceIndex} / ${danceData.length-1}${danceStreak > 0 ? " Streak: " + danceStreak : ""}`
-})
+}, () => { return settings.danceTracker && mirroverseCheck.check() })
 registerGui(danceGui)
 
 

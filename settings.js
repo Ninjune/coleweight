@@ -112,14 +112,6 @@ class Settings {
     grieferEverywhere = false;
 
     @SwitchProperty({
-        name: "Dwarven notifier",
-        description: "Notifies you every day when not in Dwarven Mines.",
-        subcategory: "General",
-        category: "General"
-    })
-    dwarvenNotifier = false;
-
-    @SwitchProperty({
         name: "Hide items",
         description: "Makes items invisible.",
         subcategory: "General",
@@ -142,14 +134,6 @@ class Settings {
         category: "General"
     })
     debug = false;
-
-    @SwitchProperty({
-        name: "Efficient miner with dillo warning",
-        description: "Shows a warning when you have dillo + efficient miner equipped.",
-        subcategory: "General",
-        category: "General"
-    })
-    effDilloWarning = true;
 
     @SwitchProperty({
         name: "Glacite tunnels waypoints",
@@ -332,15 +316,7 @@ class Settings {
     moveCollectionLocation() {
         ChatLib.command("cw move collection", true);
     }
-    // SUBCAT Efficient Miner Overlay
-    @SwitchProperty({
-        name: "Efficient Miner Overlay",
-        description: "Points towards the best block to break with efficient miner. (Also dwarven mines mithril overlay) &4&lDeprecated",
-        subcategory: "Efficient Miner Overlay",
-        category: "Gui"
-    })
-    efficientMinerOverlay = false;
-    
+
     // SUBCAT Metal Detector Solver
     @SwitchProperty({
         name: "Metal Detector Solver",

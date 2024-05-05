@@ -1,20 +1,18 @@
 import settings from "../settings"
-import { foragingChecker } from "../util/helperFunctions"
+import { foragingChecker, registerWhen } from "../util/helperFunctions"
 
 treecapCooldown = 0.0
 monkeyLevel = 0
 
-register("renderOverlay", () => {
-    if(!settings.treecapTimer || !foragingChecker.check()) return
+registerWhen(register("renderOverlay", () => {
     // ChatLib.chat(Player.getHeldItem().getItemNBT().getTag('tag').getTag('ExtraAttributes').getTag("id").toString())
     let itemId = Player.getHeldItem()?.getItemNBT()?.getTag("tag")?.getTag("ExtraAttributes")?.getTag("id")?.toString()
     if(!(itemId == "\"TREECAPITATOR_AXE\"" || itemId == "\"ASPECT_OF_THE_VOID\"" || Player?.getHeldItem()?.getRegistryName() == "minecraft:fishing_rod")) return
     let txt = Math.ceil(treecapCooldown*10)/10
     Renderer.drawStringWithShadow(txt, Renderer.screen.getWidth()/2 - Renderer.getStringWidth(txt)/2, Renderer.screen.getHeight()/2 - Renderer.screen.getHeight()/25)
-})
+}), () => { return settings.treecapTimer && foragingChecker.check() })
 
-register("step", () => {
-    if(!settings.treecapTimer || !foragingChecker.check()) return
+registerWhen(register("step", () => {
     if(treecapCooldown > 0)
     {
         let multipler = 1 + Math.floor(1/2 * parseInt(monkeyLevel))/100
@@ -23,7 +21,7 @@ register("step", () => {
         else
             treecapCooldown -= 0.1 * multipler
     }
-}).setFps(10)
+}).setFps(10), () => { return settings.treecapTimer && foragingChecker.check() })
 
 
 register("blockBreak", (block) => {

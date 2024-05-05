@@ -1,4 +1,5 @@
 import constants from "../util/constants";
+import { registerWhen } from "../util/helperFunctions";
 
 /**
  * The base for a gui in the mod.
@@ -9,9 +10,10 @@ export class BaseGui
      *
      * @param {string[]} aliases - Names of the gui. aliases[0] is required and used in config. You must make an entry in the module's PogData in constants.js to track the x and y.
      * @param {callback} renderOverlayCallback - Callback to be used in renderOverlay. Must return the string that will be rendered.
+     * @param {callback} dependency - Callback to be used as dependency for the gui rendering. Must return a boolean.
      * @param {callback} reloadCallback - Callback to be used on .reload(). Return is voided.
      */
-    constructor(aliases, renderOverlayCallback, reloadCallback)
+    constructor(aliases, renderOverlayCallback, dependency, reloadCallback)
     {
         this.reloadCallback = reloadCallback;
         this.aliases = aliases;
@@ -28,7 +30,7 @@ export class BaseGui
             constants.data.save();
         });
 
-        register("renderOverlay", () => {
+        registerWhen(register("renderOverlay", () => {
             if (this.gui.isOpen())
             {
                 let txt = "Drag to move. Use +/- to increase/decrease gui size. Use arrow keys to set alignment.";
@@ -48,7 +50,7 @@ export class BaseGui
             text.setScale(parseFloat(constants.data[aliases[0]].scale));
             text.setShadow(true);
             text.draw();
-        });
+        }), dependency);
 
         register("guiKey", (char, keyCode, gui, event) => {
             if (!this.gui.isOpen()) return;
