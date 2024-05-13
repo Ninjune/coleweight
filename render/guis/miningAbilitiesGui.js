@@ -4,6 +4,8 @@ import { capitalizeFirst, dwarvenChecker, endChecker, hollowsChecker, isPlayerHo
 import { BaseGui } from "../BaseGui"
 
 const miningAbilitiesGui = new BaseGui(["abilityGui", "miningabilities"], () => {
+    if(!checkAreas())
+        return
     let leftValues = [],
      rightValues = []
 
@@ -27,7 +29,7 @@ const miningAbilitiesGui = new BaseGui(["abilityGui", "miningabilities"], () => 
     })
 
     return message
-}, () => { return miningAbilitiesGui.isOpen() || (settings.miningAbilitiesGui && checkAreas()) })
+}, () => { return miningAbilitiesGui.isOpen() || settings.miningAbilitiesGui})
 let activeAbilities = [],
  selectedAbility
 

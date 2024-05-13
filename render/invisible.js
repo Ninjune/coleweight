@@ -2,6 +2,7 @@ import settings from "../settings"
 import { hollowsChecker, registerWhen } from "../util/helperFunctions"
 const EntityArmorStand = Java.type("net.minecraft.entity.item.EntityArmorStand");
 const EntitySlime = Java.type("net.minecraft.entity.monster.EntitySlime");
+let sludgesInvisible = false;
 
 registerWhen(register("renderItemIntoGui", (item, x, y, event) => {
     cancel(event)
@@ -14,9 +15,13 @@ registerWhen(register("renderHand", event => {
 }), () => { return settings.invisibleItems })
 
 
+registerWhen(register("step", () => {
+    if(countSludge())
+        sludgesInvisible = true;
+}).setDelay(1), () => { return hollowsChecker.check() && !settings.debug})
+
+
 registerWhen(register("renderEntity", (entity, position, partialTicks, event) => {
-    if(!countSludge())
-        return;
     entity = entity.getEntity();
     const CTEntity = new Entity(entity);
     if(entity instanceof EntitySlime)
@@ -25,11 +30,13 @@ registerWhen(register("renderEntity", (entity, position, partialTicks, event) =>
         CTEntity.getName().includes("Sludge")
     )
         cancel(event);
-}), () => { return hollowsChecker.check() && !settings.debug})
+}), () => { return sludgesInvisible && !settings.debug })
 
 
 function countSludge()
 {
+    if(!hollowsChecker.check())
+        return false;
     let count = 0;
 
     World.getAllEntitiesOfType(EntityArmorStand).forEach(stand => {
