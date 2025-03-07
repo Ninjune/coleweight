@@ -150,6 +150,30 @@ class Settings {
         category: "General"
     })
     transferCommand = false;
+
+    @SwitchProperty({
+        name: "Efficient miner overlay V2",
+        description: "Shows an heatmap for umber/tungsten highlighting the best block to break.",
+        subcategory: "General",
+        category: "General"
+    })
+    efficientMinerOverlay = false;
+
+    @SwitchProperty({
+        name: "Old heatmap",
+        description: "Uses the old heatmap system for the efficient miner overlay.",
+        subcategory: "General",
+        category: "General"
+    })
+    oldHeatmap = false;
+
+    @SwitchProperty({
+        name: "Precision miner overlay",
+        description: "Shows an overlay for precision miner like the old SBE highlight chest locks.",
+        subcategory: "General",
+        category: "General"
+    })
+    pMinerOverlay = false;
     // SUBCAT Streamer Mode
     @SwitchProperty({
         name: "Streamer mode",
@@ -366,6 +390,13 @@ class Settings {
     })
     miningAbilitiesSelectedIndicator = true;
 
+    @SwitchProperty({
+        name: "Perfect Fuel Tank",
+        description: "Applies cooldown reduction from perf fuel tank",
+        subcategory: "Mining Abilities",
+        category: "Gui"
+    })
+    PerfectFuelTank = false;
     @ButtonProperty({
         name: "Change mining abilities position",
         description: "Move the location of the mining abilities gui.",
