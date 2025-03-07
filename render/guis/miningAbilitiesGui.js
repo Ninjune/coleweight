@@ -132,7 +132,7 @@ function addAbility(abilityName, timer = 0)
     }
 
     //checks if skymall has cooldown reduction
-    if (constants.data.currentSkymall == "Reduce Pickaxe Ability cooldown by 20%"){
+    if (constants.data.currentSkymall == "-20% Pickaxe Ability cooldowns"){
         Skymall = true
     } else{
         Skymall = false
