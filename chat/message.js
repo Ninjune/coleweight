@@ -68,6 +68,7 @@ register("step", () => {
     {
         constants.data.first_time = false;
         constants.data.save();
+        constants.pbs.save();
         ChatLib.chat("");
         new TextComponent(ChatLib.getCenteredText(`${PREFIX}&bView commands: /cw help`)).chat();
         new TextComponent(ChatLib.getCenteredText(`${PREFIX}&bJoin my discord &3here&b to keep up with development!`))

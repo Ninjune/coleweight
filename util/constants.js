@@ -12,8 +12,12 @@ let PogData = new PogObject("Coleweight", {
     "tracked": {},
     "itemStringed": "",
     "museum": [],
+    "skymallDuringTest": [],
     "currentPet": "",
+    "currentAbility":"",
+    "currentSkymall":"",
     "effMinerEnabled": false,
+    "lobbyswaps": 0,
     "coleweightGui": {
         "x": 0.5,
         "y": 141,
@@ -67,6 +71,22 @@ let PogData = new PogObject("Coleweight", {
         "alignment": 0,
         "scale": 1.0
     },
+    "miningtestgui": {
+        "collectionName": '',
+        "collectionGained": 0,
+        "maxtimer": 0,
+        "timer": 0,
+        "x": 0,
+        "y": 0,
+        "alignment": 0,
+        "scale": 1.0
+    },
+    "skymallGui": {
+        "x": 0,
+        "y": 0,
+        "alignment": 0,
+        "scale": 1.0
+    },
     "gyroGui": {
         "x": 0,
         "y": 0,
@@ -99,6 +119,38 @@ let PogData = new PogObject("Coleweight", {
     }
 }, "config/data.json")
 
+
+let PBs = new PogObject("Coleweight", {
+        "Coal": 0,
+        "Cobblestone": 0,
+        "Diamond": 0,
+        "Emerald": 0,
+        "EndStone": 0,
+        "Glacite": 0,
+        "Glossy": 0,
+        "Glowstone": 0,
+        "Gold": 0,
+        "HardStone": 0,
+        "Ice": 0,
+        "Iron": 0,
+        "Lapis": 0,
+        "Mithril": 0,
+        "Mycelium": 0,
+        "Netherrack": 0,
+        "Quartz": 0,
+        "Obsidian": 0,
+        "RedSand": 0,
+        "Redstone": 0,
+        "Refined": 0,
+        "Sand": 0,
+        "Sludge": 0,
+        "Titanium": 0,
+        "Tungsten": 0,
+        "Umber": 0
+}, "config/pbs.json")
+
+
+
 const PREFIX = "&2[CW] "
 export default constants = {
     PREFIX: PREFIX,
@@ -107,6 +159,7 @@ export default constants = {
     VERSION: (JSON.parse(FileLib.read("Coleweight", "metadata.json"))).version,
     CWINFO: undefined,
     data: PogData,
+    pbs: PBs,
     beta: false,
     checkedGemstoneStats: false,
     settings,
@@ -122,11 +175,11 @@ register("gameLoad", () => {
     })
 })
 
-
 register("chat", (lvl, pet, event) => {
     constants.data.currentPet = pet.toLowerCase()
     constants.data.save()
 }).setCriteria(/&cAutopet &eequipped your &.\[Lvl ([0-9]+)] &.([a-zA-Z]+)&e! &a&lVIEW RULE&r/g)
+
 
 
 register("chat", (message, pet, event) => {
@@ -146,7 +199,8 @@ register("chat", (state, event) => {
 
 
 register("worldLoad", () => {
-    updateRegisters()
+    Client.scheduleTask(20, updateRegisters);
+    Client.scheduleTask(60, updateRegisters);
 })
 
 

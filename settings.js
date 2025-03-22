@@ -365,6 +365,46 @@ class Settings {
         category: "Gui"
     })
     muteMetalDetectorSound = false;
+    //SUBCAT Skymall Gui
+    @SwitchProperty({
+        name: "Skymall gui",
+        description: "Toggles Skymall gui.",
+        subcategory: "Skymall",
+        category: "Gui"
+    })
+    skymallGui = false;
+
+    @ButtonProperty({
+        name: "Change skymall gui position",
+        description: "Move the location of the skymall gui.",
+        subcategory: "Skymall",
+        category: "Gui",
+        placeholder: "Open"
+    })
+    moveSkymallLocation(){
+        ChatLib.command("cw move skymallgui", true);
+    }
+    //SUBCAT Mining Test
+    @SwitchProperty({
+        name: "Mining Test gui",
+        description: "Toggles Mining Test gui.",
+        subcategory: "MiningTest",
+        category: "Gui"
+    })
+    miningtestgui = false;
+
+
+    @ButtonProperty({
+        name: "Change MiningTest gui position",
+        description: "Move the location of the MiningTest gui.",
+        subcategory: "MiningTest",
+        category: "Gui",
+        placeholder: "Open"
+    })
+    moveMiningTestLocation(){
+        ChatLib.command("cw move miningtestgui", true);
+    }
+
     // SUBCAT Mining Abilities
     @SwitchProperty({ 
         name: "Mining abilities",
@@ -382,14 +422,7 @@ class Settings {
     })
     miningAbilitiesGui = false;
 
-    @SwitchProperty({
-        name: "Mining abilities selected indicator",
-        description: "Tells which ability is selected on the ability gui.",
-        subcategory: "Mining Abilities",
-        category: "Gui"
-    })
-    miningAbilitiesSelectedIndicator = true;
-
+    
     @SwitchProperty({
         name: "Perfect Fuel Tank",
         description: "Applies cooldown reduction from perf fuel tank",

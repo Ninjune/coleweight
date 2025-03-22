@@ -1,5 +1,7 @@
+/* Depreciated
+
 import { registerCommand } from "../commandManager"
-import { cguiTrackCollection } from "../render/guis/collectionGui"
+
 
 
 registerCommand({
@@ -10,4 +12,4 @@ registerCommand({
     execute: (args) => {
         cguiTrackCollection(args[1]?.toLowerCase())
     }
-})
+})*/

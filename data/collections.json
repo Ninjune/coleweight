@@ -1,337 +1,107 @@
 {
-    "gemstone": 
-    {
-        "collectionToTrack": "GEMSTONE_COLLECTION",
-        "collectionStringed": "Gemstone"
+    "coal": {
+      "collectionName": "Coal",
+      "collectionEnchanted": "Enchanted Coal"
     },
-    "mithril":
-    {
-        "collectionToTrack": "MITHRIL_ORE",
-        "collectionStringed": "Mithril"
+    "cobblestone": {
+      "collectionName": "Cobblestone",
+      "collectionEnchanted": "Enchanted Cobblestone"
     },
-    "gold":
-    {
-        "collectionToTrack": "GOLD_INGOT",
-        "collectionStringed": "Gold"
+    "diamond": {
+      "collectionName": "Diamond",
+      "collectionEnchanted": "Enchanted Diamond"
     },
-    "obsidian":
-    {
-        "collectionToTrack": "OBSIDIAN",
-        "collectionStringed": "Obsidian"
+    "emerald": {
+      "collectionName": "Emerald",
+      "collectionEnchanted": "Enchanted Emerald"
     },
-    "netherrack":
-    {
-        "collectionToTrack": "NETHERRACK",
-        "collectionStringed": "Netherrack"
+    "endstone": {
+      "collectionName": "End Stone",
+      "collectionEnchanted": "Enchanted End Stone"
     },
-    "diamond":
-    {
-        "collectionToTrack": "DIAMOND",
-        "collectionStringed": "Diamond"
+    "glacite": {
+      "collectionName": "Glacite",
+      "collectionEnchanted": "Enchanted Glacite"
     },
-    "ice":
-    {
-        "collectionToTrack": "ICE",
-        "collectionStringed": "Ice"
+    "glossy": {
+      "collectionName": "Glossy Gemstone",
+      "collectionEnchanted": "Glossy Gemstone"
     },
-    "redstone":
-    {
-        "collectionToTrack": "REDSTONE",
-        "collectionStringed": "Redstone"
+    "glowstone": {
+      "collectionName": "Glowstone Dust",
+      "collectionEnchanted": "Enchanted Glowstone Dust"
     },
-    "lapis":
-    {
-        "collectionToTrack": "INK_SACK:4",
-        "collectionStringed": "Lapis"
+    "gold": {
+      "collectionName": "Gold Ingot",
+      "collectionEnchanted": "Enchanted Gold"
     },
-    "coal":
-    {
-        "collectionToTrack": "COAL",
-        "collectionStringed": "Coal"
+    "hardstone": {
+      "collectionName": "Hard Stone",
+      "collectionEnchanted": "Enchanted Hard Stone"
     },
-    "emerald":
-    {
-        "collectionToTrack": "EMERALD",
-        "collectionStringed": "Emerald"
+    "ice": {
+      "collectionName": "Ice",
+      "collectionEnchanted": "Enchanted Ice"
     },
-    "end":
-    {
-        "collectionToTrack": "ENDER_STONE",
-        "collectionStringed": "Endstone"
+    "iron": {
+      "collectionName": "Iron Ingot",
+      "collectionEnchanted": "Enchanted Iron"
     },
-    "endstone":
-    {
-        "collectionToTrack": "ENDER_STONE",
-        "collectionStringed": "Endstone"
+    "lapis": {
+      "collectionName": "Lapis Lazuli",
+      "collectionEnchanted": "Enchanted Lapis Lazuli"
     },
-    "glowstone":
-    {
-        "collectionToTrack": "GLOWSTONE_DUST",
-        "collectionStringed": "Glowstone"
+    "mithril": {
+      "collectionName": "Mithril",
+      "collectionEnchanted": "Enchanted Mithril"
     },
-    "iron":
-    {
-        "collectionToTrack": "IRON_INGOT",
-        "collectionStringed": "Iron"
+    "mycelium": {
+      "collectionName": "Mycelium",
+      "collectionEnchanted": "Enchanted Mycelium"
     },
-    "mycelium":
-    {
-        "collectionToTrack": "MYCEL",
-        "collectionStringed": "Mycelium"
+    "netherrack": {
+      "collectionName": "Netherrack",
+      "collectionEnchanted": "Enchanted Netherrack"
     },
-    "quartz":
-    {
-        "collectionToTrack": "QUARTZ",
-        "collectionStringed": "Quartz"
+    "quartz": {
+      "collectionName": "Nether Quartz",
+      "collectionEnchanted": "Enchanted Quartz"
     },
-    "cobblestone":
-    {
-        "collectionToTrack": "COBBLESTONE",
-        "collectionStringed": "Cobblestone"
+    "obsidian": {
+      "collectionName": "Obsidian",
+      "collectionEnchanted": "Enchanted Obsidian"
     },
-	"hard":
-	{
-		"collectionToTrack": "HARD_STONE",
-        "collectionStringed": "Hard Stone"
-	},
-	"red":
-	{
-		"collectionToTrack": "SAND:1",
-        "collectionStringed": "Red Sand"
-	},
-	"sand":
-	{
-		"collectionToTrack": "SAND",
-        "collectionStringed": "Sand"
-	},
-	"gravel":
-	{
-		"collectionToTrack": "GRAVEL",
-        "collectionStringed": "Gravel"
-	},
-    "coco":
-    {
-        "collectionToTrack": "INK_SACK:3",
-        "collectionStringed": "Coco Beans"
+    "redsand": {
+      "collectionName": "Red Sand",
+      "collectionEnchanted": "Enchanted Red Sand"
     },
-    "carrot":
-    {
-        "collectionToTrack": "CARROT_ITEM",
-        "collectionStringed": "Carrot"
+    "redstone": {
+      "collectionName": "Redstone",
+      "collectionEnchanted": "Enchanted Redstone"
     },
-    "cactus":
-    {
-        "collectionToTrack": "CACTUS",
-        "collectionStringed": "Cactus"
+    "refined": {
+      "collectionName": "Refined Mineral",
+      "collectionEnchanted": "Refined Mineral"
     },
-    "chicken":
-    {
-        "collectionToTrack": "RAW_CHICKEN",
-        "collectionStringed": "Raw Chicken"
+    "sand": {
+      "collectionName": "Sand",
+      "collectionEnchanted": "Enchanted Sand"
     },
-    "cane":
-    {
-        "collectionToTrack": "SUGAR_CANE",
-        "collectionStringed": "Sugar Cane"
+    "sludge": {
+      "collectionName": "Sludge Juice",
+      "collectionEnchanted": "Sludge Juice"
     },
-    "pumpkin":
-    {
-        "collectionToTrack": "PUMPKIN",
-        "collectionStringed": "Pumpkin"
+    "titanium": {
+      "collectionName": "Titanium",
+      "collectionEnchanted": "Enchanted Titanium"
     },
-    "wheat":
-    {
-        "collectionToTrack": "WHEAT",
-        "collectionStringed": "Wheat"
+    "tungsten": {
+      "collectionName": "Tungsten",
+      "collectionEnchanted": "Enchanted Tungsten"
     },
-    "seeds":
-    {
-        "collectionToTrack": "SEEDS",
-        "collectionStringed": "Seeds"
-    },
-    "mushroom":
-    {
-        "collectionToTrack": "MUSHROOM_COLLECTION",
-        "collectionStringed": "Mushroom"
-    },
-    "rabbit":
-    {
-        "collectionToTrack": "RABBIT",
-        "collectionStringed": "Raw Rabbit"
-    },
-    "wart":
-    {
-        "collectionToTrack": "NETHER_STALK",
-        "collectionStringed": "Nether Wart"
-    },
-    "mutton":
-    {
-        "collectionToTrack": "MUTTON",
-        "collectionStringed": "Mutton"
-    },
-    "melon":
-    {
-        "collectionToTrack": "MELON",
-        "collectionStringed": "Melon"
-    },
-    "potato":
-    {
-        "collectionToTrack": "POTATO_ITEM",
-        "collectionStringed": "Potato"
-    },
-    "leather":
-    {
-        "collectionToTrack": "LEATHER",
-        "collectionStringed": "Leather"
-    },
-    "prok":
-    {
-        "collectionToTrack": "PORK",
-        "collectionStringed": "Raw Porkchop"
-    },
-    "feather":
-    {
-        "collectionToTrack": "FEATHER",
-        "collectionStringed": "Feather"
-    },
-    "pearl":
-    {
-        "collectionToTrack": "ENDER_PEARL",
-        "collectionStringed": ""
-    },
-    "chili":
-    {
-        "collectionToTrack": "CHILI_PEPPER",
-        "collectionStringed": "Chili Pepper"
-    },
-    "slime":
-    {
-        "collectionToTrack": "SLIME_BALL",
-        "collectionStringed": "Slimeball"
-    },
-    "magma":
-    {
-        "collectionToTrack": "MAGMA_CREAM",
-        "collectionStringed": "Magma Cream"
-    },
-    "ghast":
-    {
-        "collectionToTrack": "GHAST_TEAR",
-        "collectionStringed": "Ghast Tear"
-    },
-    "gunpowder":
-    {
-        "collectionToTrack": "SULPHUR",
-        "collectionStringed": "Gunpowder"
-    },
-    "rotten":
-    {
-        "collectionToTrack": "ROTTEN_FLESH",
-        "collectionStringed": "Rotten Flesh"
-    },
-    "spider":
-    {
-        "collectionToTrack": "SPIDER_EYE",
-        "collectionStringed": "Spider Eye"
-    },
-    "bone":
-    {
-        "collectionToTrack": "BONE",
-        "collectionStringed": "Bone"
-    },
-    "blaze":
-    {
-        "collectionToTrack": "BLAZE_ROD",
-        "collectionStringed": "Blaze Rod"
-    },
-    "string":
-    {
-        "collectionToTrack": "STRING",
-        "collectionStringed": "String"
-    },
-    "acacia":
-    {
-        "collectionToTrack": "LOG_2",
-        "collectionStringed": "Acacia Wood"
-    },
-    "spruce":
-    {
-        "collectionToTrack": "LOG:1",
-        "collectionStringed": "Spruce Wood"
-    },
-    "jungle":
-    {
-        "collectionToTrack": "LOG:3",
-        "collectionStringed": "Jungle Wood"
-    },
-    "birch":
-    {
-        "collectionToTrack": "LOG:2",
-        "collectionStringed": "Birch Wood"
-    },
-    "oak":
-    {
-        "collectionToTrack": "LOG",
-        "collectionStringed": "Oak Wood"
-    },
-    "dark":
-    {
-        "collectionToTrack": "LOG_2:1",
-        "collectionStringed": "Dark Oak Wood"
-    },
-    "lily":
-    {
-        "collectionToTrack": "WATER_LILY",
-        "collectionStringed": "Lily Pad"
-    },
-    "prismarine_shard":
-    {
-        "collectionToTrack": "PRISMARINE_SHARD",
-        "collectionStringed": "Prismarine Shard"
-    },
-    "ink":
-    {
-        "collectionToTrack": "INK_SACK",
-        "collectionStringed": "Ink Sack"
-    },
-    "fish":
-    {
-        "collectionToTrack": "RAW_FISH",
-        "collectionStringed": "Raw Fish"
-    },
-    "pufferfish":
-    {
-        "collectionToTrack": "RAW_FISH:3",
-        "collectionStringed": "Pufferfish"
-    },
-    "clownfish":
-    {
-        "collectionToTrack": "RAW_FISH:2",
-        "collectionStringed": "Clownfish"
-    },
-    "salmon":
-    {
-        "collectionToTrack": "RAW_FISH:1",
-        "collectionStringed": "Raw Salmon"
-    },
-    "magmafish":
-    {
-        "collectionToTrack": "MAGMA_FISH",
-        "collectionStringed": "Magmafish"
-    },
-    "prismarine_crystals":
-    {
-        "collectionToTrack": "PRISMARINE_CRYSTALS",
-        "collectionStringed": "Prismarine Crystals"
-    },
-    "clay":
-    {
-        "collectionToTrack": "CLAY_BALL",
-        "collectionStringed": "Clay"
-    },
-    "sponge":
-    {
-        "collectionToTrack": "SPONGE",
-        "collectionStringed": "sponge"
+    "umber": {
+      "collectionName": "Umber",
+      "collectionEnchanted": "Enchanted Umber"
     }
-}
+  }
+  

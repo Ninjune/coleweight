@@ -6,6 +6,8 @@ let lobbies = []
 
 register("chat", (server) => {
     if(!settings.lobbyMarking) return
+    constants.data.lobbyswaps += 1
+    constants.data.save()
     if(lobbies.indexOf(server) > 0)
         ChatLib.chat(`${PREFIX}&aYou've been in this lobby!`)
     else

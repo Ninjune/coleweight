@@ -1,4 +1,9 @@
 import constants from "../../util/constants"
+
+
+
+
+/* Depreciated
 import settings from "../../settings"
 import { secondsToMessage } from "../../util/helperFunctions"
 import { BaseGui } from "../BaseGui"
@@ -47,6 +52,11 @@ const collectionGui = new BaseGui(["collectionGui", "collection"], () => {
 }, () => { return settings.collectionTracker || collectionGui.isOpen() }, resetVars)
 registerGui(collectionGui)
 
+function getPlayerInfo(){
+
+}
+
+
 // thanks to Axl#9999 for most collections in collections.json
 export function cguiTrackCollection(collection)
 {
@@ -94,7 +104,7 @@ function calcApi(apiPath, tempUuid)
     try
     {
         request({
-            url: `https://api.hypixel.net/skyblock/profiles?key=${constants.data.api_key}&uuid=${uuid}`,
+            url: `https://api.hypixel.net/v2/skyblock/profiles?key=${constants.data.api_key}&profile=${uuid}`,
             json: true
         })
         .then(res => {
@@ -140,20 +150,6 @@ function calcApi(apiPath, tempUuid)
 }
 
 
-function trackCollection(collection)
-{
-    let collections = JSON.parse(FileLib.read("Coleweight", "data/collections.json"))
-    if(collection == undefined) return ChatLib.chat(`${constants.PREFIX}&eThat is not a valid collection! (or is not supported)`)
-    if(collection == "obby") collection = "obsidian"
-    if(collection == "cobble") collection = "cobblestone"
-    if(collections[collection.toLowerCase()] == undefined) return ChatLib.chat(`${constants.PREFIX}&eThat is not a valid collection! (or is not supported)`)
-    constants.data.tracked.item = collections[collection].collectionToTrack
-    constants.data.tracked.itemStringed = collections[collection].collectionStringed
-    constants.data.save()
-
-    ChatLib.chat(`${constants.PREFIX}&bSet collection to ${constants.data.tracked.itemStringed}!`)
-}
-
 
 function resetVars()
 {
@@ -164,4 +160,4 @@ function resetVars()
     apiCallsSinceLastChange = 0
     itemPerHour = "Calculating..."
     itemValuesSum = 0
-}
+}*/
