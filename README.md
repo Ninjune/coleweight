@@ -8,6 +8,8 @@
 </p>
 
 # Coleweight
+4/1/25 Archived: View https://github.com/Vinxey/coleweight/tree/Beta for further updates.
+
 Github for:
 https://www.chattriggers.com/modules/v/Coleweight
 ## Install
